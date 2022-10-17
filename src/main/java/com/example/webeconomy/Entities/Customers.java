@@ -1,4 +1,4 @@
-package com.example.WebEconomy.Entities;
+package com.example.webeconomy.Entities;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -18,10 +18,12 @@ public class Customers {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private long id;
+
+    
 
     @Column(name ="accountid")
-    private int accountid;
+    private long accountid;
 
     @Column(name ="name")
     private String name; 
@@ -36,17 +38,25 @@ public class Customers {
         super();
     }
 
-    public Customers(int accountid, String name, String address) {
+    public Customers(long accountid, String name, String address) {
         this.accountid = accountid;
         this.name = name;
         this.address = address;
     }
 
-    public int getAccountid() {
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getAccountid() {
         return accountid;
     }
 
-    public void setAccountid(int accountid) {
+    public void setAccountid(long accountid) {
         this.accountid = accountid;
     }
 

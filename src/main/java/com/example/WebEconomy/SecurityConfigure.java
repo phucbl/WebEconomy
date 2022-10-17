@@ -1,4 +1,4 @@
-package com.example.WebEconomy;
+package com.example.webeconomy;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,7 +1,5 @@
-package com.example.WebEconomy.Controllers;
+package com.example.webeconomy.Controllers;
 import java.util.List;
-import com.example.WebEconomy.Entities.*;
-import com.example.WebEconomy.Repository.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,14 +13,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.WebEconomy.Repository.AccountsRepository;
+import com.example.webeconomy.Entities.*;
+import com.example.webeconomy.Repository.*;
 
 @RestController
 @RequestMapping("/api")
 public class AccountsController {
-    @Autowired
+    @Autowired 
     private AccountsRepository accountsrepository;
-    @Autowired
+    @Autowired 
     private CustomersRepository customersRepository;
 
     AccountsController(AccountsRepository accountsrepository){

@@ -1,6 +1,5 @@
-package com.example.WebEconomy.Entities;
+package com.example.webeconomy.Entities;
 
-import com.example.WebEconomy.Entities.*;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -10,7 +9,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.Table;;
+import javax.persistence.Table;
+
+import com.example.webeconomy.Entities.*;;
 
 @Entity
 @Table (name ="account")
@@ -32,7 +33,7 @@ public class Accounts {
     private int roleid;
     
     @OneToOne (cascade = CascadeType.ALL)
-    @JoinColumn (name = "customers_id", referencedColumnName = "id")
+    @JoinColumn (name = "id", referencedColumnName = "accountid")
     private Customers customers;
 
     public Accounts(String phonenumber, String password, int roleid) {        

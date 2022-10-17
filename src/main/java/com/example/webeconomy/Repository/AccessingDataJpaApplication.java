@@ -1,6 +1,4 @@
-package com.example.WebEconomy.Repository;
-import com.example.WebEconomy.Entities.*;
-import com.example.WebEconomy.Controllers.*;
+package com.example.webeconomy.Repository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -8,9 +6,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
 
-@ComponentScan(basePackages = "com.example.WebEconomy")
+import com.example.webeconomy.Controllers.*;
+import com.example.webeconomy.Entities.*;
+
+@ComponentScan(basePackages = "com.example.webeconomy")
 @SpringBootApplication
-@EntityScan("com.example.WebEconomy.*")
+@EntityScan("com.example.webeconomy.*")
 public class AccessingDataJpaApplication {
 
   
@@ -20,10 +21,10 @@ public class AccessingDataJpaApplication {
   }
   
   @Bean
-  public CommandLineRunner demo(AccountsRepository repository) {
+  public CommandLineRunner demo(AccountsRepository accountsRepository) {
     return (args) -> {
       
-      // // save a few customers
+      // save a few customers
       // repository.save(new Accounts("0928105223","123",1));
       // repository.save(new Accounts("0928105224","123",2));
       // repository.save(new Accounts("0928105225","124",2));
@@ -45,12 +46,13 @@ public class AccessingDataJpaApplication {
       // });
     };
     }
-    @Bean
-    public CommandLineRunner demo1(CustomersRepository repository){
-      return (args) -> {
+    // @Bean
+    // public CommandLineRunner demo1(CustomersRepository customersRepository){
+      // return (args) -> {
         //Save some customers
-        // repository.save(new Customers(3,"ABC","ABCD"));
 
+        // repository.save(new Customers(2,"ABC","ABCD"));
+        // repository.save(new Customers(3,"AFC","ABCDE"));
         // System.out.println("------Find All Customer");
         // for (Customers customers : repository.findAll()) {
         // System.out.println(customers.toString()+"\n");
@@ -61,6 +63,6 @@ public class AccessingDataJpaApplication {
         //   System.out.println(customers.toString()+"\n");
         // }          
         
-      };
-    }
+      // };
+    // }
 }

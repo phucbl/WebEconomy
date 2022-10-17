@@ -1,4 +1,4 @@
-package com.example.WebEconomy;
+package com.example.webeconomy;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
