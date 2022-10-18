@@ -54,7 +54,7 @@ public class AccountsController {
     Accounts replaceAccounts(@RequestBody Accounts newAccounts, @PathVariable long id){
         return accountsrepository.findById(id)
             .map(accounts -> {
-            accounts.setPhonenumber(newAccounts.getPhonenumber());
+            accounts.setPhoneNumber(newAccounts.getPhoneNumber());
             accounts.setPassword(newAccounts.getPassword());
             accounts.setRoleId(0);
             return accountsrepository.save(accounts);

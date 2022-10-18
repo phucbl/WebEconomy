@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.OneToOne;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -22,24 +23,22 @@ public class Accounts {
     @Column(name = "id")
     private long id;  
     
-    @Column(name ="phonenumber")
-    private String phonenumber;
+    @Column(name ="phone_number")
+    private String phoneNumber;
 
-    @Column(name ="passwd")
+    @Column(name ="password")
     private String password;
 
+    @Column(name ="role_id")
+    private int roleId;
 
-    @Column(name ="roleid")
-    private int roleid;
-    
-    @OneToOne (cascade = CascadeType.ALL)
-    @JoinColumn (name = "id", referencedColumnName = "accountid")
+    @OneToOne(mappedBy = "accounts")
     private Customers customers;
 
-    public Accounts(String phonenumber, String password, int roleid) {        
-        this.phonenumber = phonenumber;
+    public Accounts(String phoneNumber, String password, int roleId) {        
+        this.phoneNumber = phoneNumber;
         this.password = password;
-        this.roleid = roleid;
+        this.roleId = roleId;
     }
 
     protected Accounts(){}
@@ -60,22 +59,22 @@ public class Accounts {
    
     
     public int getRoleId() {
-        return roleid;
+        return roleId;
     }
-    public void setRoleId(int roleid) {
-        this.roleid = roleid;
+    public void setRoleId(int roleId) {
+        this.roleId = roleId;
     }
 
-    public String getPhonenumber() {
-        return phonenumber;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
-    public void setPhonenumber(String phonenumber) {
-        this.phonenumber = phonenumber;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     @Override
     public String toString() {
-        return "Accounts [id=" + id + ", phoneNumber=" + phonenumber + ", password=" + password + ", roleid=" + roleid
+        return "Accounts [id=" + id + ", phoneNumber=" + phoneNumber + ", password=" + password + ", roleid=" + roleId
                 + "]";
     }
 }

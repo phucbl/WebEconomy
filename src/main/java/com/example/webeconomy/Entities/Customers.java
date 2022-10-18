@@ -20,10 +20,8 @@ public class Customers {
     @Column(name = "id")
     private long id;
 
-    
-
-    @Column(name ="accountid")
-    private long accountid;
+    @Column(name ="account_id")
+    private long accountId;
 
     @Column(name ="name")
     private String name; 
@@ -31,15 +29,16 @@ public class Customers {
     @Column(name ="address")
     private String address;
 
-    @OneToOne (mappedBy = "customers")
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "account_id", referencedColumnName = "id", insertable=false, updatable=false)
     private Accounts accounts;
 
     public Customers(){
         super();
     }
 
-    public Customers(long accountid, String name, String address) {
-        this.accountid = accountid;
+    public Customers(long accountId, String name, String address) {
+        this.accountId = accountId;
         this.name = name;
         this.address = address;
     }
@@ -52,12 +51,12 @@ public class Customers {
         this.id = id;
     }
 
-    public long getAccountid() {
-        return accountid;
+    public long getAccountId() {
+        return accountId;
     }
 
-    public void setAccountid(long accountid) {
-        this.accountid = accountid;
+    public void setAccountId(long accountId) {
+        this.accountId = accountId;
     }
 
        
@@ -80,7 +79,7 @@ public class Customers {
 
     @Override
     public String toString() {
-        return "Customers [id=" + id + ", accountid=" + accountid + ", name=" + name + ", address=" + address + "]";
+        return "Customers [id=" + id + ", accountid=" + accountId + ", name=" + name + ", address=" + address + "]";
     }
 
    

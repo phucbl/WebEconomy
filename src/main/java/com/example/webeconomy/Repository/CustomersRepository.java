@@ -11,7 +11,7 @@ import org.springframework.context.annotation.ComponentScan;
 
 public interface CustomersRepository extends JpaRepository<Customers, Long> {
 
-    Customers findByAccountid(long accountid);
+    Customers findByAccountId(long accountId);
     List<Customers> findByName (String name);
     
 }

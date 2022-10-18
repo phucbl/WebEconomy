@@ -46,9 +46,9 @@ public class AccessingDataJpaApplication {
       // });
     };
     }
-    // @Bean
-    // public CommandLineRunner demo1(CustomersRepository customersRepository){
-      // return (args) -> {
+    @Bean
+    public CommandLineRunner demo1(CustomersRepository customersRepository){
+      return (args) -> {
         //Save some customers
 
         // repository.save(new Customers(2,"ABC","ABCD"));
@@ -63,6 +63,6 @@ public class AccessingDataJpaApplication {
         //   System.out.println(customers.toString()+"\n");
         // }          
         
-      // };
-    // }
+      };
+    }
 }

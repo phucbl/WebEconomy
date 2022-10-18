@@ -38,15 +38,15 @@ public class CustomersController {
     }
 
     @GetMapping("/customer")
-    Customers getCustomerByAccountid(@RequestParam long accountid){
-        return customersRepository.findByAccountid(accountid);
+    Customers getCustomerByAccountId(@RequestParam long accountId){
+        return customersRepository.findByAccountId(accountId);
     }
 
     @PutMapping("/customer/{id}")
     Customers replaceCustomers(@RequestBody Customers newCustomers, @PathVariable long id){
         return customersRepository.findById(id)
             .map(customers -> {
-            customers.setAccountid(newCustomers.getAccountid());
+            customers.setAccountId(newCustomers.getAccountId());
             customers.setAddress(newCustomers.getAddress());
             customers.setName(newCustomers.getName());
             return customersRepository.save(customers);

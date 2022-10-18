@@ -8,7 +8,7 @@ import com.example.webeconomy.Entities.*;
 public interface AccountsRepository extends JpaRepository<Accounts, Long> {
 
     // List<Accounts> findByRoleid(int roleid);
-    @Query(value="Select * from accounts a right join a.customers c on a.id=c.accountid")
+    @Query(value="Select * from customer c join account a on a.id=c.accountid")
     Accounts findByPhonenumber (String phonenumber);
 
 }
