@@ -1,9 +1,9 @@
-package com.example.webeconomy.Repository;
+package com.example.webeconomy.repositories;
 import org.springframework.data.jdbc.repository.query.Query;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.example.webeconomy.Entities.*;
+import com.example.webeconomy.entities.*;
 
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

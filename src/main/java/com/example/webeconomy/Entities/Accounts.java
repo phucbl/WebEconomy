@@ -1,4 +1,4 @@
-package com.example.webeconomy.Entities;
+package com.example.webeconomy.entities;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -6,13 +6,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Table;
-
-import com.example.webeconomy.Entities.*;;
 
 @Entity
 @Table (name ="account")
@@ -34,6 +32,10 @@ public class Accounts {
 
     @OneToOne(mappedBy = "accounts")
     private Customers customers;
+
+    @ManyToOne
+    @JoinColumn(name = "role_id", referencedColumnName = "id", insertable=false, updatable=false)
+    private Roles roles;
 
     public Accounts(String phoneNumber, String password, int roleId) {        
         this.phoneNumber = phoneNumber;

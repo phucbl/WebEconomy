@@ -1,4 +1,4 @@
-package com.example.webeconomy.Controllers;
+package com.example.webeconomy.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,30 +12,29 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.example.webeconomy.Entities.*;
-import com.example.webeconomy.Repository.*;
+import com.example.webeconomy.entities.*;
+import com.example.webeconomy.repositories.*;
+import com.example.webeconomy.services.AccountsServices;
 
 @RestController
 @RequestMapping("/api")
 public class AccountsController {
-    @Autowired 
-    private AccountsRepository accountsrepository;
-    @Autowired 
-    private CustomersRepository customersRepository;
+    private AccountsServices accountsServices;
 
-    AccountsController(AccountsRepository accountsrepository){
-        this.accountsrepository=accountsrepository;
+
+    @Autowired
+    AccountsController(AccountsServices accountsServices){
+        this.accountsServices=accountsServices;
     }
 
-    @PostMapping("/account")
-    Accounts newAccounts (@RequestBody Accounts newAccounts) {
-      return accountsrepository.save(newAccounts);
-    }
+    // @PostMapping("/account")
+    // Accounts newAccounts (@RequestBody Accounts newAccounts) {
+    //   return accountsServices.save(newAccounts);
+    // }
 
     @GetMapping("/findAllAccounts")
     List<Accounts> all(){
-        return accountsrepository.findAll();
+        return accountsServices.getAllAccounts();
     }
 
     // @GetMapping("/account/{id}")
@@ -45,29 +44,29 @@ public class AccountsController {
     // }
 
     @GetMapping("/account")
-    Accounts getAccountByPhonenumber(@RequestParam String phonenumber ){
-        return accountsrepository.findByPhonenumber(phonenumber);
+    Accounts getAccountByPhonenumber(@RequestParam String phoneNumber ){
+        return accountsServices.getAccountByPhoneNumber(phoneNumber);
         // .orElseThrow(() -> new AccountsNotFoundException(PhoneNumber));
     }
     
-    @PutMapping("/account/{id}")
-    Accounts replaceAccounts(@RequestBody Accounts newAccounts, @PathVariable long id){
-        return accountsrepository.findById(id)
-            .map(accounts -> {
-            accounts.setPhoneNumber(newAccounts.getPhoneNumber());
-            accounts.setPassword(newAccounts.getPassword());
-            accounts.setRoleId(0);
-            return accountsrepository.save(accounts);
-        })
-        .orElseGet(() ->{
-            newAccounts.setId(id);
-            return accountsrepository.save(newAccounts);
+    // @PutMapping("/account/{id}")
+    // Accounts replaceAccounts(@RequestBody Accounts newAccounts, @PathVariable long id){
+    //     return accountsrepository.findById(id)
+    //         .map(accounts -> {
+    //         accounts.setPhoneNumber(newAccounts.getPhoneNumber());
+    //         accounts.setPassword(newAccounts.getPassword());
+    //         accounts.setRoleId(0);
+    //         return accountsrepository.save(accounts);
+    //     })
+    //     .orElseGet(() ->{
+    //         newAccounts.setId(id);
+    //         return accountsrepository.save(newAccounts);
 
-        });
-    }
+    //     });
+    // }
 
-    @DeleteMapping("/accout/{id}")
-    void deleteAccounts(@PathVariable Long id) {
-        accountsrepository.deleteById(id);
-  }
+    // @DeleteMapping("/accout/{id}")
+    // void deleteAccounts(@PathVariable Long id) {
+    //     accountsrepository.deleteById(id);
+//   }
 }

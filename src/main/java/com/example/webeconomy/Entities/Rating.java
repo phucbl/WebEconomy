@@ -1,4 +1,4 @@
-package com.example.webeconomy.Entities;
+package com.example.webeconomy.entities;
 
 public class Rating {
     

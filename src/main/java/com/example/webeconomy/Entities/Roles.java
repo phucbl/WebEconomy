@@ -1,10 +1,16 @@
-package com.example.webeconomy.Entities;
+package com.example.webeconomy.entities;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -14,7 +20,7 @@ public class Roles {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "role_id")
+    @Column(name = "id")
     private int id;
     
     public int getId() {
@@ -25,13 +31,13 @@ public class Roles {
         this.id = id;
     }
 
-    @Column(name = "role_name")
+    @Column(name = "name")
     private String roleName;
 
-    public Roles(int id, String roleName) {
-        this.id = id;
-        this.roleName = roleName;
+    public Roles(){
+        super();
     }
+
 
     public String getRoleName() {
         return roleName;
@@ -46,8 +52,12 @@ public class Roles {
         return "Roles [id=" + id + ", roleName=" + roleName + "]";
     }
 
-    @OneToOne(mappedBy = "roles")
-    private Accounts accounts;
+    @OneToMany(mappedBy="roles",cascade = CascadeType.ALL)
+    private List<Accounts> accounts;
+
+    public Roles(String roleName) {
+        this.roleName = roleName;
+    }
 
     
 }

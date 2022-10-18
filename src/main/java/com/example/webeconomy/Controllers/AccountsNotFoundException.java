@@ -1,4 +1,4 @@
-package com.example.webeconomy.Controllers;
+package com.example.webeconomy.controllers;
 
 public class AccountsNotFoundException extends RuntimeException{
     AccountsNotFoundException (long id){

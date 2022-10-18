@@ -1,13 +1,12 @@
-package com.example.webeconomy.Entities;
+package com.example.webeconomy.entities;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Table;;
 
@@ -32,6 +31,13 @@ public class Customers {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id", referencedColumnName = "id", insertable=false, updatable=false)
     private Accounts accounts;
+
+    
+    // @OneToMany(fetch = FetchType.LAZY)
+    // @JoinColumn(name = "id", referencedColumnName = "customer_id", insertable=false, updatable=false)
+    // private Rating rating;
+
+
 
     public Customers(){
         super();
