@@ -1,6 +1,8 @@
 package com.example.webeconomy.controllers;
 import java.util.List;
 
+import javax.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,20 +13,23 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.webeconomy.data.entities.*;
 import com.example.webeconomy.data.repositories.*;
+import com.example.webeconomy.dto.request.AccountUpdateDto;
+import com.example.webeconomy.dto.response.AccountResponseDto;
 import com.example.webeconomy.services.AccountService;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/account")
 public class AccountController {
-    private AccountService accountServices;
+    private AccountService accountService;
 
 
     @Autowired
-    AccountController(AccountService accountServices){
-        this.accountServices=accountServices;
+    AccountController(AccountService accountService){
+        this.accountService=accountService;
     }
 
     // @PostMapping("/account")
@@ -32,38 +37,26 @@ public class AccountController {
     //   return accountServices.save(newAccounts);
     // }
 
-    @GetMapping("/findAllAccounts")
+    @GetMapping
     List<Account> all(){
-        return accountServices.getAllAccounts();
+        return accountService.getAllAccounts();
     }
 
-    // @GetMapping("/account/{id}")
-    // Accounts getAccountByID(@RequestParam("id") Long id){
-    //     return accountsrepository.findById(id)
-    //     .orElseThrow(() -> new AccountsNotFoundException(id));
-    // }
+    @GetMapping("/{id}")
+    Account getAccountByID(@PathVariable("id") Long id){
+        return accountService.getAccountById(id);
+    }
 
-    @GetMapping("/account")
-    Account getAccountByPhonenumber(@RequestParam String phoneNumber ){
-        return accountServices.getAccountByPhoneNumber(phoneNumber);
-        // .orElseThrow(() -> new AccountsNotFoundException(PhoneNumber));
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    AccountResponseDto createCustomer(@Valid @RequestBody AccountUpdateDto dto){
+        return this.accountService.createAccount(dto);
     }
     
-    // @PutMapping("/account/{id}")
-    // Accounts replaceAccounts(@RequestBody Accounts newAccounts, @PathVariable long id){
-    //     return accountsrepository.findById(id)
-    //         .map(accounts -> {
-    //         accounts.setPhoneNumber(newAccounts.getPhoneNumber());
-    //         accounts.setPassword(newAccounts.getPassword());
-    //         accounts.setRoleId(0);
-    //         return accountsrepository.save(accounts);
-    //     })
-    //     .orElseGet(() ->{
-    //         newAccounts.setId(id);
-    //         return accountsrepository.save(newAccounts);
-
-    //     });
-    // }
+    @PutMapping("/{id}")
+    AccountResponseDto updateCustomer(@PathVariable("id") Long id, @RequestBody AccountUpdateDto dto){
+        return this.accountService.updateAccount(id,dto);
+    }
 
     // @DeleteMapping("/accout/{id}")
     // void deleteAccounts(@PathVariable Long id) {

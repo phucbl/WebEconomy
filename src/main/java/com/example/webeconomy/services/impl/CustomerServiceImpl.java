@@ -5,6 +5,8 @@ import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import com.example.webeconomy.data.repositories.*;
@@ -25,16 +27,6 @@ public class CustomerServiceImpl implements CustomerService{
         this.modelMapper = modelMapper;
     }
 
-    @Override
-    public CustomerResponseDto getCustomerByIdDto (Long id) {
-        Optional<Customer> customerOptional = this.customerRepository.findById(id);
-
-        if (customerOptional.isPresent()){
-            return modelMapper.map(customerOptional.get(), CustomerResponseDto.class);
-        }
-
-        // throw new CustomerNotFoundException();
-    }
     @Override
     public List<Customer> getAllCustomers(){
         return this.customerRepository.findAll();

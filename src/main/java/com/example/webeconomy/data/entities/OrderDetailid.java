@@ -1,5 +1,7 @@
 package com.example.webeconomy.data.entities;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
@@ -9,7 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Embeddable
-public class OrderDetailid{
+public class OrderDetailid implements Serializable{
     @Column(name="order_id")
     private long orderId;
 

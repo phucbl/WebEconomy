@@ -42,10 +42,6 @@ public class CustomerController {
     Customer getCustomerById(@PathVariable("id") Long id){
         return customerServices.getCustomerById(id);
     }
-    @GetMapping("/with-dto/{id}")
-    CustomerResponseDto getCustomerByIdDto(@PathVariable("id") Long id){
-        return customerServices.getCustomerByIdDto(id);
-    }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
