@@ -1,4 +1,4 @@
-package com.example.webeconomy.entities;
+package com.example.webeconomy.data.entities;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;

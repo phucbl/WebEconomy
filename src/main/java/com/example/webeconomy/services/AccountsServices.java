@@ -1,5 +1,5 @@
 package com.example.webeconomy.services;
-import com.example.webeconomy.entities.*;
+import com.example.webeconomy.data.entities.*;
 
 import java.util.List;
 
