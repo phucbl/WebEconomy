@@ -1,4 +1,4 @@
-package com.example.demo.exceptions;
+package com.example.webeconomy.exceptions;
 
 public class ValidationException extends RuntimeException {
     private static final long serialVersionUID = -3808246479819405631L;

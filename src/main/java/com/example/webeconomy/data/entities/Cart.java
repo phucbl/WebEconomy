@@ -1,4 +1,4 @@
-package com.example.webeconomy.entities;
+package com.example.webeconomy.data.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

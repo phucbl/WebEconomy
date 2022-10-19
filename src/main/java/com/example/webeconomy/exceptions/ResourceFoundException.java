@@ -1,4 +1,4 @@
-package com.example.demo.exceptions;
+package com.example.webeconomy.exceptions;
 
 public class ResourceFoundException extends RuntimeException{
 

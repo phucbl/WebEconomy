@@ -1,4 +1,4 @@
-package com.example.webeconomy.entities;
+package com.example.webeconomy.data.entities;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table (name = "role")
-public class Roles {
+public class Role {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,7 +34,7 @@ public class Roles {
     @Column(name = "name")
     private String roleName;
 
-    public Roles(){
+    public Role(){
         super();
     }
 
@@ -53,9 +53,9 @@ public class Roles {
     }
 
     @OneToMany(mappedBy="roles",cascade = CascadeType.ALL)
-    private List<Accounts> accounts;
+    private List<Account> accounts;
 
-    public Roles(String roleName) {
+    public Role(String roleName) {
         this.roleName = roleName;
     }
 

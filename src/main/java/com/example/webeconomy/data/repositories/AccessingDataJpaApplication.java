@@ -1,4 +1,4 @@
-package com.example.webeconomy.repositories;
+package com.example.webeconomy.data.repositories;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
 
 import com.example.webeconomy.controllers.*;
-import com.example.webeconomy.entities.*;
+import com.example.webeconomy.data.entities.*;
 
 @ComponentScan(basePackages = "com.example.webeconomy")
 @SpringBootApplication

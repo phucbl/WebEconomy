@@ -1,4 +1,4 @@
-package com.example.webeconomy.entities;
+package com.example.webeconomy.data.entities;
 
 import java.sql.Date;
 
@@ -11,7 +11,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="product")
-public class Products {
+public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,7 +48,7 @@ public class Products {
     @Column(name = "update_date")
     private Date updateDate;
 
-    public Products(String name, String descripstion, String origin, float price, String imageUrl, int count,
+    public Product(String name, String descripstion, String origin, float price, String imageUrl, int count,
             int categoryId, float rate, Date createDate, Date updateDate) {
         this.name = name;
         this.descripstion = descripstion;

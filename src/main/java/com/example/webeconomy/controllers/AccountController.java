@@ -14,27 +14,27 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.webeconomy.data.entities.*;
 import com.example.webeconomy.data.repositories.*;
-import com.example.webeconomy.services.AccountsServices;
+import com.example.webeconomy.services.AccountService;
 
 @RestController
 @RequestMapping("/api")
-public class AccountsController {
-    private AccountsServices accountsServices;
+public class AccountController {
+    private AccountService accountServices;
 
 
     @Autowired
-    AccountsController(AccountsServices accountsServices){
-        this.accountsServices=accountsServices;
+    AccountController(AccountService accountServices){
+        this.accountServices=accountServices;
     }
 
     // @PostMapping("/account")
     // Accounts newAccounts (@RequestBody Accounts newAccounts) {
-    //   return accountsServices.save(newAccounts);
+    //   return accountServices.save(newAccounts);
     // }
 
     @GetMapping("/findAllAccounts")
-    List<Accounts> all(){
-        return accountsServices.getAllAccounts();
+    List<Account> all(){
+        return accountServices.getAllAccounts();
     }
 
     // @GetMapping("/account/{id}")
@@ -44,8 +44,8 @@ public class AccountsController {
     // }
 
     @GetMapping("/account")
-    Accounts getAccountByPhonenumber(@RequestParam String phoneNumber ){
-        return accountsServices.getAccountByPhoneNumber(phoneNumber);
+    Account getAccountByPhonenumber(@RequestParam String phoneNumber ){
+        return accountServices.getAccountByPhoneNumber(phoneNumber);
         // .orElseThrow(() -> new AccountsNotFoundException(PhoneNumber));
     }
     

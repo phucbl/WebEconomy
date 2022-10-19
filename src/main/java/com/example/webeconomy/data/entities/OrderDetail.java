@@ -1,21 +1,19 @@
-package com.example.webeconomy.entities;
+package com.example.webeconomy.data.entities;
 
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table (name = "orderdetail")
-public class OrdersDetail {
-    @Id
-    @Column(name ="order_id")
-    private long orderId;
-    
-    // @Id
-    @Column(name ="product_id")
-    private long productId;
+public class OrderDetail {
+
+    @EmbeddedId
+    private OrderDetailid ordersDetailid;
 
     @Column(name ="price")
     private float price;
@@ -23,27 +21,18 @@ public class OrdersDetail {
     @Column(name ="quantity")
     private int quantity;
 
-    public OrdersDetail(long orderId, long productId, float price, int quantity) {
-        this.orderId = orderId;
-        this.productId = productId;
+    public OrderDetail(OrderDetailid ordersDetailid, float price, int quantity) {
+        this.ordersDetailid = ordersDetailid;
         this.price = price;
         this.quantity = quantity;
     }
 
-    public long getOrderId() {
-        return orderId;
+    public OrderDetailid getOrdersDetailid() {
+        return ordersDetailid;
     }
 
-    public void setOrderId(long orderId) {
-        this.orderId = orderId;
-    }
-
-    public long getProductId() {
-        return productId;
-    }
-
-    public void setProductId(long productId) {
-        this.productId = productId;
+    public void setOrdersDetailid(OrderDetailid ordersDetailid) {
+        this.ordersDetailid = ordersDetailid;
     }
 
     public float getPrice() {
@@ -64,9 +53,10 @@ public class OrdersDetail {
 
     @Override
     public String toString() {
-        return "OrdersDetail [orderId=" + orderId + ", productId=" + productId + ", price=" + price + ", quantity="
-                + quantity + "]";
+        return "OrderDetail [ordersDetailid=" + ordersDetailid + ", price=" + price + ", quantity=" + quantity + "]";
     }
+
+
 
     // @ManyToOne(mappedBy = "ordersDetail")
     // private Orders orders;

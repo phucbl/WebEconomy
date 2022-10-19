@@ -12,7 +12,7 @@ import javax.persistence.Table;;
 
 @Entity
 @Table (name ="customer")
-public class Customers {
+public class Customer {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,7 +30,7 @@ public class Customers {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id", referencedColumnName = "id", insertable=false, updatable=false)
-    private Accounts accounts;
+    private Account accounts;
 
     
     // @OneToMany(fetch = FetchType.LAZY)
@@ -39,11 +39,11 @@ public class Customers {
 
 
 
-    public Customers(){
+    public Customer(){
         super();
     }
 
-    public Customers(long accountId, String name, String address) {
+    public Customer(long accountId, String name, String address) {
         this.accountId = accountId;
         this.name = name;
         this.address = address;

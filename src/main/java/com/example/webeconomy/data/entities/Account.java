@@ -14,7 +14,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table (name ="account")
-public class Accounts {
+public class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,19 +31,19 @@ public class Accounts {
     private int roleId;
 
     @OneToOne(mappedBy = "accounts")
-    private Customers customers;
+    private Customer customers;
 
     @ManyToOne
     @JoinColumn(name = "role_id", referencedColumnName = "id", insertable=false, updatable=false)
-    private Roles roles;
+    private Role roles;
 
-    public Accounts(String phoneNumber, String password, int roleId) {        
+    public Account(String phoneNumber, String password, int roleId) {        
         this.phoneNumber = phoneNumber;
         this.password = password;
         this.roleId = roleId;
     }
 
-    protected Accounts(){}
+    protected Account(){}
 
     public long getId() {
         return id;
