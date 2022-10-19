@@ -1,17 +1,10 @@
 package com.example.webeconomy.dto.request;
 
-import javax.validation.constraints.NotBlank;
-
-import lombok.Getter;
-import lombok.Setter;
-
-@Getter
-@Setter
+import lombok.Data;
+@Data
 public class AccountUpdateDto {
-    @NotBlank(message = "Name is required")
+    private Long id;
 	private String phoneNumber;
-	@NotBlank(message = "Address is required")
 	private String password;
-
-    
+	private int roleId;
 }

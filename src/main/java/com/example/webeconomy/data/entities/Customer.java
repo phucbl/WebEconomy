@@ -17,10 +17,10 @@ public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private long id;
+    private Long id;
 
     @Column(name ="account_id")
-    private long accountId;
+    private Long accountId;
 
     @Column(name ="name")
     private String name; 
@@ -43,25 +43,25 @@ public class Customer {
         super();
     }
 
-    public Customer(long accountId, String name, String address) {
+    public Customer(Long accountId, String name, String address) {
         this.accountId = accountId;
         this.name = name;
         this.address = address;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public long getAccountId() {
+    public Long getAccountId() {
         return accountId;
     }
 
-    public void setAccountId(long accountId) {
+    public void setAccountId(Long accountId) {
         this.accountId = accountId;
     }
 

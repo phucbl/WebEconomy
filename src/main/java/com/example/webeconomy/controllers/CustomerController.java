@@ -23,35 +23,34 @@ import java.util.List;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/customers")
+@RequestMapping("/customer")
 public class CustomerController {
-
-    private CustomerService customerServices;
+    private CustomerService customerService;
     
     @Autowired
-    CustomerController (CustomerService customerServices){
-        this.customerServices = customerServices;
+    CustomerController (CustomerService customerService){
+        this.customerService = customerService;
     }
 
     @GetMapping
     List<Customer> getCustomers(){
-        return customerServices.getAllCustomers();
+        return customerService.getAllCustomers();
     }
 
     @GetMapping("/{id}")
     Customer getCustomerById(@PathVariable("id") Long id){
-        return customerServices.getCustomerById(id);
+        return customerService.getCustomerById(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    CustomerResponseDto createCustomer(@Valid @RequestBody CustomerUpdateDto dto){
-        return this.customerServices.createCustomer(dto);
+    CustomerResponseDto createCustomer(@RequestBody CustomerUpdateDto dto){
+        return this.customerService.createCustomer(dto);
     }
     
     @PutMapping("/{id}")
     CustomerResponseDto updateCustomer(@PathVariable("id") Long id, @RequestBody CustomerUpdateDto dto){
-        return this.customerServices.updateCustomer(id,dto);
+        return this.customerService.updateCustomer(id,dto);
     }
 
 }

@@ -36,7 +36,7 @@ public class CustomerServiceImpl implements CustomerService{
         Optional<Customer> customerOptional = this.customerRepository.findById(id);
 
         if (customerOptional.isEmpty()){
-            throw new ResourceFoundException("Customer Not Found with Controller Advice");
+            throw new ResourceNotFoundException("Customer Not Found with Controller Advice");
         }
         Customer customer = customerOptional.get();
         return customer;
@@ -50,13 +50,14 @@ public class CustomerServiceImpl implements CustomerService{
     }
     @Override
     public CustomerResponseDto updateCustomer(Long id, CustomerUpdateDto dto){
-        Optional<Customer> customerOptional = customerRepository.findById(id);
+        Optional<Customer> customerOptional = this.customerRepository.findById(id);
         if (customerOptional.isEmpty()){
-            throw new CustomerNotFoundException();
+            throw new ResourceNotFoundException("Customer Not Found");
         }
+        // dto.setId(id);
         Customer customer = customerOptional.get();
         modelMapper.map(dto,customer);
-        customer = customerRepository.save(customer);
+        customer = this.customerRepository.save(customer);
         return modelMapper.map(customer, CustomerResponseDto.class);
     }
 }

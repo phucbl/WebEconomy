@@ -49,17 +49,14 @@ public class AccountController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    AccountResponseDto createCustomer(@Valid @RequestBody AccountUpdateDto dto){
+    AccountResponseDto createAccount(@RequestBody AccountUpdateDto dto){
         return this.accountService.createAccount(dto);
     }
     
     @PutMapping("/{id}")
-    AccountResponseDto updateCustomer(@PathVariable("id") Long id, @RequestBody AccountUpdateDto dto){
+    AccountResponseDto updateAccount(@PathVariable("id") Long id, @RequestBody AccountUpdateDto dto){
         return this.accountService.updateAccount(id,dto);
     }
 
-    // @DeleteMapping("/accout/{id}")
-    // void deleteAccounts(@PathVariable Long id) {
-    //     accountsrepository.deleteById(id);
-//   }
+    
 }

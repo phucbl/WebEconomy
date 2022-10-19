@@ -38,7 +38,7 @@ public class AccountServiceImpl implements AccountService{
     public Account getAccountById(Long id){
         Optional<Account> accountOptional = this.accountRepository.findById(id);
         if (accountOptional.isEmpty()){
-            throw new ResourceFoundException("Account Not Found with Controller Advice");
+            throw new ResourceNotFoundException("Account Not Found with Controller Advice");
         }        
         Account account= accountOptional.get();
         return account;
@@ -54,7 +54,7 @@ public class AccountServiceImpl implements AccountService{
     public AccountResponseDto updateAccount(Long id, AccountUpdateDto dto){
         Optional<Account> accountOptional = accountRepository.findById(id);
         if (accountOptional.isEmpty()){
-            throw new CustomerNotFoundException();
+            throw new ResourceNotFoundException("Account Not Found");
         }
         Account account = accountOptional.get();
         modelMapper.map(dto,account);

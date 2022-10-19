@@ -14,12 +14,12 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.example.webeconomy.dto.response.ErrorResponse;
-import com.example.webeconomy.exceptions.ResourceFoundException;
+import com.example.webeconomy.exceptions.ResourceNotFoundException;
 
 @ControllerAdvice
 public class GlobalExceptionsHandler extends ResponseEntityExceptionHandler {
 
-	@ExceptionHandler({ ResourceFoundException.class })
+	@ExceptionHandler({ ResourceNotFoundException.class })
 	protected ResponseEntity<ErrorResponse> handleResourceNotFoundException(RuntimeException exception,
 			WebRequest request) {
 		ErrorResponse error = new ErrorResponse("01", exception.getMessage());
