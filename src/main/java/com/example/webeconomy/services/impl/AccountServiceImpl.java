@@ -22,6 +22,7 @@ import com.example.webeconomy.exceptions.*;
 public class AccountServiceImpl implements AccountService{
     
     private AccountRepository accountRepository;
+    @Autowired
     private ModelMapper modelMapper;
 
     @Autowired
@@ -60,6 +61,15 @@ public class AccountServiceImpl implements AccountService{
         modelMapper.map(dto,account);
         account = accountRepository.save(account);
         return modelMapper.map(account, AccountResponseDto.class);
+    }
+    @Override
+    public Account getAccountByPhoneNumber(String phoneNumber){
+        Optional<Account> accountOptional =  this.accountRepository.findByPhoneNumber(phoneNumber);
+        if (accountOptional.isEmpty()){
+            throw new ResourceNotFoundException("Account Not Found");
+        }
+        Account account= accountOptional.get();
+        return account;
     }
 
 }

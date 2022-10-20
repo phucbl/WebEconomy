@@ -19,6 +19,7 @@ import com.example.webeconomy.services.CustomerService;
 @Service
 public class CustomerServiceImpl implements CustomerService{
     private CustomerRepository customerRepository;
+    @Autowired
     private ModelMapper modelMapper;
 
     @Autowired
@@ -54,10 +55,10 @@ public class CustomerServiceImpl implements CustomerService{
         if (customerOptional.isEmpty()){
             throw new ResourceNotFoundException("Customer Not Found");
         }
-        // dto.setId(id);
+        
         Customer customer = customerOptional.get();
         modelMapper.map(dto,customer);
-        customer = this.customerRepository.save(customer);
+        customer = customerRepository.save(customer);
         return modelMapper.map(customer, CustomerResponseDto.class);
     }
 }

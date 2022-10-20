@@ -46,16 +46,20 @@ public class AccountController {
     Account getAccountByID(@PathVariable("id") Long id){
         return accountService.getAccountById(id);
     }
+    @GetMapping("/")
+    Account getAccountByPhoneNumber(@RequestParam("phoneNumber") String phoneNumber){
+        return accountService.getAccountByPhoneNumber(phoneNumber);
+    }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     AccountResponseDto createAccount(@RequestBody AccountUpdateDto dto){
-        return this.accountService.createAccount(dto);
+        return accountService.createAccount(dto);
     }
     
     @PutMapping("/{id}")
-    AccountResponseDto updateAccount(@PathVariable("id") Long id, @RequestBody AccountUpdateDto dto){
-        return this.accountService.updateAccount(id,dto);
+    AccountResponseDto updateAccount(@PathVariable("id") Long id, @Valid @RequestBody AccountUpdateDto dto){
+        return accountService.updateAccount(id,dto);
     }
 
     

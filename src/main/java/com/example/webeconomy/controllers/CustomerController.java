@@ -49,7 +49,7 @@ public class CustomerController {
     }
     
     @PutMapping("/{id}")
-    CustomerResponseDto updateCustomer(@PathVariable("id") Long id, @RequestBody CustomerUpdateDto dto){
+    CustomerResponseDto updateCustomer(@PathVariable("id") Long id, @Valid @RequestBody CustomerUpdateDto dto){
         return this.customerService.updateCustomer(id,dto);
     }
 

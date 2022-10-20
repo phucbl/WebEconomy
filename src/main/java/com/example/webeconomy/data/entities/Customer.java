@@ -43,7 +43,7 @@ public class Customer {
         super();
     }
 
-    public Customer(Long accountId, String name, String address) {
+    public Customer(long accountId, String name, String address) {
         this.accountId = accountId;
         this.name = name;
         this.address = address;

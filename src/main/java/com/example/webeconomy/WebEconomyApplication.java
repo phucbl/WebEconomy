@@ -11,8 +11,5 @@ public class WebEconomyApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(WebEconomyApplication.class, args);
 	}
-	// @Bean
-	// public ModelMapper modelMapper() {
-	//     return new ModelMapper();
-	// }
+	
 }

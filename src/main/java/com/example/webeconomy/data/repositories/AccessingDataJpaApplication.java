@@ -20,10 +20,18 @@ public class AccessingDataJpaApplication {
     SpringApplication.run(AccessingDataJpaApplication.class, args);
   }
   
-  // @Bean
-  // public CommandLineRunner demo(AccountsRepository accountsRepository) {
-  //   return (args) -> {
-      
+  @Bean
+  public CommandLineRunner demo(AccountRepository accountRepository) {
+    return (args) -> {
+
+      // if (accountRepository.findAll().isEmpty()){
+      //   accountRepository.save(new Account("0928105220","123",1));
+      //   accountRepository.save(new Account("0928105221","123",2));
+      //   accountRepository.save(new Account("0928105222","124",2));
+      //   accountRepository.save(new Account("0928105223","123",2));
+      //   accountRepository.save(new Account("0928105224","123",2));
+      //   accountRepository.save(new Account("0928105225","124",2));
+      // }
   //     // save a few customers
   //     // repository.save(new Accounts("0928105223","123",1));
   //     // repository.save(new Accounts("0928105224","123",2));
@@ -44,15 +52,20 @@ public class AccessingDataJpaApplication {
   //     // repository.findByRoleid(2).forEach(bauer -> {
   //     //   System.out.println(bauer.toString()+"\n");
   //     // });
-  //   };
-  //   }
-    // @Bean
-    // public CommandLineRunner demo1(CustomersRepository customersRepository){
-    //   return (args) -> {
-    //     //Save some customers
-
-    //     // repository.save(new Customers(2,"ABC","ABCD"));
-    //     // repository.save(new Customers(3,"AFC","ABCDE"));
+    };
+    }
+    @Bean
+    public CommandLineRunner demo1(CustomerRepository customerRepository){
+      return (args) -> {
+        //Save some customers
+        // customerRepository.save(new Customer(5,"AFC","ABCDE"));
+        // if (customerRepository.findAll().isEmpty()){
+        //   customerRepository.save(new Customer(2,"ABC","AGDW"));
+        //   customerRepository.save(new Customer(3,"AFC","ABCDE"));
+        //   customerRepository.save(new Customer(4,"ABC","ABCD"));
+        //   customerRepository.save(new Customer(5,"AFC","ABCDE"));
+        //   }
+    //     // 
     //     // System.out.println("------Find All Customer");
     //     // for (Customers customers : repository.findAll()) {
     //     // System.out.println(customers.toString()+"\n");
@@ -63,6 +76,6 @@ public class AccessingDataJpaApplication {
     //     //   System.out.println(customers.toString()+"\n");
     //     // }          
         
-    //   };
-    // }
+      };
+    }
 }

@@ -12,6 +12,6 @@ public interface AccountService {
     public Account getAccountById(Long id);
     public AccountResponseDto createAccount(AccountUpdateDto dto);
     public AccountResponseDto updateAccount(Long id, AccountUpdateDto dto);
-    // public Account getAccountByPhoneNumber (String phoneNumber);
+    public Account getAccountByPhoneNumber (String phoneNumber);
 
 }

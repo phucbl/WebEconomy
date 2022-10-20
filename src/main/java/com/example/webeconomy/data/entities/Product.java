@@ -4,9 +4,13 @@ import java.sql.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -61,6 +65,9 @@ public class Product {
         this.createDate = createDate;
         this.updateDate = updateDate;
     }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="category_id", referencedColumnName = "id", insertable=false, updatable=false)
+    public Category category;
 
     public long getId() {
         return id;
