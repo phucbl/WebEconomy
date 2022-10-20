@@ -18,4 +18,14 @@ public class OrderDetailid implements Serializable{
     @Column(name = "product_id")
     private long productId;
 
+    public OrderDetailid(long orderId, long productId) {
+        this.orderId = orderId;
+        this.productId = productId;
+    }
+
+    @Override
+    public String toString() {
+        return "OrderDetailid [orderId=" + orderId + ", productId=" + productId + "]";
+    }
+
 }

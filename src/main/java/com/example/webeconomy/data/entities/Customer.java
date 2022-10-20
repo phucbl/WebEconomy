@@ -30,7 +30,7 @@ public class Customer {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id", referencedColumnName = "id", insertable=false, updatable=false)
-    private Account accounts;
+    private Account account;
 
     
     // @OneToMany(fetch = FetchType.LAZY)

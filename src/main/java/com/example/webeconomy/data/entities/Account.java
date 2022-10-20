@@ -9,6 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Table;
 
@@ -30,12 +31,12 @@ public class Account {
     @Column(name ="role_id")
     private int roleId;
 
-    @OneToOne(mappedBy = "accounts")
-    private Customer customers;
+    @OneToOne(mappedBy = "account", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    private Customer customer;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id", referencedColumnName = "id", insertable=false, updatable=false)
-    private Role roles;
+    private Role role;
 
     public Account(String phoneNumber, String password, int roleId) {        
         this.phoneNumber = phoneNumber;

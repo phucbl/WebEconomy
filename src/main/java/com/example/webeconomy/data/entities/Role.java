@@ -52,7 +52,7 @@ public class Role {
         return "Roles [id=" + id + ", roleName=" + roleName + "]";
     }
 
-    @OneToMany(mappedBy="roles",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy="role",cascade = CascadeType.ALL)
     private List<Account> accounts;
 
     public Role(String roleName) {
