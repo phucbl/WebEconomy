@@ -11,49 +11,50 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.webeconomy.dto.response.ProductResponseDto;
+import com.example.webeconomy.dto.response.OrderResponseDto;
 import com.example.webeconomy.dto.response.ErrorResponse;
-import com.example.webeconomy.data.entities.Product;
-import com.example.webeconomy.dto.request.ProductUpdateDto;
+import com.example.webeconomy.data.entities.Order;
+import com.example.webeconomy.dto.request.OrderUpdateDto;
 import com.example.webeconomy.data.repositories.*;
-import com.example.webeconomy.services.ProductService;
+import com.example.webeconomy.services.OrderService;
 
 import java.util.List;
 
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/product")
-public class ProductController {
-    private ProductService ProductService;
+@RequestMapping("/order")
+public class OrderController {
+    private OrderService orderService;
     
     @Autowired
-    ProductController (ProductService ProductService){
-        this.ProductService = ProductService;
+    OrderController (OrderService orderService){
+        this.orderService = orderService;
     }
 
     @GetMapping
-    List<Product> getProducts(){
-        return ProductService.getAllProducts();
+    List<Order> getOrders(){
+        return orderService.getAllOrders();
     }
     @GetMapping("/")
-    List<Product> getProductsByCategoryId(@RequestParam("categoryId") int categoryId ){
-        return ProductService.getAllProductsByCategoryId(categoryId);
+    List<Order> getOrdersByCustomerId(@RequestParam("customerId") Long customerId){
+        return orderService.getOrdersByCustomerId(customerId);
     }
     @GetMapping("/{id}")
-    Product getProductById(@PathVariable("id") Long id){
-        return ProductService.getProductById(id);
+    Order getOrderById(@PathVariable("id") Long id){
+        return orderService.getOrderById(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    ProductResponseDto createProduct(@RequestBody ProductUpdateDto dto){
-        return this.ProductService.createProduct(dto);
+    OrderResponseDto createOrder(@RequestBody OrderUpdateDto dto){
+        return this.orderService.createOrder(dto);
     }
     
     @PutMapping("/{id}")
-    ProductResponseDto updateProduct(@PathVariable("id") Long id, @Valid @RequestBody ProductUpdateDto dto){
-        return this.ProductService.updateProduct(id,dto);
+    OrderResponseDto updateOrder(@PathVariable("id") Long id, @Valid @RequestBody OrderUpdateDto dto){
+        return this.orderService.updateOrder(id,dto);
     }
 
 }
+

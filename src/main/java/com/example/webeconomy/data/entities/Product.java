@@ -13,6 +13,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name="product")
 public class Product {
@@ -26,7 +29,7 @@ public class Product {
     private String name;
 
     @Column(name = "description")
-    private String descripstion;
+    private String description;
 
     @Column(name = "origin")
     private String origin;
@@ -52,10 +55,14 @@ public class Product {
     @Column(name = "update_date")
     private Date updateDate;
 
-    public Product(String name, String descripstion, String origin, float price, String imageUrl, int count,
+    public Product (){
+        super();
+    }
+
+    public Product(String name, String description, String origin, float price, String imageUrl, int count,
             int categoryId, float rate, Date createDate, Date updateDate) {
         this.name = name;
-        this.descripstion = descripstion;
+        this.description = description;
         this.origin = origin;
         this.price = price;
         this.imageUrl = imageUrl;
@@ -65,6 +72,9 @@ public class Product {
         this.createDate = createDate;
         this.updateDate = updateDate;
     }
+    
+    @JsonBackReference
+    // @JsonManagedReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="category_id", referencedColumnName = "id", insertable=false, updatable=false)
     public Category category;
@@ -85,12 +95,12 @@ public class Product {
         this.name = name;
     }
 
-    public String getDescripstion() {
-        return descripstion;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDescripstion(String descripstion) {
-        this.descripstion = descripstion;
+    public void setDescription(String Description) {
+        this.description = Description;
     }
 
     public String getOrigin() {
@@ -159,7 +169,7 @@ public class Product {
 
     @Override
     public String toString() {
-        return "Products [id=" + id + ", name=" + name + ", descripstion=" + descripstion + ", origin=" + origin
+        return "Products [id=" + id + ", name=" + name + ", Description=" + description + ", origin=" + origin
                 + ", price=" + price + ", imageUrl=" + imageUrl + ", count=" + count + ", categoryId=" + categoryId
                 + ", rate=" + rate + ", createDate=" + createDate + ", updateDate=" + updateDate + "]";
     }

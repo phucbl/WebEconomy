@@ -13,7 +13,7 @@ import javax.persistence.Table;
 public class OrderDetail {
 
     @EmbeddedId
-    private OrderDetailid ordersDetailid;
+    private OrderDetailId orderDetailId;
 
     @Column(name ="price")
     private float price;
@@ -21,18 +21,22 @@ public class OrderDetail {
     @Column(name ="quantity")
     private int quantity;
 
-    public OrderDetail(OrderDetailid ordersDetailid, float price, int quantity) {
-        this.ordersDetailid = ordersDetailid;
+    public OrderDetail (){
+        super();
+    }
+
+    public OrderDetail(OrderDetailId orderDetailId, float price, int quantity) {
+        this.orderDetailId = orderDetailId;
         this.price = price;
         this.quantity = quantity;
     }
 
-    public OrderDetailid getOrdersDetailid() {
-        return ordersDetailid;
+    public OrderDetailId getOrdersDetailid() {
+        return orderDetailId;
     }
 
-    public void setOrdersDetailid(OrderDetailid ordersDetailid) {
-        this.ordersDetailid = ordersDetailid;
+    public void setOrdersDetailid(OrderDetailId ordersDetailid) {
+        this.orderDetailId = ordersDetailid;
     }
 
     public float getPrice() {
@@ -53,7 +57,7 @@ public class OrderDetail {
 
     @Override
     public String toString() {
-        return "OrderDetail [ordersDetailid=" + ordersDetailid + ", price=" + price + ", quantity=" + quantity + "]";
+        return "OrderDetail [ordersDetailid=" + orderDetailId + ", price=" + price + ", quantity=" + quantity + "]";
     }
 
 

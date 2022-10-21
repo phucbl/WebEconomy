@@ -16,53 +16,53 @@ import com.example.webeconomy.services.ProductService;
 
 @Service
 public class ProductServiceImpl implements ProductService{
-    private ProductRepository ProductRepository;
+    private ProductRepository productRepository;
     @Autowired
     private ModelMapper modelMapper;
 
     @Autowired
-    public ProductServiceImpl(ProductRepository ProductRepository, ModelMapper modelMapper){
-        this.ProductRepository = ProductRepository;
+    public ProductServiceImpl(ProductRepository productRepository, ModelMapper modelMapper){
+        this.productRepository = productRepository;
         this.modelMapper = modelMapper;
     }
 
     @Override
     public List<Product> getAllProducts(){
-        return this.ProductRepository.findAll();
+        return this.productRepository.findAll();
     }
 
     @Override
     public List<Product> getAllProductsByCategoryId (int categoryId){
-        return this.ProductRepository.findByCategoryId(categoryId);
+        return this.productRepository.findByCategoryId(categoryId);
     }
 
     @Override
     public Product getProductById(Long id){
-        Optional<Product> ProductOptional = this.ProductRepository.findById(id);
+        Optional<Product> productOptional = this.productRepository.findById(id);
 
-        if (ProductOptional.isEmpty()){
+        if (productOptional.isEmpty()){
             throw new ResourceNotFoundException("Product Not Found with Controller Advice");
         }
-        Product Product = ProductOptional.get();
-        return Product;
+        Product product = productOptional.get();
+        return product;
 
     }
     @Override
     public ProductResponseDto createProduct(ProductUpdateDto dto){
-        Product Product = modelMapper.map(dto,Product.class);
-        Product savedProduct = ProductRepository.save(Product);
+        Product product = modelMapper.map(dto,Product.class);
+        Product savedProduct = productRepository.save(product);
         return modelMapper.map(savedProduct, ProductResponseDto.class);
     }
     @Override
     public ProductResponseDto updateProduct(Long id, ProductUpdateDto dto){
-        Optional<Product> ProductOptional = this.ProductRepository.findById(id);
-        if (ProductOptional.isEmpty()){
+        Optional<Product> productOptional = this.productRepository.findById(id);
+        if (productOptional.isEmpty()){
             throw new ResourceNotFoundException("Product Not Found");
         }
         
-        Product Product = ProductOptional.get();
-        modelMapper.map(dto,Product);
-        Product = ProductRepository.save(Product);
-        return modelMapper.map(Product, ProductResponseDto.class);
+        Product product = productOptional.get();
+        modelMapper.map(dto,product);
+        product = productRepository.save(product);
+        return modelMapper.map(product, ProductResponseDto.class);
     }
 }

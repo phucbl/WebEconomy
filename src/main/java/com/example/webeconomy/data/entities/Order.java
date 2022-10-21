@@ -31,6 +31,10 @@ public class Order {
     @Column (name = "customer_id")
     private long customerId;
 
+    public Order (){
+        super();
+    }
+
     public Order(Date dateCreated, int status, long customerId) {
         this.dateCreated = dateCreated;
         this.status = status;

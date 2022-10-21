@@ -22,14 +22,14 @@ public class GlobalExceptionsHandler extends ResponseEntityExceptionHandler {
 	@ExceptionHandler({ ResourceNotFoundException.class })
 	protected ResponseEntity<ErrorResponse> handleResourceNotFoundException(RuntimeException exception,
 			WebRequest request) {
-		ErrorResponse error = new ErrorResponse("01", exception.getMessage());
+		ErrorResponse error = new ErrorResponse("404", exception.getMessage());
 		return new ResponseEntity<ErrorResponse>(error, HttpStatus.NOT_FOUND);
 	}
 
 	@ExceptionHandler({ IllegalArgumentException.class })
 	protected ResponseEntity<ErrorResponse> handleIllegalArgumentException(RuntimeException exception,
 			WebRequest request) {
-		ErrorResponse error = new ErrorResponse("01", exception.getMessage());
+		ErrorResponse error = new ErrorResponse("400", exception.getMessage());
 		return new ResponseEntity<ErrorResponse>(error, HttpStatus.BAD_REQUEST);
 	}
 
@@ -42,7 +42,7 @@ public class GlobalExceptionsHandler extends ResponseEntityExceptionHandler {
 			String errorMessage = error.getDefaultMessage();
 			errors.put(fieldName, errorMessage);
 		});
-		ErrorResponse error = new ErrorResponse("01", "Validation Error", errors);
+		ErrorResponse error = new ErrorResponse("403", "Validation Error", errors);
 		return new ResponseEntity<Object>(error, HttpStatus.BAD_REQUEST);
 	}
 }

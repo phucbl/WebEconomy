@@ -5,12 +5,12 @@ import lombok.Data;
 
 @Data
 public class ProductUpdateDto {
-	private long id;
+	private long categoryId;
 	private String name;
 	private String description;
 	@Min(value = 1, message = "Price should be a positive number")
 	private Double price;
-	private String Origin;
+	private String origin;
 
 
 	
