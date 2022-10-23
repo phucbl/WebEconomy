@@ -12,10 +12,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.webeconomy.dto.response.OrderDetailResponseDto;
-import com.example.webeconomy.dto.response.ErrorResponse;
 import com.example.webeconomy.data.entities.OrderDetail;
 import com.example.webeconomy.dto.request.OrderDetailUpdateDto;
-import com.example.webeconomy.data.repositories.*;
 import com.example.webeconomy.services.OrderDetailService;
 
 import java.util.List;

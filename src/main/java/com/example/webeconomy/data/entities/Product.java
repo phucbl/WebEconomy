@@ -1,8 +1,11 @@
 package com.example.webeconomy.data.entities;
 
 import java.sql.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -16,7 +19,12 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import lombok.Getter;
+import lombok.Setter;
+
 @Entity
+@Getter
+@Setter
 @Table(name="product")
 public class Product {
 
@@ -37,8 +45,12 @@ public class Product {
     @Column(name = "price")
     private float price;
 
+    @Column(name = "status")
+    private boolean status;
+    
+    @Convert(converter = StringListConverter.class)
     @Column(name = "image_url")
-    private String imageUrl;
+    private List<String> imageUrl;
 
     @Column(name = "count")
     private int count;
@@ -58,121 +70,38 @@ public class Product {
     public Product (){
         super();
     }
+    
+    @ManyToOne
+    @JoinColumn(name="category_id", referencedColumnName = "id", insertable=false, updatable=false)
+    public Category category;
 
-    public Product(String name, String description, String origin, float price, String imageUrl, int count,
-            int categoryId, float rate, Date createDate, Date updateDate) {
+    @JsonManagedReference
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    public List<Rating> rating;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    public List<Cart> cart;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    public List<OrderDetail> orderDetail;
+
+    public Product(long id, String name, String description, String origin, float price, List<String> imageUrl, int categoryId) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.origin = origin;
         this.price = price;
         this.imageUrl = imageUrl;
-        this.count = count;
         this.categoryId = categoryId;
-        this.rate = rate;
-        this.createDate = createDate;
-        this.updateDate = updateDate;
-    }
-    
-    @JsonBackReference
-    // @JsonManagedReference
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="category_id", referencedColumnName = "id", insertable=false, updatable=false)
-    public Category category;
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String Description) {
-        this.description = Description;
-    }
-
-    public String getOrigin() {
-        return origin;
-    }
-
-    public void setOrigin(String origin) {
-        this.origin = origin;
-    }
-
-    public float getPrice() {
-        return price;
-    }
-
-    public void setPrice(float price) {
-        this.price = price;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
-    public int getCount() {
-        return count;
-    }
-
-    public void setCount(int count) {
-        this.count = count;
-    }
-
-    public int getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(int categoryId) {
-        this.categoryId = categoryId;
-    }
-
-    public float getRate() {
-        return rate;
-    }
-
-    public void setRate(float rate) {
-        this.rate = rate;
-    }
-
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    public Date getUpdateDate() {
-        return updateDate;
-    }
-
-    public void setUpdateDate(Date updateDate) {
-        this.updateDate = updateDate;
     }
 
     @Override
     public String toString() {
-        return "Products [id=" + id + ", name=" + name + ", Description=" + description + ", origin=" + origin
-                + ", price=" + price + ", imageUrl=" + imageUrl + ", count=" + count + ", categoryId=" + categoryId
-                + ", rate=" + rate + ", createDate=" + createDate + ", updateDate=" + updateDate + "]";
-    }
-
-    
+        return "Product [id=" + id + ", name=" + name + ", description=" + description + ", origin=" + origin
+                + ", price=" + price + ", status=" + status + ", imageUrl=" + imageUrl + ", count=" + count
+                + ", categoryId=" + categoryId + ", rate=" + rate + ", createDate=" + createDate + ", updateDate="
+                + updateDate + "]";
+    } 
 }

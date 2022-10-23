@@ -12,10 +12,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.webeconomy.dto.response.OrderResponseDto;
-import com.example.webeconomy.dto.response.ErrorResponse;
 import com.example.webeconomy.data.entities.Order;
 import com.example.webeconomy.dto.request.OrderUpdateDto;
-import com.example.webeconomy.data.repositories.*;
 import com.example.webeconomy.services.OrderService;
 
 import java.util.List;
@@ -38,7 +36,7 @@ public class OrderController {
     }
     @GetMapping("/")
     List<Order> getOrdersByCustomerId(@RequestParam("customerId") Long customerId){
-        return orderService.getOrdersByCustomerId(customerId);
+        return orderService.getOrderByCustomerId(customerId);
     }
     @GetMapping("/{id}")
     Order getOrderById(@PathVariable("id") Long id){

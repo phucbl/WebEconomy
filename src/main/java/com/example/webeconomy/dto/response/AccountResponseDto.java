@@ -5,6 +5,5 @@ import lombok.Data;
 public class AccountResponseDto {
     private Long id;
 	private String phoneNumber;
-	private String password;
     private int roleId;
 }

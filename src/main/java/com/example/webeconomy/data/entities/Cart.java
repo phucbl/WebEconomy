@@ -1,19 +1,53 @@
 package com.example.webeconomy.data.entities;
-
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 @Entity
 @Table (name ="cart")
 public class Cart {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private long id;
+    @EmbeddedId
+    private ProductCustomerId id;
+
+    @Column (name="quantity")
+    private int quantity;
+
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name="product_id", referencedColumnName = "id", insertable=false, updatable=false)
+    private Product product;
+    
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name="customer_id", referencedColumnName = "id", insertable=false, updatable=false)
+    private Customer customer;
+
+    public Cart(){
+        super();
+    }
+
+    public Cart(ProductCustomerId id, int quantity) {
+        this.id = id;
+        this.quantity = quantity;
+    }
+
+    @Override
+    public String toString() {
+        return "Cart [productAndCustomerId=" + id + ", quantity=" + quantity + "]";
+    }
+
     
 }

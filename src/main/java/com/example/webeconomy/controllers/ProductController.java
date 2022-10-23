@@ -12,10 +12,12 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.webeconomy.dto.response.ProductResponseDto;
-import com.example.webeconomy.dto.response.ErrorResponse;
+import com.example.webeconomy.dto.response.RatingResponseDto;
+import com.example.webeconomy.dto.response.CartResponseDto;
 import com.example.webeconomy.data.entities.Product;
+import com.example.webeconomy.dto.request.CartUpdateDto;
 import com.example.webeconomy.dto.request.ProductUpdateDto;
-import com.example.webeconomy.data.repositories.*;
+import com.example.webeconomy.dto.request.RatingUpdateDto;
 import com.example.webeconomy.services.ProductService;
 
 import java.util.List;
@@ -25,35 +27,47 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/product")
 public class ProductController {
-    private ProductService ProductService;
+    private ProductService productService;
     
     @Autowired
-    ProductController (ProductService ProductService){
-        this.ProductService = ProductService;
+    ProductController (ProductService productService){
+        this.productService = productService;
     }
 
     @GetMapping
     List<Product> getProducts(){
-        return ProductService.getAllProducts();
+        return productService.getAllProducts();
     }
     @GetMapping("/")
     List<Product> getProductsByCategoryId(@RequestParam("categoryId") int categoryId ){
-        return ProductService.getAllProductsByCategoryId(categoryId);
+        return productService.getAllProductsByCategoryId(categoryId);
     }
     @GetMapping("/{id}")
     Product getProductById(@PathVariable("id") Long id){
-        return ProductService.getProductById(id);
+        return productService.getProductById(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     ProductResponseDto createProduct(@RequestBody ProductUpdateDto dto){
-        return this.ProductService.createProduct(dto);
+        return this.productService.createProduct(dto);
+    }
+
+    @PostMapping("/{id}")
+    @ResponseStatus(HttpStatus.CREATED)
+    CartResponseDto addToCart (@RequestBody CartUpdateDto dto){
+        return this.productService.addToCart(dto);
+    }
+
+    @PostMapping("/{id}/rating")
+    @ResponseStatus(HttpStatus.CREATED)
+    RatingResponseDto addRating (@PathVariable("id") Long id, @Valid @RequestBody RatingUpdateDto dto){
+        return this.productService.addRating(dto);
     }
     
     @PutMapping("/{id}")
     ProductResponseDto updateProduct(@PathVariable("id") Long id, @Valid @RequestBody ProductUpdateDto dto){
-        return this.ProductService.updateProduct(id,dto);
+        return this.productService.updateProduct(id,dto);
     }
 
 }

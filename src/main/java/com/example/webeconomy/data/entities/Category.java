@@ -1,10 +1,5 @@
 package com.example.webeconomy.data.entities;
-
 import java.util.List;
-import com.example.webeconomy.data.entities.*;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -26,9 +21,7 @@ public class Category {
     @Column(name = "name")
     private String name;
 
-    // @JsonManagedReference
-    @JsonBackReference
-    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Product> product;
 
     public Category() {
@@ -55,16 +48,9 @@ public class Category {
         this.name = name;
     }
 
-    public List<Product> getProduct() {
-        return product;
-    }
-
-    public void setProduct(List<Product> product) {
-        this.product = product;
-    }
-
     @Override
     public String toString() {
         return "Category [id=" + id + ", name=" + name + "]";
     }
+    
 }

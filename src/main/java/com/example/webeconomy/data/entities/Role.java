@@ -9,9 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -52,7 +50,7 @@ public class Role {
         return "Roles [id=" + id + ", roleName=" + roleName + "]";
     }
 
-    @OneToMany(mappedBy="role",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy="role",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Account> accounts;
 
     public Role(String roleName) {

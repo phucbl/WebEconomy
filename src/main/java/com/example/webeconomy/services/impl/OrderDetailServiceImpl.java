@@ -28,23 +28,23 @@ public class OrderDetailServiceImpl implements OrderDetailService{
 
     @Override
     public List<OrderDetail> getAllOrderDetails(){
-        return this.orderDetailRepository.findAll();
+        return orderDetailRepository.findAll();
     }  
     @Override
     public List<OrderDetail> getOrderDetailByOrderId(Long orderId){
-        return this.orderDetailRepository.findByOrderDetailIdOrderId(orderId);
+        return orderDetailRepository.findByIdOrderId(orderId);
     }  
     
     @Override
     public OrderDetailResponseDto createOrderDetail(OrderDetailUpdateDto dto){
         OrderDetail orderDetail = modelMapper.map(dto,OrderDetail.class);
-        orderDetail.setOrdersDetailid(dto.getOrderDetailId());
+        orderDetail.setId(dto.getOrderDetailId());
         OrderDetail savedOrderDetail = orderDetailRepository.save(orderDetail);
         return modelMapper.map(savedOrderDetail, OrderDetailResponseDto.class);
     }
     @Override
     public OrderDetailResponseDto updateOrderDetail(Long id, OrderDetailUpdateDto dto){
-        Optional<OrderDetail> OrderDetailOptional = this.orderDetailRepository.findById(id);
+        Optional<OrderDetail> OrderDetailOptional = orderDetailRepository.findById(id);
         if (OrderDetailOptional.isEmpty()){
             throw new ResourceNotFoundException("OrderDetail Not Found");
         }

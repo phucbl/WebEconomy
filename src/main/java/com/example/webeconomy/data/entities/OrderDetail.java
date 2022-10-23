@@ -1,10 +1,11 @@
 package com.example.webeconomy.data.entities;
 
+
+
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -13,7 +14,7 @@ import javax.persistence.Table;
 public class OrderDetail {
 
     @EmbeddedId
-    private OrderDetailId orderDetailId;
+    private OrderDetailId id;
 
     @Column(name ="price")
     private float price;
@@ -25,18 +26,27 @@ public class OrderDetail {
         super();
     }
 
-    public OrderDetail(OrderDetailId orderDetailId, float price, int quantity) {
-        this.orderDetailId = orderDetailId;
+    @ManyToOne
+    @JoinColumn(name="product_id", referencedColumnName = "id", insertable=false, updatable=false)
+    private Product product;
+
+    
+    @ManyToOne
+    @JoinColumn(name="order_id", referencedColumnName = "id", insertable=false, updatable=false)
+    private Order order;
+
+    public OrderDetail(OrderDetailId id, float price, int quantity) {
+        this.id = id;
         this.price = price;
         this.quantity = quantity;
     }
 
-    public OrderDetailId getOrdersDetailid() {
-        return orderDetailId;
+    public OrderDetailId getId() {
+        return id;
     }
 
-    public void setOrdersDetailid(OrderDetailId ordersDetailid) {
-        this.orderDetailId = ordersDetailid;
+    public void setId(OrderDetailId id) {
+        this.id = id;
     }
 
     public float getPrice() {
@@ -57,7 +67,7 @@ public class OrderDetail {
 
     @Override
     public String toString() {
-        return "OrderDetail [ordersDetailid=" + orderDetailId + ", price=" + price + ", quantity=" + quantity + "]";
+        return "OrderDetail [ordersDetailid=" + id + ", price=" + price + ", quantity=" + quantity + "]";
     }
 
 

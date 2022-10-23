@@ -1,22 +1,15 @@
 package com.example.webeconomy.services.impl;
-import java.util.List;
 import java.util.Optional;
-
-import javax.security.auth.login.AccountNotFoundException;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.stereotype.Component;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
 import com.example.webeconomy.services.AccountService;
 import com.example.webeconomy.data.entities.*;
 import com.example.webeconomy.data.repositories.*;
 import com.example.webeconomy.dto.request.AccountUpdateDto;
 import com.example.webeconomy.dto.response.AccountResponseDto;
 import com.example.webeconomy.exceptions.*;
-
 
 @Service
 public class AccountServiceImpl implements AccountService{
@@ -30,19 +23,19 @@ public class AccountServiceImpl implements AccountService{
         this.accountRepository = accountRepository;
     }
 
-    @Override
-    public List<Account> getAllAccounts() {
-        return this.accountRepository.findAll();
-    }
+    // @Override
+    // public List<Account> getAllAccounts() {
+    //     return accountRepository.findAll();
+    // }
     
     @Override
-    public Account getAccountById(Long id){
+    public AccountResponseDto getAccountById(Long id){
         Optional<Account> accountOptional = this.accountRepository.findById(id);
         if (accountOptional.isEmpty()){
             throw new ResourceNotFoundException("Account Not Found with Controller Advice");
         }        
         Account account= accountOptional.get();
-        return account;
+        return modelMapper.map(account, AccountResponseDto.class);
     }
     @Override
     public AccountResponseDto createAccount(AccountUpdateDto dto){
@@ -63,13 +56,25 @@ public class AccountServiceImpl implements AccountService{
         return modelMapper.map(account, AccountResponseDto.class);
     }
     @Override
-    public Account getAccountByPhoneNumber(String phoneNumber){
+    public AccountResponseDto getAccountByPhoneNumber(String phoneNumber){
         Optional<Account> accountOptional =  this.accountRepository.findByPhoneNumber(phoneNumber);
         if (accountOptional.isEmpty()){
             throw new ResourceNotFoundException("Account Not Found");
         }
         Account account= accountOptional.get();
-        return account;
+        return modelMapper.map(account, AccountResponseDto.class);
+    }
+
+    @Override
+    public HttpStatus deactiveAccount (Long id){
+        Optional<Account> accountOptional = accountRepository.findById(id);
+        if (accountOptional.isEmpty()){
+            throw new ResourceNotFoundException("Account Not Found");
+        }
+        Account account = accountOptional.get();
+        account.setStatus(false);
+        account = accountRepository.save(account);
+        return HttpStatus.ACCEPTED;
     }
 
 }

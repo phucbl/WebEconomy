@@ -7,9 +7,13 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.Column;
-import javax.persistence.Table;;
 
+import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 @Entity
 @Table (name ="customer")
 public class Customer {
@@ -31,14 +35,19 @@ public class Customer {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id", referencedColumnName = "id", insertable=false, updatable=false)
     private Account account;
-
     
+    @JsonManagedReference
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
+    private List<Order> order;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
+    private List<Cart> cart;
+
     // @OneToMany(fetch = FetchType.LAZY)
     // @JoinColumn(name = "id", referencedColumnName = "customer_id", insertable=false, updatable=false)
     // private Rating rating;
-
-
-
+    
     public Customer(){
         super();
     }

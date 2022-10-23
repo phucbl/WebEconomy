@@ -11,7 +11,7 @@ import com.example.webeconomy.dto.response.OrderResponseDto;
 public interface OrderService {
 
     public List<Order> getAllOrders();
-    public List<Order> getOrdersByCustomerId(Long customerId);
+    public List<Order> getOrderByCustomerId(Long customerId);
     public Order getOrderById(Long id);
     public OrderResponseDto createOrder(OrderUpdateDto dto);
     public OrderResponseDto updateOrder(Long id, OrderUpdateDto dto);

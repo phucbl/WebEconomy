@@ -1,5 +1,7 @@
 package com.example.webeconomy.services.impl;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,16 +11,30 @@ import org.springframework.stereotype.Service;
 
 import com.example.webeconomy.data.repositories.*;
 import com.example.webeconomy.data.entities.*;
-import com.example.webeconomy.dto.request.ProductUpdateDto;
-import com.example.webeconomy.dto.response.ProductResponseDto;
+import com.example.webeconomy.dto.request.*;
+import com.example.webeconomy.dto.response.*;
 import com.example.webeconomy.exceptions.*;
 import com.example.webeconomy.services.ProductService;
 
 @Service
 public class ProductServiceImpl implements ProductService{
+    Date date;
+    LocalDate currentDate = LocalDate.now();
+    
+    @Autowired
     private ProductRepository productRepository;
     @Autowired
+    private CartRepository cartRepository;
+    @Autowired
+    private OrderRepository orderRepository;
+    @Autowired
+    private RatingRepository ratingRepository;
+    @Autowired
+    private OrderDetailRepository orderDetailRepository;
+    @Autowired
     private ModelMapper modelMapper;
+
+    private ProductCustomerId productCustomerId;
 
     @Autowired
     public ProductServiceImpl(ProductRepository productRepository, ModelMapper modelMapper){
@@ -37,6 +53,50 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
+    public CartResponseDto addToCart(CartUpdateDto dto){        
+        Cart cart;
+        productCustomerId=dto.getId();
+        Optional<Cart> cartOptional = cartRepository.findById(productCustomerId);
+        if (cartOptional.isEmpty()){
+            cart = new Cart(productCustomerId,0);
+        } else 
+            {
+                cart=cartOptional.get();
+                cart.setQuantity(cart.getQuantity()+dto.getQuantity());
+            }
+        cart = cartRepository.save(cart);
+        return modelMapper.map(cart, CartResponseDto.class);
+    }
+    @Override
+    public RatingResponseDto addRating (RatingUpdateDto dto){        
+        Rating rating;
+        Boolean isBought = false;
+        productCustomerId=dto.getId();
+        List<Order> order = orderRepository.findByCustomerId(dto.getId().getCustomerId());
+        for (Order findProduct : order) {
+            List<OrderDetail> orderDetails = orderDetailRepository.findByIdOrderId(findProduct.getId());
+            for (OrderDetail orderDetail : orderDetails) {
+                Long productId=orderDetail.getId().getProductId();
+                if (productId==dto.getId().getProductId()){
+                    isBought = true;
+                }
+            }
+        }
+        if (isBought==false){
+            throw new ResourceNotFoundException("Haven't bought this product yet");
+        }
+        Optional<Rating> ratingOptional = ratingRepository.findById(productCustomerId);
+        if (ratingOptional.isEmpty()){
+            rating = new Rating(productCustomerId,dto.getPoint());
+        } else {
+            rating=ratingOptional.get();
+            rating.setPoint(dto.getPoint());
+        }
+        rating = ratingRepository.save(rating);
+        return modelMapper.map(rating, RatingResponseDto.class);
+    }  
+
+    @Override
     public Product getProductById(Long id){
         Optional<Product> productOptional = this.productRepository.findById(id);
 
@@ -50,6 +110,11 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public ProductResponseDto createProduct(ProductUpdateDto dto){
         Product product = modelMapper.map(dto,Product.class);
+        product.setCount(0);
+        product.setCreateDate(Date.valueOf(currentDate));
+        product.setUpdateDate(Date.valueOf(currentDate));
+        product.setRate(0);
+        product.setStatus(true);
         Product savedProduct = productRepository.save(product);
         return modelMapper.map(savedProduct, ProductResponseDto.class);
     }
@@ -61,8 +126,9 @@ public class ProductServiceImpl implements ProductService{
         }
         
         Product product = productOptional.get();
+        product.setUpdateDate(Date.valueOf(currentDate));
         modelMapper.map(dto,product);
-        product = productRepository.save(product);
-        return modelMapper.map(product, ProductResponseDto.class);
+        Product savedProduct = productRepository.save(product);
+        return modelMapper.map(savedProduct, ProductResponseDto.class);
     }
 }

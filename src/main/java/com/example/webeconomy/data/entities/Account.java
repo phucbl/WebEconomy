@@ -7,44 +7,47 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Table;
 
 @Entity
-@Table (name ="account")
+@Table(name = "account")
 public class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private long id;  
-    
-    @Column(name ="phone_number")
+    private long id;
+
+    @Column(name = "phone_number")
     private String phoneNumber;
 
-    @Column(name ="password")
+    @Column(name = "password")
     private String password;
 
-    @Column(name ="role_id")
+    @Column(name = "role_id")
     private int roleId;
 
-    @OneToOne(mappedBy = "account", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @Column(name = "status")
+    private boolean status;
+
+    @OneToOne(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Customer customer;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "role_id", referencedColumnName = "id", insertable=false, updatable=false)
+    @JoinColumn(name = "role_id", referencedColumnName = "id", insertable = false, updatable = false)
     private Role role;
 
-    public Account(String phoneNumber, String password, int roleId) {        
+    public Account(String phoneNumber, String password, int roleId) {
         this.phoneNumber = phoneNumber;
         this.password = password;
         this.roleId = roleId;
     }
 
-    protected Account(){}
+    protected Account() {
+    }
 
     public long getId() {
         return id;
@@ -53,17 +56,19 @@ public class Account {
     public void setId(long id) {
         this.id = id;
     }
+
     public String getPassword() {
         return password;
     }
+
     public void setPassword(String password) {
         this.password = password;
     }
-   
-    
+
     public int getRoleId() {
         return roleId;
     }
+
     public void setRoleId(int roleId) {
         this.roleId = roleId;
     }
@@ -71,13 +76,23 @@ public class Account {
     public String getPhoneNumber() {
         return phoneNumber;
     }
+
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
-        return "Accounts [id=" + id + ", phoneNumber=" + phoneNumber + ", password=" + password + ", roleid=" + roleId
-                + "]";
+        return "Account [id=" + id + ", phoneNumber=" + phoneNumber + ", password=" + password + ", roleId=" + roleId
+                + ", status=" + status + "]";
     }
+
 }
