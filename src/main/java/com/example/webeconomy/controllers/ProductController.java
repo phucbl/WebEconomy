@@ -34,14 +34,11 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @GetMapping
+    @GetMapping("/")
     List<Product> getProducts(){
         return productService.getAllProducts();
     }
-    @GetMapping("/")
-    List<Product> getProductsByCategoryId(@RequestParam("categoryId") int categoryId ){
-        return productService.getAllProductsByCategoryId(categoryId);
-    }
+    
     @GetMapping("/{id}")
     Product getProductById(@PathVariable("id") Long id){
         return productService.getProductById(id);

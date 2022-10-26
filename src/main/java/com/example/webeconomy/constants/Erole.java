@@ -1,6 +1,6 @@
 package com.example.webeconomy.constants;
 
 public enum Erole {
-    ADMIN,
-    USER
+    ROLE_ADMIN,
+    ROLE_USER
 }

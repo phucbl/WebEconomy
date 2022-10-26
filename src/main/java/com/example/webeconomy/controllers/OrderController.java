@@ -31,14 +31,11 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    @GetMapping
+    @GetMapping("/")
     List<Order> getOrders(){
         return orderService.getAllOrders();
     }
-    @GetMapping("/")
-    List<Order> getOrdersByCustomerId(@RequestParam("customerId") Long customerId){
-        return orderService.getOrderByCustomerId(customerId);
-    }
+
     @GetMapping("/{id}")
     Order getOrderById(@PathVariable("id") Long id){
         return orderService.getOrderById(id);

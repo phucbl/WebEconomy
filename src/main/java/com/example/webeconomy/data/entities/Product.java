@@ -15,6 +15,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.Getter;
@@ -69,19 +71,20 @@ public class Product {
         super();
     }
     
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name="category_id", referencedColumnName = "id", insertable=false, updatable=false)
     public Category category;
 
-    @JsonManagedReference
+    @JsonBackReference
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     public List<Rating> rating;
 
-    @JsonManagedReference
+    @JsonBackReference
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     public List<Cart> cart;
 
-    @JsonManagedReference
+    @JsonBackReference
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     public List<OrderDetail> orderDetail;
 

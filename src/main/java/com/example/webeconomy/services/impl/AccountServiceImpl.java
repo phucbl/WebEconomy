@@ -51,7 +51,7 @@ public class AccountServiceImpl implements AccountService{
             throw new ValidationException("Phone number is already signed up");
         }
         Account account = modelMapper.map(dto,Account.class);
-        account.setRoleId(Erole.ADMIN);
+        account.setRoleId(Erole.ROLE_ADMIN);
         Account savedAccount = accountRepository.save(account);
         return modelMapper.map(savedAccount, AccountResponseDto.class);
     }
@@ -66,7 +66,7 @@ public class AccountServiceImpl implements AccountService{
         Account account = modelMapper.map(accountUpdateDto,Account.class);
         PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
         account.setPassword(encoder.encode(account.getPassword()));
-        account.setRoleId(Erole.USER);
+        account.setRoleId(Erole.ROLE_USER);
         account = accountRepository.save(account);
         Customer customer = modelMapper.map(customerUpdateDto,Customer.class);
         customer.setAccountId(account.getId());
