@@ -1,6 +1,6 @@
 package com.example.webeconomy.data.entities;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -13,6 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.example.webeconomy.constants.OrderStatus;
 
 // import com.fasterxml.jackson.annotation.JsonBackReference;
 
@@ -29,7 +31,7 @@ public class Order {
     private Date dateCreated;
 
     @Column (name = "status")
-    private int status;
+    private OrderStatus status;
 
     @Column (name = "customer_id")
     private long customerId;
@@ -45,7 +47,7 @@ public class Order {
     @JoinColumn(name="customer_id", referencedColumnName = "id", insertable=false, updatable=false)
     private Customer customer;
 
-    public Order(Date dateCreated, int status, long customerId) {
+    public Order(Date dateCreated, OrderStatus status, long customerId) {
         this.dateCreated = dateCreated;
         this.status = status;
         this.customerId = customerId;
@@ -69,11 +71,11 @@ public class Order {
         this.dateCreated = dateCreated;
     }
 
-    public int getStatus() {
+    public OrderStatus getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(OrderStatus status) {
         this.status = status;
     }
 

@@ -9,12 +9,17 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
+import lombok.Getter;
+import lombok.Setter;
+
 @Entity
+@Getter
+@Setter
 @Table (name ="rating")
 public class Rating {
 
     @EmbeddedId
-    private ProductCustomerId productAndCustomerId;
+    private ProductCustomerId id;
 
     @Column (name="point")
     private int point;
@@ -30,30 +35,18 @@ public class Rating {
     @JoinColumn(name="customer_id", referencedColumnName = "id", insertable=false, updatable=false)
     private Customer customer;
 
-    public Rating(ProductCustomerId productAndCustomerId, int point) {
-        this.productAndCustomerId = productAndCustomerId;
-        this.point = point;
+    public Rating (){
+        super();
     }
 
-    public ProductCustomerId getProductAndCustomerId() {
-        return productAndCustomerId;
-    }
-
-    public void setProductAndCustomerId(ProductCustomerId productAndCustomerId) {
-        this.productAndCustomerId = productAndCustomerId;
-    }
-
-    public int getPoint() {
-        return point;
-    }
-
-    public void setPoint(int point) {
+    public Rating(ProductCustomerId id, int point) {
+        this.id = id;
         this.point = point;
     }
 
     @Override
     public String toString() {
-        return "Cart [productAndCustomerId=" + productAndCustomerId + ", point=" + point + "]";
+        return "Cart [productAndCustomerId=" + id + ", point=" + point + "]";
     }
 
     

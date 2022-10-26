@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.example.webeconomy.data.repositories.*;
+import com.example.webeconomy.constants.OrderStatus;
 import com.example.webeconomy.data.entities.*;
 import com.example.webeconomy.dto.request.*;
 import com.example.webeconomy.dto.response.*;
@@ -59,9 +60,9 @@ public class CustomerServiceImpl implements CustomerService{
     public OrderResponseDto createOrder (CustomerCreateOrderUpdateDto customerCreateOrderUpdateDto){
         OrderUpdateDto dto=customerCreateOrderUpdateDto.getDto();
         List<Cart> carts =customerCreateOrderUpdateDto.getCarts();
-        dto.setDateCreated(Calendar.getInstance().getTime());
         Order order = modelMapper.map(dto,Order.class);
-        order.setStatus(0);
+        order.setDateCreated(Calendar.getInstance().getTime());
+        order.setStatus(OrderStatus.CHECKING);
         Order savedOrder = orderRepository.save(order);
         Long orderId = savedOrder.getId();
         for (Cart cart : carts) {

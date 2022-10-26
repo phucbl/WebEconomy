@@ -1,6 +1,7 @@
 package com.example.webeconomy.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,6 +22,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/category")
 public class CategoryController {
+    @Autowired
     private CategoryService CategoryService;
     
     @Autowired
@@ -47,5 +49,10 @@ public class CategoryController {
     @PutMapping("/{id}")
     CategoryResponseDto updateCategory(@PathVariable("id") Integer id, @Valid @RequestBody CategoryUpdateDto dto){
         return this.CategoryService.updateCategory(id,dto);
+    }
+
+    @DeleteMapping("/{id}")
+    HttpStatus deleteCategory (@PathVariable("id") Integer id){
+        return HttpStatus.ACCEPTED;
     }
 }

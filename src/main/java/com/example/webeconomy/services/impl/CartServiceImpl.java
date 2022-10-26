@@ -1,8 +1,6 @@
 package com.example.webeconomy.services.impl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.webeconomy.services.CartService;
-import com.example.webeconomy.data.entities.*;
 
 
 @Service

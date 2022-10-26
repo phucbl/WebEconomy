@@ -58,7 +58,7 @@ public class ProductServiceImpl implements ProductService{
         productCustomerId=dto.getId();
         Optional<Cart> cartOptional = cartRepository.findById(productCustomerId);
         if (cartOptional.isEmpty()){
-            cart = new Cart(productCustomerId,0);
+            cart = new Cart(productCustomerId,dto.getQuantity());
         } else 
             {
                 cart=cartOptional.get();
@@ -69,7 +69,7 @@ public class ProductServiceImpl implements ProductService{
     }
     @Override
     public RatingResponseDto addRating (RatingUpdateDto dto){        
-        Rating rating;
+        Rating saveRating;
         Boolean isBought = false;
         productCustomerId=dto.getId();
         List<Order> order = orderRepository.findByCustomerId(dto.getId().getCustomerId());
@@ -83,17 +83,28 @@ public class ProductServiceImpl implements ProductService{
             }
         }
         if (isBought==false){
-            throw new ResourceNotFoundException("Haven't bought this product yet");
+            throw new ValidationException("Haven't bought this product yet");
         }
         Optional<Rating> ratingOptional = ratingRepository.findById(productCustomerId);
         if (ratingOptional.isEmpty()){
-            rating = new Rating(productCustomerId,dto.getPoint());
+            saveRating = new Rating(productCustomerId,dto.getPoint());
         } else {
-            rating=ratingOptional.get();
-            rating.setPoint(dto.getPoint());
+            saveRating=ratingOptional.get();
+            saveRating.setPoint(dto.getPoint());
         }
-        rating = ratingRepository.save(rating);
-        return modelMapper.map(rating, RatingResponseDto.class);
+        saveRating = ratingRepository.save(saveRating);
+        List<Rating> listRatings = ratingRepository.findByIdProductId(productCustomerId.getProductId());
+        int countRating=0;
+        int sumRating=0;
+        for (Rating rating : listRatings) {
+            countRating+=1;
+            sumRating+=rating.getPoint();
+        }
+        Optional<Product> productOptional = productRepository.findById(productCustomerId.getProductId());
+        Product saveProduct = productOptional.get();
+        saveProduct.setRate(sumRating/countRating);
+        saveProduct=productRepository.save(saveProduct);
+        return modelMapper.map(saveRating, RatingResponseDto.class);
     }  
 
     @Override

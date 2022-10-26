@@ -6,6 +6,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.webeconomy.data.repositories.*;
+import com.example.webeconomy.constants.OrderStatus;
 import com.example.webeconomy.data.entities.*;
 import com.example.webeconomy.dto.request.OrderUpdateDto;
 import com.example.webeconomy.dto.response.OrderResponseDto;
@@ -47,28 +48,44 @@ public class OrderServiceImpl implements OrderService{
     }
     @Override
     public OrderResponseDto createOrder(OrderUpdateDto dto){
-        dto.setDateCreated(Calendar.getInstance().getTime());
         Order order = modelMapper.map(dto,Order.class);
+        order.setDateCreated(Calendar.getInstance().getTime());
+        order.setStatus(OrderStatus.CHECKING);
         Order savedOrder = orderRepository.save(order);
         return modelMapper.map(savedOrder, OrderResponseDto.class);
     }
     @Override
     public OrderResponseDto updateOrder(Long id, OrderUpdateDto dto){
-        Optional<Order> OrderOptional = this.orderRepository.findById(id);
-        if (OrderOptional.isEmpty()){
+        Optional<Order> orderOptional = this.orderRepository.findById(id);
+        if (orderOptional.isEmpty()){
             throw new ResourceNotFoundException("Order Not Found");
         }
-        Order order = OrderOptional.get();
-        modelMapper.map(dto,order);
+        Order order = orderOptional.get();
+        OrderStatus lastStatus = order.getStatus();
+        if (lastStatus==OrderStatus.CANCELED) throw new ValidationException("This order was canceled");
+        order.setStatus(dto.getStatus());
         order = orderRepository.save(order);
-        if (order.getStatus()==2){
+        if (order.getStatus()==OrderStatus.DONE&&lastStatus!=OrderStatus.DONE){
             List<OrderDetail> orderDetails = orderDetailRepository.findByIdOrderId(id);
             for (OrderDetail orderDetail : orderDetails) {
                 Optional<Product> productOptional = productRepository.findById(orderDetail.getId().getProductId());
                 Product product = productOptional.get();
                 product.setCount(product.getCount()+orderDetail.getQuantity());
+                product = productRepository.save(product);
             }
         }
+        return modelMapper.map(order, OrderResponseDto.class);
+    }
+
+    @Override
+    public OrderResponseDto cancelOrder (Long id){
+        Optional<Order> orderOptional = this.orderRepository.findById(id);
+        if (orderOptional.isEmpty()){
+            throw new ResourceNotFoundException("Order Not Found");
+        }
+        Order order = orderOptional.get();
+        order.setStatus(OrderStatus.CANCELED);
+        order = orderRepository.save(order);
         return modelMapper.map(order, OrderResponseDto.class);
     }
 }

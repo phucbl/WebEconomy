@@ -37,8 +37,8 @@ public class AccountController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    AccountResponseDto createAccount(@RequestBody AccountUpdateDto dto){
-        return accountService.createAccount(dto);
+    AccountResponseDto createAdminAccount(@RequestBody AccountUpdateDto dto){
+        return accountService.createAdminAccount(dto);
     }
     
     @PutMapping("/{id}")
