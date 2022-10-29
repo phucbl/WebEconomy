@@ -13,13 +13,16 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.hibernate.annotations.GenericGenerator;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 @Entity
 @Table (name ="customer")
 public class Customer {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator="seq")
+    @GenericGenerator(name = "seq", strategy="increment")
     @Column(name = "id")
     private Long id;
 
@@ -32,15 +35,16 @@ public class Customer {
     @Column(name ="address")
     private String address;
 
+    @JsonBackReference
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id", referencedColumnName = "id", insertable=false, updatable=false)
     private Account account;
     
-    @JsonManagedReference
+    @JsonBackReference
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
     private List<Order> order;
 
-    @JsonManagedReference
+    @JsonBackReference
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
     private List<Cart> cart;
 

@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.example.webeconomy.data.repositories.*;
@@ -83,7 +84,7 @@ public class ProductServiceImpl implements ProductService{
             }
         }
         if (isBought==false){
-            throw new ValidationException("Haven't bought this product yet");
+            throw new BadRequestException("Haven't bought this product yet");
         }
         Optional<Rating> ratingOptional = ratingRepository.findById(productCustomerId);
         if (ratingOptional.isEmpty()){
@@ -142,4 +143,17 @@ public class ProductServiceImpl implements ProductService{
         Product savedProduct = productRepository.save(product);
         return modelMapper.map(savedProduct, ProductResponseDto.class);
     }
+    @Override
+    public ProductResponseDto deactiveProduct (Long id){
+        Optional<Product> productOptional = this.productRepository.findById(id);
+        if (productOptional.isEmpty()){
+            throw new ResourceNotFoundException("Product Not Found");
+        }
+        Product product = productOptional.get();
+        product.setUpdateDate(Date.valueOf(currentDate));
+        product.setStatus(false);
+        Product savedProduct = productRepository.save(product);
+        return modelMapper.map(savedProduct, ProductResponseDto.class);
+    }
+        
 }

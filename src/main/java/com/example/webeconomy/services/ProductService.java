@@ -15,5 +15,6 @@ public interface ProductService {
     public RatingResponseDto addRating(RatingUpdateDto dto);
     public ProductResponseDto createProduct(ProductUpdateDto dto);
     public ProductResponseDto updateProduct(Long id, ProductUpdateDto dto);
+    public ProductResponseDto deactiveProduct(Long id);
 
 }

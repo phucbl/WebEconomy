@@ -78,7 +78,7 @@ public class CategoryServiceImpl implements CategoryService{
         Category category = categoryOptional.get();
         List<Product> products = productRepository.findByCategoryId(category.getId());
         if (!products.isEmpty()) {
-            throw new ValidationException("This category still has products");
+            throw new BadRequestException("This category still has products");
         }
         categoryRepository.delete(category);
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto(null, "Delete Successfully!","200"));

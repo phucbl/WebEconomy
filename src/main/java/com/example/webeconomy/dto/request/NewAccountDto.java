@@ -4,6 +4,8 @@ import lombok.Data;
 
 @Data
 public class NewAccountDto {
-    private AccountUpdateDto accountDto;
-    private CustomerUpdateDto customerDto;
+    private String phoneNumber;
+    private String password;
+    private String name;
+    private String address;
 }

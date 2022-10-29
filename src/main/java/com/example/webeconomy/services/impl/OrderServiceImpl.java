@@ -62,7 +62,7 @@ public class OrderServiceImpl implements OrderService{
         }
         Order order = orderOptional.get();
         OrderStatus lastStatus = order.getStatus();
-        if (lastStatus==OrderStatus.CANCELED) throw new ValidationException("This order was canceled");
+        if (lastStatus==OrderStatus.CANCELED) throw new BadRequestException("This order was canceled");
         order.setStatus(dto.getStatus());
         order = orderRepository.save(order);
         if (order.getStatus()==OrderStatus.DONE&&lastStatus!=OrderStatus.DONE){

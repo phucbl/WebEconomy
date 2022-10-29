@@ -1,7 +1,5 @@
 package com.example.webeconomy.dto.request;
 
-import java.util.Date;
-
 import com.example.webeconomy.constants.OrderStatus;
 
 import lombok.Data;

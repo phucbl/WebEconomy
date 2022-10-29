@@ -4,7 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.example.webeconomy.services.AccountService;
@@ -12,7 +12,6 @@ import com.example.webeconomy.constants.Erole;
 import com.example.webeconomy.data.entities.*;
 import com.example.webeconomy.data.repositories.*;
 import com.example.webeconomy.dto.request.AccountUpdateDto;
-import com.example.webeconomy.dto.request.CustomerUpdateDto;
 import com.example.webeconomy.dto.request.NewAccountDto;
 import com.example.webeconomy.dto.response.AccountResponseDto;
 import com.example.webeconomy.dto.response.ResponseDto;
@@ -20,11 +19,14 @@ import com.example.webeconomy.exceptions.*;
 
 @Service
 public class AccountServiceImpl implements AccountService{
-    
+    @Autowired
     private AccountRepository accountRepository;
+    @Autowired
     private CustomerRepository customerRepositoy;
     @Autowired
     private ModelMapper modelMapper;
+
+    private Customer customer;
 
     @Autowired
     public AccountServiceImpl (AccountRepository accountRepository){
@@ -48,7 +50,7 @@ public class AccountServiceImpl implements AccountService{
     @Override
     public AccountResponseDto createAdminAccount(AccountUpdateDto dto){
         if (accountRepository.existsByPhoneNumber(dto.getPhoneNumber())){
-            throw new ValidationException("Phone number is already signed up");
+            throw new ItemExistException("Phone number is already signed up");
         }
         Account account = modelMapper.map(dto,Account.class);
         account.setRoleId(Erole.ROLE_ADMIN);
@@ -58,18 +60,18 @@ public class AccountServiceImpl implements AccountService{
 
     @Override
     public AccountResponseDto createAccount (NewAccountDto dto){
-        AccountUpdateDto accountUpdateDto = dto.getAccountDto();
-        CustomerUpdateDto customerUpdateDto = dto.getCustomerDto();
-        if (accountRepository.existsByPhoneNumber(accountUpdateDto.getPhoneNumber())){
-            throw new ValidationException("Phone number is already signed up");
+        
+        Optional<Account> accountOptional = accountRepository.findByPhoneNumber(dto.getPhoneNumber());
+        if (accountOptional.isPresent()){
+            throw new ItemExistException("Phone number is already signed up");
         }
-        Account account = modelMapper.map(accountUpdateDto,Account.class);
-        PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        Account account = new Account(dto.getPhoneNumber(), dto.getPassword(), null);
+        PasswordEncoder encoder = new BCryptPasswordEncoder();
         account.setPassword(encoder.encode(account.getPassword()));
         account.setRoleId(Erole.ROLE_USER);
+        account.setStatus(true);
         account = accountRepository.save(account);
-        Customer customer = modelMapper.map(customerUpdateDto,Customer.class);
-        customer.setAccountId(account.getId());
+        customer = new Customer(account.getId(),dto.getName(),dto.getAddress());
         customerRepositoy.save(customer);
         return modelMapper.map(account, AccountResponseDto.class);
     }
