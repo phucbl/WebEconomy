@@ -27,7 +27,6 @@ import com.example.webeconomy.dto.response.LoginResponseDto;
 import com.example.webeconomy.dto.response.ResponseDto;
 import com.example.webeconomy.exceptions.BadRequestException;
 import com.example.webeconomy.exceptions.ResourceNotFoundException;
-import com.example.webeconomy.exceptions.ValidationException;
 import com.example.webeconomy.security.JwtTokenProvider;
 import com.example.webeconomy.services.AuthService;
 
