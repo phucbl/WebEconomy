@@ -26,7 +26,7 @@ export default function SigleProduct ({prod}) {
       })
     }
   return (
-    <div className='products'>
+    <div className='carts'>
         <Card>
             <Card.Img variant = 'top' src={prod.imageUrl} alt={prod.name}/>
             <Card.Body>

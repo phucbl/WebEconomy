@@ -1,6 +1,7 @@
 package com.example.webeconomy.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +12,7 @@ import com.example.webeconomy.dto.response.ResponseDto;
 import com.example.webeconomy.services.AuthService;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/customer/login")
 public class LoginController {
     @Autowired

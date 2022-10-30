@@ -1,6 +1,7 @@
 package com.example.webeconomy.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +22,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/customer")
 public class CustomerController {
     @Autowired
@@ -35,6 +37,10 @@ public class CustomerController {
     @GetMapping
     List<Customer> getCustomers(){
         return customerService.getAllCustomers();
+    }
+    @GetMapping("/")
+    Customer getCustomerByHeaderId(@RequestHeader("customerId") Long id){
+        return customerService.getCustomerById(id);
     }
 
     @GetMapping("/{id}")

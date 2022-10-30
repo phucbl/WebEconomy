@@ -16,6 +16,7 @@ export default function Home () {
     const result=await axios.get("http://localhost:8080/product/");
     setProducts(result.data);
   }
+  
 
   
 

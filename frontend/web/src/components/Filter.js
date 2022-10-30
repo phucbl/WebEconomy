@@ -8,7 +8,7 @@ const Filter = () => {
         <span>
             <Form.Check
             inline
-            label="Ascending"
+            label="Price increase"
             name="group1"
             type="radio"
             id={'inline-1'}
@@ -17,7 +17,7 @@ const Filter = () => {
         <span>
             <Form.Check
             inline
-            label="Descending"
+            label="Price descrease"
             name="group1"
             type="radio"
             id={'inline-2'}
@@ -39,6 +39,24 @@ const Filter = () => {
             name="group1"
             type="checkbox"
             id={'inline-4'}
+            />
+        </span>
+        <span>
+            <Form.Check
+            inline
+            label="Ốc, vít"
+            name="group1"
+            type="checkbox"
+            id={'inline-5'}
+            />
+        </span>
+        <span>
+            <Form.Check
+            inline
+            label="Phụ kiện khác"
+            name="group1"
+            type="checkbox"
+            id={'inline-6'}
             />
         </span>
         
