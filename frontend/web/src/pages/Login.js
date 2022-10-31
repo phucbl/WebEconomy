@@ -30,8 +30,12 @@ export default function Login() {
           cookies.set('customerId',res.data.data.customerId,{ path: '/' })
           cookies.set('role',res.data.data.role,{ path: '/' })
           cookies.set('token',res.data.data.token,{ path: '/' })
+          navigate("/")
         })
-        // navigate("/")
+        .catch((error)=>{
+          alert(error.data.message)
+        })
+        window.location.reload()
     };
 
   return (

@@ -4,12 +4,13 @@ import {
     Container,FormControl,Navbar,
     Badge,Nav,Dropdown,Button,
 } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import Cookies from 'universal-cookie'
 // import { CartState } from './Context'
 
 export default function Header(){
+    let navigate = useNavigate()
     const cookies = new Cookies();
     const [carts, setCarts] = useState([]);
 
@@ -27,6 +28,17 @@ export default function Header(){
   });
     setCarts(result.data);
   }
+  const logout = (e) => {
+
+    cookies.remove('name');
+    cookies.remove('customerId');
+    cookies.remove('role');
+    cookies.remove('token');
+    window.location.reload()
+    navigate("/")
+    
+    
+}
     return(
         <Navbar bg="dark" variant="dark" style={{height:80}}>
             <Container>
@@ -45,10 +57,24 @@ export default function Header(){
                         <span class="badge badge-light">{carts.length}</span>
                         
                     </Button>
-                    
-                    <Button style={{marginLeft:10}}>
+                    {cookies.get('name')==null ? (
+                        <Button style={{marginLeft:10}}>
                         <Link to="/customer/login">Login</Link>
-                    </Button>
+                        </Button>
+                    ):(
+                        <Dropdown style={{marginLeft:10}}>
+                            <Dropdown.Toggle>
+                                {cookies.get('name')}
+                            </Dropdown.Toggle>
+                            <Dropdown.Menu>
+                            <a class="dropdown-item" href='/customer'>Info</a>
+                            <a class="dropdown-item" href='/customer/order'>Orders</a>
+                            <Dropdown.Divider/>
+                            <a class="dropdown-item" onClick={logout}>Log Out</a>
+                            </Dropdown.Menu>
+                        </Dropdown>
+                    )}
+                    
                 </Nav>
                 
             </Container>

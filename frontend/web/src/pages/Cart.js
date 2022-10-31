@@ -1,5 +1,5 @@
 import  { React,useEffect, useState } from 'react'
-import { Button, ListGroup } from 'react-bootstrap'
+import { Button, ListGroup, ListGroupItem, Row, Col } from 'react-bootstrap'
 import axios from 'axios'
 import Cookies from 'universal-cookie'
 
@@ -29,7 +29,21 @@ export default function Cart() {
         <ListGroup>
           {
           carts.map((cart)=>(
-            <span>{cart.id.productId}</span>
+            <ListGroupItem key={cart.id}>
+              <Row>
+                <Col md={2}>
+                <span>{cart.product.name}</span>
+                
+                </Col>
+                <Col md={2}>
+                <span>{cart.product.price}</span>
+                
+                </Col>
+                <Col md={2}>
+                <span>{cart.quantity}</span>
+                </Col>
+              </Row>
+            </ListGroupItem>
           ))
           }
         </ListGroup>

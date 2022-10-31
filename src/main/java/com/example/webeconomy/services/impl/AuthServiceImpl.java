@@ -73,7 +73,7 @@ public class AuthServiceImpl implements AuthService{
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseDto(null, "Invalid phone number or password!","400"));
         }
         String customerName = "Admin";
-        Long customerId = new Long(0);
+        Long customerId = 0l;
         Optional<Customer> customeroOptional = customerRepository.findByAccountId(account.getId());
         if(customeroOptional.isPresent())  {
             customerName = customeroOptional.get().getName();

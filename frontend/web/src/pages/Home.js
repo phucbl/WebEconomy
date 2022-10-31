@@ -5,23 +5,19 @@ import Filter from '../components/Filter';
 import axios from 'axios'
 
 export default function Home () {
-
   const [products, setProducts] = useState([]);
-
+  
   useEffect(()=>{
     loadProducts();
   },[])
 
   const loadProducts = async()=>{
+    
     const result=await axios.get("http://localhost:8080/product/");
     setProducts(result.data);
   }
-  
-
-  
-
   return (
-
+    
     <div className='home'>
       <Filter/>
       <div className='productContainer'>

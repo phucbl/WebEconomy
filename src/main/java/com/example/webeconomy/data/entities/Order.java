@@ -14,6 +14,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import com.example.webeconomy.constants.OrderStatus;
 
 // import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -23,7 +25,8 @@ import com.example.webeconomy.constants.OrderStatus;
 public class Order {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator="seq")
+    @GenericGenerator(name = "seq", strategy="increment")
     @Column (name = "id")
     private long id;
 
