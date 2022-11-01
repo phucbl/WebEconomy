@@ -31,11 +31,12 @@ export default function Login() {
           cookies.set('role',res.data.data.role,{ path: '/' })
           cookies.set('token',res.data.data.token,{ path: '/' })
           navigate("/")
+          window.location.reload()
         })
         .catch((error)=>{
-          alert(error.data.message)
+          alert(error.response.data.message)
         })
-        window.location.reload()
+        
     };
 
   return (

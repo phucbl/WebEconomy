@@ -1,5 +1,5 @@
 import  { React,useEffect, useState } from 'react'
-import SingleProduct from '../components/SigleProduct'
+import SingleProduct from '../components/SingleProduct'
 import "../components/style.css";
 import Filter from '../components/Filter';
 import axios from 'axios'

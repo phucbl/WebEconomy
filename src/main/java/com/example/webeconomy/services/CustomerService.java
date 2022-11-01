@@ -2,6 +2,7 @@ package com.example.webeconomy.services;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.example.webeconomy.data.entities.*;
@@ -20,5 +21,5 @@ public interface CustomerService {
     public CustomerResponseDto createCustomer(CustomerUpdateDto dto);
     public CustomerResponseDto updateCustomer(Long id, CustomerUpdateDto dto);
     public CartResponseDto updateCart(CartUpdateDto dto);
-    public HttpStatus deleteCart(Long productId, Long customerId);
+    public ResponseEntity<ResponseDto> deleteCart(ProductCustomerId id);
 }

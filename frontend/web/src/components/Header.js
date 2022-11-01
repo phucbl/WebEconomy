@@ -28,16 +28,13 @@ export default function Header(){
   });
     setCarts(result.data);
   }
-  const logout = (e) => {
-
-    cookies.remove('name');
-    cookies.remove('customerId');
-    cookies.remove('role');
-    cookies.remove('token');
-    window.location.reload()
+  const logout = async(e) => {
+    cookies.remove('name', { path: '/' })
+    cookies.remove('customerId', { path: '/' })
+    cookies.remove('role', { path: '/' })
+    cookies.remove('token', { path: '/' })
     navigate("/")
-    
-    
+    window.location.reload()
 }
     return(
         <Navbar bg="dark" variant="dark" style={{height:80}}>

@@ -24,7 +24,7 @@ export default function SigleProduct ({prod}) {
             'customerId': cookies.get('customerId')
         }
       })
-      window.location.reload()
+      alert ("Added product to cart")
     }
   return (
     <div className='products'>

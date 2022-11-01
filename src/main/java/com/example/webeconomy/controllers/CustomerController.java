@@ -1,6 +1,7 @@
 package com.example.webeconomy.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -48,10 +49,10 @@ public class CustomerController {
         return customerService.getCustomerById(id);
     }
 
-    @GetMapping("/{id}/cart")
-    List<Cart> getCartByCustomerId(@PathVariable("id") Long id){
-        return customerService.getCartByCustomerId(id);
-    }
+    // @GetMapping("/{id}/cart")
+    // List<Cart> getCartByCustomerId(@PathVariable("id") Long id){
+    //     return customerService.getCartByCustomerId(id);
+    // }
     @GetMapping("/cart")
     List<Cart> getCartByHeaderCustomerId(@RequestHeader("customerId") Long id){
         return customerService.getCartByCustomerId(id);
@@ -62,19 +63,19 @@ public class CustomerController {
         return orderService.getOrderByCustomerId(id);
     }
 
-    @PostMapping("/{id}/cart")
+    @PostMapping("/cart")
     OrderResponseDto createOrder(@RequestBody CustomerCreateOrderUpdateDto customerCreateOrderUpdateDto){
         return customerService.createOrder(customerCreateOrderUpdateDto);
     }
 
-    @PutMapping("/{id}/cart")
+    @PutMapping("/cart")
     CartResponseDto updateCart(@RequestBody CartUpdateDto dto){
         return customerService.updateCart(dto);
     }
 
-    @DeleteMapping("/{id}/cart")
-    HttpStatus deleteCart(Long customerId,Long productId){
-        return HttpStatus.ACCEPTED;
+    @DeleteMapping("/cart")
+    public ResponseEntity<ResponseDto> deleteCart(@RequestBody ProductCustomerId id){
+        return customerService.deleteCart(id);
     }
 
     @PostMapping

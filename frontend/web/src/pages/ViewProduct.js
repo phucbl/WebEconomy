@@ -19,7 +19,7 @@ export default function ViewProduct() {
     <div className='productContainer'>
         <div className='d-flex justify-content-center col-md-6 offset-md-2 border rounded p-4 mt-2'>
             <div className='viewProductImage'>
-                <img srcset="/images/logo.png" width="100%" class="img-fluid" alt="Responsive"/> 
+                <img src={product.imageUrl} width="100%" class="img-fluid" alt="Responsive"/> 
             </div>
             <div className=''>
                 <p> {product.name}</p>

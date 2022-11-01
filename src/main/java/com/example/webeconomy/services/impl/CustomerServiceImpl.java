@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.example.webeconomy.data.repositories.*;
@@ -118,15 +119,13 @@ public class CustomerServiceImpl implements CustomerService{
     }
 
     @Override
-    public HttpStatus deleteCart(Long productId, Long customerId){        
-        productCustomerId.setCustomerId(customerId);
-        productCustomerId.setProductId(productId);
-        Optional<Cart> cartOptional = cartRepository.findById(productCustomerId);
+    public ResponseEntity<ResponseDto> deleteCart(ProductCustomerId id){    
+        Optional<Cart> cartOptional = cartRepository.findById(id);
         if (cartOptional.isEmpty()){
             throw new ResourceNotFoundException("Cart Item Not Found");
         }
         Cart cart = cartOptional.get();
         cartRepository.delete(cart);
-        return HttpStatus.ACCEPTED;
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto(null, "Delete Successfully!","200"));
     }
 }
