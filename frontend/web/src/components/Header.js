@@ -16,7 +16,7 @@ export default function Header(){
 
   useEffect(()=>{
     loadCarts();
-  },[])
+  },[carts])
 
   const loadCarts = async()=>{
     const result=await axios.get("http://localhost:8080/customer/cart",{

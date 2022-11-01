@@ -3,12 +3,12 @@ import {Card,Button, ListGroupItem, Row, Col, Image} from 'react-bootstrap'
 import {Link} from 'react-router-dom'
 import Cookies from 'universal-cookie';
 import axios from 'axios';
-import loadCarts from '../pages/Cart';
+import setSum from '../pages/Cart';
+import Cart from '../pages/Cart';
 
 
-export default function SingleCartItem ({cart}) {
+export default function SingleCartItem ({cart})  {
     const cookies = new Cookies()
-    const [quantity,setQuanity]=useState(cart.quantity)
     const [itemSumPrice,setItemSumPrice] = useState(cart.product.price*cart.quantity)
 
     useEffect(()=>{
@@ -16,13 +16,18 @@ export default function SingleCartItem ({cart}) {
     },[])
     useEffect(()=>{
       setItemSumPrice(cart.product.price*cart.quantity)
-    },[])
+    },[cart])
 
     const onInputChange = async (e)=>{
-      setQuanity(e.target.value)
-      changeCarts(e)
-      setItemSumPrice(cart.product.price*e.target.value)
-      loadCarts()
+      if (e.target.value>0){
+        cart.quantity=e.target.value
+        changeCarts(e)
+        setItemSumPrice(cart.product.price*e.target.value)
+        
+      }else{
+        alert('Quantity can not be 0. Please delete')
+      }
+      
     } 
 
     const changeCarts = async(e)=>{
@@ -35,10 +40,7 @@ export default function SingleCartItem ({cart}) {
             'Authorization': 'Bearer ' + cookies.get('token'),
             'customerId': cookies.get('customerId')
         }
-        }).then((res)=>{
-          cart=res.data
-          
-        });
+        })
     }
     const deleteCarts = async(e)=>{
       e.preventDefault()
@@ -78,7 +80,7 @@ export default function SingleCartItem ({cart}) {
                   type={"number"} 
                   className="form-control" 
                   name="quantity" 
-                  value={quantity} 
+                  value={cart.quantity} 
                   onChange={(e)=> onInputChange(e)}/>
                 </Col>
                 <Col>

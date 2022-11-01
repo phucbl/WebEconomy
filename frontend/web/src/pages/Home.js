@@ -23,7 +23,7 @@ export default function Home () {
       <div className='productContainer'>
         {products.map((prod)=>{
           return <SingleProduct prod={prod} key= {prod.id}/>
-        })}
+        }).reverse()}
       </div>
       
       </div>

@@ -8,15 +8,14 @@ export default function Cart() {
 
   const cookies = new Cookies();
     const [carts, setCarts] = useState([])
-    const [sum, setSum] = useState([])
+    let [sum, setSum] = useState([])
     
   useEffect(()=>{
     loadCarts();
-  },[])
+  },[carts])
   useEffect(()=>{
     setSum(carts.reduce((total,currentItem)=> total = total + currentItem.product.price*currentItem.quantity,0))
   },[carts])
-    
 
   const loadCarts = async()=>{
     const result=await axios.get("http://localhost:8080/customer/cart",{
@@ -27,21 +26,16 @@ export default function Cart() {
       }
   });
     setCarts(result.data);
-    
   }
-
-  
-   
   return (
     <div className='home'>
       <div className='productContainer'>
         <ListGroup>
           {
           carts.map((cart)=>{
-            return <SingleCartItem cart = {cart} key = {cart.id} />
+            return <SingleCartItem cart = {cart} key = {cart.product.id}/>
           }
-          
-          )}
+          ).reverse()}
         </ListGroup>
       </div>
       <div className='filters summary'>
