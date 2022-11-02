@@ -28,7 +28,7 @@ public class OrderDetail {
         super();
     }
 
-    @JsonBackReference
+    @JsonBackReference (value="order-detail")
     @ManyToOne
     @JoinColumn(name="product_id", referencedColumnName = "id", insertable=false, updatable=false)
     private Product product;

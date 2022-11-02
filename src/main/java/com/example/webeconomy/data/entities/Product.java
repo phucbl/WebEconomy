@@ -19,6 +19,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -73,20 +74,20 @@ public class Product {
         super();
     }
     
-    @JsonBackReference
-    @ManyToOne
+    @JsonBackReference (value="category-show")
+    @ManyToOne  
     @JoinColumn(name="category_id", referencedColumnName = "id", insertable=false, updatable=false)
     public Category category;
 
-    @JsonBackReference
+    @JsonBackReference (value="rating")
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     public List<Rating> rating;
 
-    @JsonBackReference
+    @JsonBackReference (value="product-show")
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     public List<Cart> cart;
 
-    @JsonBackReference
+    @JsonBackReference (value="order-detail")
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     public List<OrderDetail> orderDetail;
 

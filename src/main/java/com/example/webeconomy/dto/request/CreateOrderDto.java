@@ -9,5 +9,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class CreateOrderDto {
+    private Long customerId;
     private List<Cart> carts;
 }

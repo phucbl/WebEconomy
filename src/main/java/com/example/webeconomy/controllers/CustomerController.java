@@ -45,7 +45,7 @@ public class CustomerController {
     }
 
     @GetMapping("/cart")
-    List<Cart> getCartByHeaderCustomerId(@RequestHeader("customerId") Long id){
+    List<CartResponseDto> getCartByHeaderCustomerId(@RequestHeader("customerId") Long id){
         return customerService.getCartByCustomerId(id);
     }
 

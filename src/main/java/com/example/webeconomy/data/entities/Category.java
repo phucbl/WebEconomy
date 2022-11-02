@@ -12,6 +12,8 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name = "category")
 public class Category {
@@ -24,6 +26,7 @@ public class Category {
     @Column(name = "name")
     private String name;
 
+    @JsonBackReference (value="category-show")
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Product> product;
 

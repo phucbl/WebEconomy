@@ -1,10 +1,12 @@
 package com.example.webeconomy.services.impl;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -55,8 +57,13 @@ public class CustomerServiceImpl implements CustomerService{
     } 
 
     @Override
-    public List<Cart> getCartByCustomerId(Long id){
-        return cartRepository.findByIdCustomerId(id);
+    public List<CartResponseDto> getCartByCustomerId(Long id){
+        List<Cart> carts = cartRepository.findByIdCustomerId(id);
+        List<CartResponseDto> cartResponseDtos = modelMapper.map(carts,new TypeToken<List<CartResponseDto>>() {}.getType());
+        for (CartResponseDto cartResponseDto : cartResponseDtos) {
+            cartResponseDto.setProduct(productRepository.findById(cartResponseDto.getId().getProductId()).get());
+        }
+        return cartResponseDtos;
     }
     @Override
     public List<Order> getOrderByCustomerId(Long id){
@@ -65,17 +72,18 @@ public class CustomerServiceImpl implements CustomerService{
 
     @Override
     public OrderResponseDto createOrder (CreateOrderDto createOrderDto){
+
         List<Cart> carts = createOrderDto.getCarts();
-        Order order = new Order(Calendar.getInstance().getTime(),OrderStatus.CHECKING,1);
+        Order order = new Order(Calendar.getInstance().getTime(),OrderStatus.CHECKING,createOrderDto.getCustomerId());
         Order savedOrder = orderRepository.save(order);
-        // Long orderId = savedOrder.getId();
-        // for (Cart cart : carts) {
-        //     orderDetailId = new OrderDetailId(orderId,cart.getId().getProductId());
-        //     Optional<Product> productOptional = productRepository.findById(orderDetailId.getProductId());
-        //     orderDetail = new OrderDetail(orderDetailId,productOptional.get().getPrice(),cart.getQuantity());
-        //     orderDetail = orderDetailRepository.save(orderDetail);
-        //     // cartRepository.delete(cart);
-        // }
+        Long orderId = savedOrder.getId();
+        for (Cart cart : carts) {
+            orderDetailId = new OrderDetailId(orderId,cart.getId().getProductId());
+            Optional<Product> productOptional = productRepository.findById(orderDetailId.getProductId());
+            orderDetail = new OrderDetail(orderDetailId,productOptional.get().getPrice(),cart.getQuantity());
+            orderDetail = orderDetailRepository.save(orderDetail);
+            cartRepository.delete(cart);
+        }
         
         return modelMapper.map(savedOrder, OrderResponseDto.class);
     }

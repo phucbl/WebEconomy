@@ -18,6 +18,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.springframework.stereotype.Service;
 
 import com.example.webeconomy.constants.Erole;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -48,6 +49,7 @@ public class Account {
     @Column(name = "status")
     private boolean status;
 
+    @JsonBackReference (value="accout-show")
     @OneToOne(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Customer customer;
 

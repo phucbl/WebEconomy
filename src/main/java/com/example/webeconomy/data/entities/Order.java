@@ -17,6 +17,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
 import com.example.webeconomy.constants.OrderStatus;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 // import com.fasterxml.jackson.annotation.JsonBackReference;
 
@@ -46,6 +47,7 @@ public class Order {
     @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
     private List<OrderDetail> orderDetail;
 
+    @JsonBackReference (value="Order-show")
     @ManyToOne
     @JoinColumn(name="customer_id", referencedColumnName = "id", insertable=false, updatable=false)
     private Customer customer;

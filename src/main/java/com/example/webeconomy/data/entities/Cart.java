@@ -1,4 +1,6 @@
 package com.example.webeconomy.data.entities;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -27,12 +29,12 @@ public class Cart {
     @Column (name="is_checked")
     private boolean check;
 
-    @JsonManagedReference
+    @JsonBackReference(value="product-show")
     @ManyToOne
     @JoinColumn(name="product_id", referencedColumnName = "id", insertable=false, updatable=false)
     private Product product;
     
-    @JsonBackReference
+    @JsonBackReference 
     @ManyToOne
     @JoinColumn(name="customer_id", referencedColumnName = "id", insertable=false, updatable=false)
     private Customer customer;

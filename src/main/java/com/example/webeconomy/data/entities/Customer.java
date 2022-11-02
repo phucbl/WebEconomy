@@ -35,16 +35,16 @@ public class Customer {
     @Column(name ="address")
     private String address;
 
-    @JsonBackReference
+    @JsonBackReference (value="accout-show")
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id", referencedColumnName = "id", insertable=false, updatable=false)
     private Account account;
     
-    @JsonBackReference
+    @JsonBackReference (value="Order-show")
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
     private List<Order> order;
 
-    @JsonBackReference
+    @JsonBackReference (value="cart-show")
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
     private List<Cart> cart;
 

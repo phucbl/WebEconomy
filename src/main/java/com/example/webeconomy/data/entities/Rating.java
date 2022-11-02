@@ -26,7 +26,7 @@ public class Rating {
 
     
     @ManyToOne
-    @JsonBackReference
+    @JsonBackReference (value="rating")
     @JoinColumn(name="product_id", referencedColumnName = "id", insertable=false, updatable=false)
     private Product product;
 
