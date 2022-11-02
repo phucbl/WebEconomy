@@ -24,6 +24,9 @@ public class Cart {
     @Column (name="quantity")
     private int quantity;
 
+    @Column (name="is_checked")
+    private boolean check;
+
     @JsonManagedReference
     @ManyToOne
     @JoinColumn(name="product_id", referencedColumnName = "id", insertable=false, updatable=false)

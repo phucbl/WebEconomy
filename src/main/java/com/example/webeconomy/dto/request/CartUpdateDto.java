@@ -17,4 +17,6 @@ public class CartUpdateDto {
     @Min(1)
 	@NotBlank(message = "Password is required")
     private int quantity;
+
+    private boolean check;
 }

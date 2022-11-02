@@ -6,4 +6,5 @@ import lombok.Data;
 public class CartResponseDto {
     private ProductCustomerId id;
     private int quantity;
+    private boolean check;
 }

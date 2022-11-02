@@ -16,8 +16,8 @@ public interface CustomerService {
     public List<Customer> getAllCustomers();
     public List<Cart> getCartByCustomerId(Long id);
     public List<Order> getOrderByCustomerId(Long id);
-    public Customer getCustomerById(Long id);
-    public OrderResponseDto createOrder(CustomerCreateOrderUpdateDto customerCreateOrderUpdateDto);
+    public CustomerResponseDto getCustomerById(Long id);
+    public OrderResponseDto createOrder(CreateOrderDto createOrderDto);
     public CustomerResponseDto createCustomer(CustomerUpdateDto dto);
     public CustomerResponseDto updateCustomer(Long id, CustomerUpdateDto dto);
     public CartResponseDto updateCart(CartUpdateDto dto);

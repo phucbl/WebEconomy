@@ -8,6 +8,7 @@ import Register from './pages/Register'
 import Customer from './pages/Customer'
 import ViewProduct from './pages/ViewProduct'
 import Order from './pages/Order';
+import ConfirmOrder from './pages/ConfirmOrder';
 import { CookiesProvider } from "react-cookie";
 
 function App() {
@@ -20,12 +21,14 @@ function App() {
         <Route path='/customer/cart' element={<Cart/>} exact/>
         <Route path='/customer/login' element={<Login/>} exact/>
         <Route path='/customer/register' element={<Register/>} exact/>
+        <Route path='/customer/order' element={<Order />} exact/>
+        <Route path='/customer/confirm' element={<ConfirmOrder />} exact />
         <Route path='/customer/' element={<Customer/>} exact/>
-        <Route path='/product/:id' element={<ViewProduct/>} />
-        <Route path='/customer/order' element={<Order />} />
+        <Route path='/product/:id' element={<ViewProduct/>} exact/>
+        
       </Routes>
     </BrowserRouter>
-    </CookiesProvider>
+    </CookiesProvider> 
   );
 }
 

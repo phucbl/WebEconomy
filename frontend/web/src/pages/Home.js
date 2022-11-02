@@ -12,9 +12,11 @@ export default function Home () {
   },[])
 
   const loadProducts = async()=>{
+    axios.get("http://localhost:8080/product/")
+    .then((res)=>{
+      setProducts(res.data);
+    })
     
-    const result=await axios.get("http://localhost:8080/product/");
-    setProducts(result.data);
   }
   return (
     

@@ -4,14 +4,7 @@ import Cookies from 'universal-cookie';
 
 export default function Customer() {
     const cookies = new Cookies();
-
-    const [customer, setCustomer] = useState({
-        accountId:'',
-        name:'',
-        address:'',
-    });
-    const {accountId,name,address}=customer
-
+    const [customer, setCustomer] = useState({})
     useEffect(()=>{
         loadCustomer();
       },[])
@@ -24,17 +17,16 @@ export default function Customer() {
                 'customerId': cookies.get('customerId')
             }
         });
-        setCustomer(result.data);
+        setCustomer(result.data)
       }
 
   return (
     <div className='customer'>
         <div className='col-md-6 offset-md-3 border rounded p-4 mt-2'>
             <h1 className='text-center m-4'>Customer Info</h1>
-            
-            <h2>AccoutId: {accountId}</h2>
-            <h2>Name: {name}</h2>
-            <h2>Address: {address}</h2>
+            <h2>Phone Number: {customer.phoneNumber}</h2>
+            <h2>Name: {customer.name}</h2>
+            <h2>Address: {customer.address}</h2>
         </div>
     </div>
   )

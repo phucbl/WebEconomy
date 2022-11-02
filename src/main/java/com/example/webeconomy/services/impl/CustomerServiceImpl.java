@@ -8,6 +8,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.example.webeconomy.data.repositories.*;
@@ -23,6 +25,8 @@ public class CustomerServiceImpl implements CustomerService{
     @Autowired
     private OrderRepository orderRepository;
     @Autowired
+    private AccountRepository accountRepository;
+    @Autowired
     private ProductRepository productRepository;
     @Autowired
     private OrderDetailRepository orderDetailRepository;
@@ -32,6 +36,8 @@ public class CustomerServiceImpl implements CustomerService{
     private CartRepository cartRepository;
     @Autowired
     private ModelMapper modelMapper;
+    
+    private UserDetails userDetails;
 
     private ProductCustomerId productCustomerId;
 
@@ -58,40 +64,57 @@ public class CustomerServiceImpl implements CustomerService{
     }
 
     @Override
-    public OrderResponseDto createOrder (CustomerCreateOrderUpdateDto customerCreateOrderUpdateDto){
-        OrderUpdateDto dto=customerCreateOrderUpdateDto.getDto();
-        List<Cart> carts =customerCreateOrderUpdateDto.getCarts();
-        Order order = modelMapper.map(dto,Order.class);
-        order.setDateCreated(Calendar.getInstance().getTime());
-        order.setStatus(OrderStatus.CHECKING);
+    public OrderResponseDto createOrder (CreateOrderDto createOrderDto){
+        List<Cart> carts = createOrderDto.getCarts();
+        Order order = new Order(Calendar.getInstance().getTime(),OrderStatus.CHECKING,1);
         Order savedOrder = orderRepository.save(order);
-        Long orderId = savedOrder.getId();
-        for (Cart cart : carts) {
-            orderDetailId = new OrderDetailId(orderId,cart.getId().getProductId());
-            Optional<Product> productOptional = productRepository.findById(orderDetailId.getProductId());
-            orderDetail = new OrderDetail(orderDetailId,productOptional.get().getPrice(),cart.getQuantity());
-            orderDetail = orderDetailRepository.save(orderDetail);
-            cartRepository.delete(cart);
-        }
+        // Long orderId = savedOrder.getId();
+        // for (Cart cart : carts) {
+        //     orderDetailId = new OrderDetailId(orderId,cart.getId().getProductId());
+        //     Optional<Product> productOptional = productRepository.findById(orderDetailId.getProductId());
+        //     orderDetail = new OrderDetail(orderDetailId,productOptional.get().getPrice(),cart.getQuantity());
+        //     orderDetail = orderDetailRepository.save(orderDetail);
+        //     // cartRepository.delete(cart);
+        // }
+        
         return modelMapper.map(savedOrder, OrderResponseDto.class);
     }
 
 
     @Override
-    public Customer getCustomerById(Long id){
-        Optional<Customer> customerOptional = this.customerRepository.findById(id);
+    public CustomerResponseDto getCustomerById(Long id){
+
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
+                        .getPrincipal();
+        String phoneNumber = userDetails.getUsername();
+        Optional<Account> accountOptional = accountRepository.findByPhoneNumber(phoneNumber);
+        if (accountOptional.isEmpty()){
+            throw new ResourceNotFoundException("Account Not Found with Controller Advice");
+        }
+
+        Optional<Customer> customerOptional = this.customerRepository.findByAccountId(accountOptional.get().getId());
 
         if (customerOptional.isEmpty()){
             throw new ResourceNotFoundException("Customer Not Found with Controller Advice");
         }
         Customer customer = customerOptional.get();
-        return customer;
+        
+        
+        CustomerResponseDto customerResponseDto = modelMapper.map(customer, CustomerResponseDto.class);
+        customerResponseDto.setPhoneNumber(accountOptional.get().getPhoneNumber());
+        return customerResponseDto;
     }
     @Override
     public CustomerResponseDto createCustomer(CustomerUpdateDto dto){
         Customer customer = modelMapper.map(dto,Customer.class);
-        Customer savedCustomer = customerRepository.save(customer);
-        return modelMapper.map(savedCustomer, CustomerResponseDto.class);
+        customerRepository.save(customer);
+        Optional<Account> accountOptional = accountRepository.findById(customer.getAccountId());
+        if (accountOptional.isEmpty()){
+            throw new ResourceNotFoundException("Account Not Found with Controller Advice");
+        }
+        CustomerResponseDto customerResponseDto = modelMapper.map(customer, CustomerResponseDto.class);
+        customerResponseDto.setPhoneNumber(accountOptional.get().getPhoneNumber());
+        return customerResponseDto;
     }
     @Override
     public CustomerResponseDto updateCustomer(Long id, CustomerUpdateDto dto){
@@ -103,7 +126,13 @@ public class CustomerServiceImpl implements CustomerService{
         Customer customer = customerOptional.get();
         modelMapper.map(dto,customer);
         customer = customerRepository.save(customer);
-        return modelMapper.map(customer, CustomerResponseDto.class);
+        Optional<Account> accountOptional = accountRepository.findById(customer.getAccountId());
+        if (accountOptional.isEmpty()){
+            throw new ResourceNotFoundException("Account Not Found with Controller Advice");
+        }
+        CustomerResponseDto customerResponseDto = modelMapper.map(customer, CustomerResponseDto.class);
+        customerResponseDto.setPhoneNumber(accountOptional.get().getPhoneNumber());
+        return customerResponseDto;
     }
     @Override
     public CartResponseDto updateCart(CartUpdateDto dto){
@@ -115,6 +144,8 @@ public class CustomerServiceImpl implements CustomerService{
         cart.setQuantity(dto.getQuantity());
         cart = cartRepository.save(cart);
         cart.setId(dto.getId());
+        cart.setCheck(dto.isCheck());
+        cartRepository.save(cart);
         return modelMapper.map(cart, CartResponseDto.class);
     }
 

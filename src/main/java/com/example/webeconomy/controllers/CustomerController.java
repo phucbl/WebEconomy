@@ -40,19 +40,10 @@ public class CustomerController {
         return customerService.getAllCustomers();
     }
     @GetMapping("/")
-    Customer getCustomerByHeaderId(@RequestHeader("customerId") Long id){
+    CustomerResponseDto getCustomerByHeaderId(@RequestHeader("customerId") Long id){
         return customerService.getCustomerById(id);
     }
 
-    @GetMapping("/{id}")
-    Customer getCustomerById(@PathVariable("id") Long id){
-        return customerService.getCustomerById(id);
-    }
-
-    // @GetMapping("/{id}/cart")
-    // List<Cart> getCartByCustomerId(@PathVariable("id") Long id){
-    //     return customerService.getCartByCustomerId(id);
-    // }
     @GetMapping("/cart")
     List<Cart> getCartByHeaderCustomerId(@RequestHeader("customerId") Long id){
         return customerService.getCartByCustomerId(id);
@@ -64,8 +55,8 @@ public class CustomerController {
     }
 
     @PostMapping("/cart")
-    OrderResponseDto createOrder(@RequestBody CustomerCreateOrderUpdateDto customerCreateOrderUpdateDto){
-        return customerService.createOrder(customerCreateOrderUpdateDto);
+    OrderResponseDto createOrder(@RequestBody CreateOrderDto createOrderDto){
+        return customerService.createOrder(createOrderDto);
     }
 
     @PutMapping("/cart")

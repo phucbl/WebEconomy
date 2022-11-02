@@ -16,7 +16,7 @@ export default function Header(){
 
   useEffect(()=>{
     loadCarts();
-  },[carts])
+  },[])
 
   const loadCarts = async()=>{
     const result=await axios.get("http://localhost:8080/customer/cart",{
@@ -51,8 +51,6 @@ export default function Header(){
                 <Nav>
                     <Button href='/customer/cart' variant='success'>
                         <FaShoppingCart color="white" fontSize="25px"/>
-                        <span class="badge badge-light">{carts.length}</span>
-                        
                     </Button>
                     {cookies.get('name')==null ? (
                         <Button style={{marginLeft:10}}>
