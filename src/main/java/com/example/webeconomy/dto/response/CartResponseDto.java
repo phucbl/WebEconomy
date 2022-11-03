@@ -8,5 +8,7 @@ public class CartResponseDto {
     private ProductCustomerId id;
     private int quantity;
     private boolean check;
-    private Product product;
+    private String productName;
+    private String productImageUrl;
+    private float productPrice;
 }

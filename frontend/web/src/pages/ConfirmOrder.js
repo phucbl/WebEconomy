@@ -4,6 +4,7 @@ import {useNavigate,Link} from 'react-router-dom'
 import {Button,ListGroup, ListGroupItem, Row, Col, Image} from 'react-bootstrap'
 import Cookies from 'universal-cookie'
 export default function ConfirmOrder () {
+    const navigate=new useNavigate()
     const cookies = new Cookies();
     const [customer, setCustomer] = useState([])
     const [carts, setCarts] = useState([])
@@ -16,7 +17,7 @@ export default function ConfirmOrder () {
     },[carts])
     useEffect(()=>{
         setSum(carts.filter(item=>item.check).reduce((total,currentItem)=> 
-        total = total + currentItem.product.price*currentItem.quantity,0))
+        total = total + currentItem.productPrice*currentItem.quantity,0))
     },[carts])
     useEffect(()=>{
         setCount(carts.filter(item=>item.check).reduce((total,currentItem)=> 
@@ -25,7 +26,6 @@ export default function ConfirmOrder () {
     useEffect(()=>{
         loadCustomer();
         loadCarts();
-        console.log(carts)
       },[])
 
     const loadCustomer = async()=>{
@@ -60,8 +60,10 @@ export default function ConfirmOrder () {
             'customerId': cookies.get('customerId')
         },
         
+    }).then(()=>{
+      navigate("/customer/order")
     });
-        
+      
     }
   return (
     <div className='customer'>
@@ -71,32 +73,32 @@ export default function ConfirmOrder () {
             <h2>Name: {customer.name}</h2>
             <h2>Address: {customer.address}</h2>
             <ListGroup>
-          {
-          carts.filter(item=>item.check).map((cart)=>{
-            return (
-              <ListGroupItem key={cart.id.productId}>
-              <Row>
-                <Col md={1}>
-                  <Image src={cart.product.imageUrl} alt={cart.product.name} fluid/>
-                </Col>
-                <Col md={3}>
-                <span>{cart.product.name}</span>
-                </Col>
-                <Col md={3}>
-                <span>{cart.product.price} đ</span>
-                </Col>
-                <Col md={3}>
-                  <span>Số lượng: {cart.quantity} </span>
-                </Col>
-                <Col>
-                <span> Sum: {cart.product.price*cart.quantity} đ</span>
-                </Col>
-              </Row>
-            </ListGroupItem>
-            )
-          }
-          ).reverse()}
-        </ListGroup>
+              {
+              carts.filter(item=>item.check).map((cart)=>{
+                return (
+                  <ListGroupItem key={cart.id.productId}>
+                  <Row>
+                    <Col md={1}>
+                      <Image src={cart.productImageUrl} alt={cart.productName} fluid/>
+                    </Col>
+                    <Col md={3}>
+                    <span>{cart.productName}</span>
+                    </Col>
+                    <Col md={3}>
+                    <span>{cart.productPrice} đ</span>
+                    </Col>
+                    <Col md={3}>
+                      <span>Số lượng: {cart.quantity} </span>
+                    </Col>
+                    <Col>
+                    <span> Sum: {cart.productPrice*cart.quantity} đ</span>
+                    </Col>
+                  </Row>
+                </ListGroupItem>
+                )
+              }
+              ).reverse()}
+            </ListGroup>
         <div className='col text-center'>
             <h3> Number of products : {count}</h3>
             <h3> Number of items: {countItem}</h3>

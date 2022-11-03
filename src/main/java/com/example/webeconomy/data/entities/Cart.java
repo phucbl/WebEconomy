@@ -43,9 +43,10 @@ public class Cart {
         super();
     }
 
-    public Cart(ProductCustomerId id, int quantity) {
+    public Cart(ProductCustomerId id, int quantity, boolean check) {
         this.id = id;
         this.quantity = quantity;
+        this.check = check;
     }
 
     @Override

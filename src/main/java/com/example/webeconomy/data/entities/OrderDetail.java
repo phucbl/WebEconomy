@@ -11,6 +11,11 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 @Entity
 @Table (name = "orderdetail")
 public class OrderDetail {
@@ -24,10 +29,6 @@ public class OrderDetail {
     @Column(name ="quantity")
     private int quantity;
 
-    public OrderDetail (){
-        super();
-    }
-
     @JsonBackReference (value="order-detail")
     @ManyToOne
     @JoinColumn(name="product_id", referencedColumnName = "id", insertable=false, updatable=false)
@@ -37,6 +38,10 @@ public class OrderDetail {
     @ManyToOne
     @JoinColumn(name="order_id", referencedColumnName = "id", insertable=false, updatable=false)
     private Order order;
+
+    public OrderDetail (){
+        super();
+    }
 
     public OrderDetail(OrderDetailId id, float price, int quantity) {
         this.id = id;

@@ -1,7 +1,11 @@
 package com.example.webeconomy.services.impl;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -61,27 +65,45 @@ public class CustomerServiceImpl implements CustomerService{
         List<Cart> carts = cartRepository.findByIdCustomerId(id);
         List<CartResponseDto> cartResponseDtos = modelMapper.map(carts,new TypeToken<List<CartResponseDto>>() {}.getType());
         for (CartResponseDto cartResponseDto : cartResponseDtos) {
-            cartResponseDto.setProduct(productRepository.findById(cartResponseDto.getId().getProductId()).get());
+            Product product = productRepository.findById(cartResponseDto.getId().getProductId()).get();
+            cartResponseDto.setProductImageUrl(product.getImageUrl());
+            cartResponseDto.setProductName(product.getName());
+            cartResponseDto.setProductPrice(product.getPrice());
         }
         return cartResponseDtos;
     }
     @Override
-    public List<Order> getOrderByCustomerId(Long id){
-        return orderRepository.findByCustomerId(id);
+    public List<Order> getOrdersByCustomerId(){
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
+                        .getPrincipal();
+        String phoneNumber = userDetails.getUsername();
+        Optional<Account> accountOptional = accountRepository.findByPhoneNumber(phoneNumber);
+        if (accountOptional.isEmpty()){
+            throw new ResourceNotFoundException("Account Not Found with Controller Advice");
+        }
+
+        Optional<Customer> customerOptional = this.customerRepository.findByAccountId(accountOptional.get().getId());
+
+        if (customerOptional.isEmpty()){
+            throw new ResourceNotFoundException("Customer Not Found with Controller Advice");
+        }
+        Customer customer = customerOptional.get();
+        return orderRepository.findByCustomerId(customer.getId());
     }
 
     @Override
     public OrderResponseDto createOrder (CreateOrderDto createOrderDto){
 
         List<Cart> carts = createOrderDto.getCarts();
-        Order order = new Order(Calendar.getInstance().getTime(),OrderStatus.CHECKING,createOrderDto.getCustomerId());
+        LocalDateTime localDateTime = LocalDateTime.now();
+        Order order = new Order(localDateTime.toLocalDate().toString(),OrderStatus.CHECKING,createOrderDto.getCustomerId());
         Order savedOrder = orderRepository.save(order);
         Long orderId = savedOrder.getId();
         for (Cart cart : carts) {
             orderDetailId = new OrderDetailId(orderId,cart.getId().getProductId());
             Optional<Product> productOptional = productRepository.findById(orderDetailId.getProductId());
-            orderDetail = new OrderDetail(orderDetailId,productOptional.get().getPrice(),cart.getQuantity());
-            orderDetail = orderDetailRepository.save(orderDetail);
+            orderDetail = new OrderDetail(orderDetailId, productOptional.get().getPrice(), cart.getQuantity());
+            orderDetailRepository.save(orderDetail);
             cartRepository.delete(cart);
         }
         
@@ -150,10 +172,9 @@ public class CustomerServiceImpl implements CustomerService{
         }
         Cart cart = cartOptional.get();
         cart.setQuantity(dto.getQuantity());
-        cart = cartRepository.save(cart);
         cart.setId(dto.getId());
         cart.setCheck(dto.isCheck());
-        cartRepository.save(cart);
+        cart=cartRepository.save(cart);
         return modelMapper.map(cart, CartResponseDto.class);
     }
 

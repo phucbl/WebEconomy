@@ -59,12 +59,11 @@ public class ProductServiceImpl implements ProductService{
         productCustomerId=dto.getId();
         Optional<Cart> cartOptional = cartRepository.findById(productCustomerId);
         if (cartOptional.isEmpty()){
-            cart = new Cart(productCustomerId,dto.getQuantity());
+            cart = new Cart(productCustomerId,dto.getQuantity(),true);
         } else 
             {
                 cart=cartOptional.get();
                 cart.setQuantity(cart.getQuantity()+dto.getQuantity());
-                cart.setCheck(true);
             }
         cart = cartRepository.save(cart);
         return modelMapper.map(cart, CartResponseDto.class);

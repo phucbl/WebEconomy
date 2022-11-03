@@ -10,6 +10,7 @@ import Cookies from 'universal-cookie'
 // import { CartState } from './Context'
 
 export default function Header(){
+
     let navigate = useNavigate()
     const cookies = new Cookies();
     const [carts, setCarts] = useState([]);
@@ -37,8 +38,10 @@ export default function Header(){
     window.location.reload()
 }
     return(
+        
         <Navbar bg="dark" variant="dark" style={{height:80}}>
-            <Container>
+            {cookies.get('role')!="ROLE_ADMIN"?(
+                <Container>
                 <Navbar.Brand className='shopName'>
                     <Link to="/">PohucSecur</Link>
                 </Navbar.Brand>
@@ -49,9 +52,12 @@ export default function Header(){
                     className='m-auto'/>
                 </Navbar.Text>
                 <Nav>
-                    <Button href='/customer/cart' variant='success'>
-                        <FaShoppingCart color="white" fontSize="25px"/>
+                    <Link to='/customer/cart'>
+                    <Button variant='success'>
+                        <FaShoppingCart color="white" fontSize="25px"/> Cart
                     </Button>
+                    </Link>
+                    
                     {cookies.get('name')==null ? (
                         <Button style={{marginLeft:10}}>
                         <Link to="/customer/login">Login</Link>
@@ -73,6 +79,10 @@ export default function Header(){
                 </Nav>
                 
             </Container>
+            ):(
+                <div></div>
+            )}
+            
         </Navbar>
         
     )

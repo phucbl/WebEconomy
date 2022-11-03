@@ -1,8 +1,10 @@
 package com.example.webeconomy.data.entities;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -19,8 +21,13 @@ import org.hibernate.annotations.GenericGenerator;
 import com.example.webeconomy.constants.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
+import lombok.Getter;
+import lombok.Setter;
+
 // import com.fasterxml.jackson.annotation.JsonBackReference;
 
+@Getter
+@Setter
 @Entity
 @Table (name = "orders")
 public class Order {
@@ -32,7 +39,7 @@ public class Order {
     private long id;
 
     @Column (name = "date_created")
-    private Date dateCreated;
+    private String dateCreated;
 
     @Column (name = "status")
     private OrderStatus status;
@@ -43,8 +50,9 @@ public class Order {
     public Order (){
         super();
     }
-
-    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
+    
+    @JsonBackReference
+    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<OrderDetail> orderDetail;
 
     @JsonBackReference (value="Order-show")
@@ -52,43 +60,9 @@ public class Order {
     @JoinColumn(name="customer_id", referencedColumnName = "id", insertable=false, updatable=false)
     private Customer customer;
 
-    public Order(Date dateCreated, OrderStatus status, long customerId) {
+    public Order(String dateCreated, OrderStatus status, long customerId) {
         this.dateCreated = dateCreated;
         this.status = status;
-        this.customerId = customerId;
-    }
-
-
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public Date getDateCreated() {
-        return dateCreated;
-    }
-
-    public void setDateCreated(Date dateCreated) {
-        this.dateCreated = dateCreated;
-    }
-
-    public OrderStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(OrderStatus status) {
-        this.status = status;
-    }
-
-    public long getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(long customerId) {
         this.customerId = customerId;
     }
 

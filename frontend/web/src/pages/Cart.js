@@ -11,7 +11,7 @@ export default function Cart() {
   const [carts, setCarts] = useState([])
 
 
-  const handleCheck = (cart) => {
+  const handleCheck = async (cart) => {
     let check = false
     if (cart.check===true) {
       check = false
@@ -19,7 +19,7 @@ export default function Cart() {
        check = true
     }
     
-    axios.put("http://localhost:8080/customer/cart",{
+    const result = await axios.put("http://localhost:8080/customer/cart",{
       'id':{'customerId':cart.id.customerId,'productId':cart.id.productId},'quantity':cart.quantity,'check':check
     }
     ,{
@@ -28,10 +28,8 @@ export default function Cart() {
           'Authorization': 'Bearer ' + cookies.get('token'),
           'customerId': cookies.get('customerId')
       }
-      }).then((res)=>{
-        loadCarts()
       })
-      
+      loadCarts()
   };
   const onInputChange = async (e)=>{
     let {value,name} = e.target
@@ -64,7 +62,7 @@ export default function Cart() {
   },[])
   useEffect(()=>{
     setSum(carts.filter(item=>item.check).reduce((total,currentItem)=> 
-    total = total + currentItem.product.price*currentItem.quantity,0))
+    total = total + currentItem.productPrice*currentItem.quantity,0))
   },[carts])
   useEffect(()=>{
     setCount(carts.filter(item=>item.check).reduce((total,currentItem)=> 
@@ -111,13 +109,13 @@ export default function Cart() {
                 </div>
                 </Col>
                 <Col md={1}>
-                  <Image src={cart.product.imageUrl} alt={cart.product.name} fluid/>
+                  <Image src={cart.productImageUrl} alt={cart.productName} fluid/>
                 </Col>
                 <Col md={3}>
-                <span>{cart.product.name}</span>
+                <span>{cart.productName}</span>
                 </Col>
                 <Col md={3}>
-                <span>{cart.product.price} đ</span>
+                <span>{cart.productPrice} đ</span>
                 </Col>
                 <Col md={1}>
                   <input 
@@ -132,7 +130,7 @@ export default function Cart() {
                 <Button variant='danger' onClick={(e)=>deleteCarts(cart.id)}>X</Button>
                 </Col>
                 <Col>
-                <span> Sum: {cart.product.price*cart.quantity} đ</span>
+                <span> Sum: {cart.productPrice*cart.quantity} đ</span>
                 </Col>
               </Row>
             </ListGroupItem>

@@ -51,9 +51,8 @@ public class Product {
     @Column(name = "status")
     private boolean status;
     
-    @Convert(converter = StringListConverter.class)
     @Column(name = "image_url")
-    private List<String> imageUrl;
+    private String imageUrl;
 
     @Column(name = "count")
     private int count;
@@ -91,7 +90,7 @@ public class Product {
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     public List<OrderDetail> orderDetail;
 
-    public Product(long id, String name, String description, String origin, float price, List<String> imageUrl, int categoryId) {
+    public Product(long id, String name, String description, String origin, float price, String imageUrl, int categoryId) {
         this.id = id;
         this.name = name;
         this.description = description;

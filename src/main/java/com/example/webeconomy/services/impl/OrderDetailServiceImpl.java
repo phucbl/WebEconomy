@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,9 @@ import com.example.webeconomy.services.OrderDetailService;
 
 @Service
 public class OrderDetailServiceImpl implements OrderDetailService{
+    @Autowired
+    private ProductRepository productRepository;
+    @Autowired
     private OrderDetailRepository orderDetailRepository;
     @Autowired
     private ModelMapper modelMapper;
@@ -31,14 +35,24 @@ public class OrderDetailServiceImpl implements OrderDetailService{
         return orderDetailRepository.findAll();
     }  
     @Override
-    public List<OrderDetail> getOrderDetailByOrderId(Long orderId){
-        return orderDetailRepository.findByIdOrderId(orderId);
+    public List<OrderDetailResponseDto> getOrderDetailByOrderId(Long orderId){
+        List<OrderDetail> orderDetails = orderDetailRepository.findByIdOrderId(orderId);
+        List<OrderDetailResponseDto> orderDetailResponseDtos = modelMapper.map(orderDetails,new TypeToken<List<OrderDetailResponseDto>>() {}.getType());
+        for (OrderDetailResponseDto orderDetailResponseDto : orderDetailResponseDtos) {
+            Long productId=orderDetailResponseDto.getId().getProductId();
+            Optional<Product> productOptional = productRepository.findById(productId);
+            Product product=productOptional.get();
+            orderDetailResponseDto.setProductName(product.getName());
+            orderDetailResponseDto.setImageUrl(product.getImageUrl());
+        }
+
+        return orderDetailResponseDtos;
     }  
     
     @Override
     public OrderDetailResponseDto createOrderDetail(OrderDetailUpdateDto dto){
         OrderDetail orderDetail = modelMapper.map(dto,OrderDetail.class);
-        orderDetail.setId(dto.getOrderDetailId());
+        orderDetail.setId(dto.getId());
         OrderDetail savedOrderDetail = orderDetailRepository.save(orderDetail);
         return modelMapper.map(savedOrderDetail, OrderDetailResponseDto.class);
     }

@@ -3,6 +3,7 @@ import SingleProduct from '../components/SingleProduct'
 import "../components/style.css";
 import Filter from '../components/Filter';
 import axios from 'axios'
+import Header from '../components/Header'
 
 export default function Home () {
   const [products, setProducts] = useState([]);
@@ -21,6 +22,7 @@ export default function Home () {
   return (
     
     <div className='home'>
+      
       <Filter/>
       <div className='productContainer'>
         {products.map((prod)=>{
@@ -28,6 +30,6 @@ export default function Home () {
         }).reverse()}
       </div>
       
-      </div>
+    </div>
   )
 }

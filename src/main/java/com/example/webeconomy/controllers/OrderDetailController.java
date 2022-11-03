@@ -1,6 +1,7 @@
 package com.example.webeconomy.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,6 +22,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/orderDetail")
 public class OrderDetailController {
     private OrderDetailService orderDetailService;
@@ -35,7 +37,7 @@ public class OrderDetailController {
         return orderDetailService.getAllOrderDetails();
     }
     @GetMapping("/")
-    List<OrderDetail> getOrderDetailsByCustomerId(@RequestParam("orderId") Long orderId){
+    List<OrderDetailResponseDto> getOrderDetailsByCustomerId(@RequestParam("orderId") Long orderId){
         return orderDetailService.getOrderDetailByOrderId(orderId);
     }
 

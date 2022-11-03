@@ -27,11 +27,14 @@ import javax.validation.Valid;
 @RequestMapping("/customer")
 public class CustomerController {
     @Autowired
+    private OrderDetailService orderDetailService;
+    @Autowired
     private CustomerService customerService;
     @Autowired
     private OrderService orderService;
     @Autowired
     CustomerController (CustomerService customerService){
+
         this.customerService = customerService;
     }
 
@@ -49,9 +52,13 @@ public class CustomerController {
         return customerService.getCartByCustomerId(id);
     }
 
-    @GetMapping("/{id}/order")
-    List<Order> getOrderByCustomerId(@PathVariable("id") Long id){
-        return orderService.getOrderByCustomerId(id);
+    @GetMapping("/order")
+    List<Order> getOrderByCustomerId(){
+        return customerService.getOrdersByCustomerId();
+    }
+    @GetMapping("/order/{id}")
+    OrderResponseDto getOrderByCustomerIdOrderId(@PathVariable("id") Long id){
+        return orderService.getOrderById(id);
     }
 
     @PostMapping("/cart")
