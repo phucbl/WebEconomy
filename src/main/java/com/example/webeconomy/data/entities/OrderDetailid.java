@@ -11,18 +11,18 @@ import lombok.Setter;
 @Getter
 @Setter
 @Embeddable
-public class OrderDetailId implements Serializable{
+public class OrderDetailid implements Serializable{
     @Column(name="order_id")
     private long orderId;
 
     @Column(name="product_id")
     private long productId;
 
-    public OrderDetailId(){
+    public OrderDetailid(){
         super();
     }
 
-    public OrderDetailId(long orderId, long productId) {
+    public OrderDetailid(long orderId, long productId) {
         this.orderId = orderId;
         this.productId = productId;
     }

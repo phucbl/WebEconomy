@@ -21,7 +21,7 @@ import lombok.Setter;
 public class OrderDetail {
 
     @EmbeddedId
-    private OrderDetailId id;
+    private OrderDetailid id;
 
     @Column(name ="price")
     private float price;
@@ -43,17 +43,17 @@ public class OrderDetail {
         super();
     }
 
-    public OrderDetail(OrderDetailId id, float price, int quantity) {
+    public OrderDetail(OrderDetailid id, float price, int quantity) {
         this.id = id;
         this.price = price;
         this.quantity = quantity;
     }
 
-    public OrderDetailId getId() {
+    public OrderDetailid getId() {
         return id;
     }
 
-    public void setId(OrderDetailId id) {
+    public void setId(OrderDetailid id) {
         this.id = id;
     }
 

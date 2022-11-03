@@ -30,7 +30,11 @@ export default function Login() {
           cookies.set('customerId',res.data.data.customerId,{ path: '/' })
           cookies.set('role',res.data.data.role,{ path: '/' })
           cookies.set('token',res.data.data.token,{ path: '/' })
-          navigate("/")
+          {cookies.get('role')==="ROLE_ADMIN"?(
+            navigate('/manager')
+          ):(
+            navigate('/')
+          )}
           window.location.reload()
         })
         .catch((error)=>{

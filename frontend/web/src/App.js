@@ -11,7 +11,7 @@ import CustomerOrders from './pages/CustomerOrders';
 import ConfirmOrder from './pages/ConfirmOrder';
 import { CookiesProvider } from "react-cookie";
 import ViewOrder from './pages/ViewOrder';
-
+import Manager from './pages/admin/Manager';
 
 
 function App() {
@@ -30,6 +30,7 @@ function App() {
         <Route path='/customer/' element={<Customer/>} exact/>
         <Route path='/product/:id' element={<ViewProduct/>} exact/>
         <Route path='/customer/order/:id' element={<ViewOrder/>} exact/>
+        <Route path='/manager' element={<Manager/>} exact/>
       </Routes>
     </BrowserRouter>
     </CookiesProvider> 

@@ -48,7 +48,7 @@ public class CustomerServiceImpl implements CustomerService{
     private ProductCustomerId productCustomerId;
 
     private OrderDetail orderDetail;
-    private OrderDetailId orderDetailId;
+    private OrderDetailid orderDetailId;
     @Autowired
     public CustomerServiceImpl(CustomerRepository customerRepository, ModelMapper modelMapper){
         this.customerRepository = customerRepository;
@@ -100,7 +100,7 @@ public class CustomerServiceImpl implements CustomerService{
         Order savedOrder = orderRepository.save(order);
         Long orderId = savedOrder.getId();
         for (Cart cart : carts) {
-            orderDetailId = new OrderDetailId(orderId,cart.getId().getProductId());
+            orderDetailId = new OrderDetailid(orderId,cart.getId().getProductId());
             Optional<Product> productOptional = productRepository.findById(orderDetailId.getProductId());
             orderDetail = new OrderDetail(orderDetailId, productOptional.get().getPrice(), cart.getQuantity());
             orderDetailRepository.save(orderDetail);

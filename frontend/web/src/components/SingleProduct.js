@@ -35,7 +35,7 @@ export default function SigleProduct ({prod}) {
                 <div style={{ paddingBottom:10}}>
                 <span>{prod.price} đ</span>
                 </div>
-                <Button onClick={(e)=>postCart(e)}>Add to cart</Button>
+                <Button onClick={(e)=>postCart(e)} disabled={cookies.get('role')=="ROLE_ADMIN"}>Add to cart</Button>
                 <Link to={'/product/'+prod.id}>
                 <Button variant='success' style={{marginLeft:5}}>View product</Button>
                 </Link>
