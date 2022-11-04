@@ -47,9 +47,9 @@ public class OrderDetailController {
         return this.orderDetailService.createOrderDetail(dto);
     }
     
-    @PutMapping("/{id}")
-    OrderDetailResponseDto updateOrderDetail(@PathVariable("id") Long id, @Valid @RequestBody OrderDetailUpdateDto dto){
-        return this.orderDetailService.updateOrderDetail(id,dto);
+    @PutMapping()
+    OrderDetailResponseDto updateOrderDetail(@Valid @RequestBody OrderDetailUpdateDto dto){
+        return this.orderDetailService.updateOrderDetail(dto);
     }
 
 }

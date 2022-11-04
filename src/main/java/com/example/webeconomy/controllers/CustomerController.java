@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.webeconomy.dto.response.*;
@@ -43,13 +44,17 @@ public class CustomerController {
         return customerService.getAllCustomers();
     }
     @GetMapping("/")
-    CustomerResponseDto getCustomerByHeaderId(@RequestHeader("customerId") Long id){
-        return customerService.getCustomerById(id);
+    CustomerResponseDto getCustomerByHeaderId(){
+        return customerService.getCustomerByToken();
     }
 
     @GetMapping("/cart")
     List<CartResponseDto> getCartByHeaderCustomerId(@RequestHeader("customerId") Long id){
         return customerService.getCartByCustomerId(id);
+    }
+    @GetMapping("/{id}")
+    CustomerResponseDto getCustomerById(@PathVariable("id") Long id){
+        return customerService.getCustomerById(id);
     }
 
     @GetMapping("/order")

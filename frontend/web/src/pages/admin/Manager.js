@@ -7,33 +7,23 @@ export default function HomeManager() {
     const navigate = new useNavigate()
     
   return (
-    <div>
-        {cookies.get('role')!=="ROLE_ADMIN"?(
-            navigate('/')
-        ):(
-            <div class="container">
+        <div className="container">
                 <h1 className='text-center' style={{padding:100}}>Home Manager</h1>
-            <div class="row">
-                <Link to="/manager/customer/" class="col m-2">
-                <div class="bg-danger text-dark text-center border rounded" style={{padding:50}}><h1>Customer</h1></div>
+            <div className="row">
+                <Link to="/manager/customer" className="col m-2">
+                <div className="bg-danger text-dark text-center border rounded" style={{padding:50}}><h1>Customer</h1></div>
                 </Link>
-                <Link to="/manager/category/" class="col m-2">
-                <div class="bg-warning text-dark text-center border rounded" style={{padding:50}}><h1>Category</h1></div>
+                <Link to="/manager/category" className="col m-2">
+                <div className="bg-warning text-dark text-center border rounded" style={{padding:50}}><h1>Category</h1></div>
                 </Link>
-                <div class="w-100"></div>
-                <Link to="/manager/product/" class="col m-2">
-                <div class="bg-info text-white text-center border rounded" style={{padding:50}}><h1>Product</h1></div>
+                <div className="w-100"></div>
+                <Link to="/manager/product" className="col m-2">
+                <div className="bg-info text-white text-center border rounded" style={{padding:50}}><h1>Product</h1></div>
                 </Link>
-                <Link to="/manager/order/" class="col m-2">
-                <div class="bg-dark text-white text-center border rounded" style={{padding:50}}><h1>Order</h1></div>
+                <Link to="/manager/order" className="col m-2">
+                <div className="bg-dark text-white text-center border rounded" style={{padding:50}}><h1>Order</h1></div>
                 </Link>
             </div>
-            </div>
-            
-        )}
-
-    </div>
-    
-    
+        </div>
   )
 }

@@ -57,8 +57,8 @@ public class OrderDetailServiceImpl implements OrderDetailService{
         return modelMapper.map(savedOrderDetail, OrderDetailResponseDto.class);
     }
     @Override
-    public OrderDetailResponseDto updateOrderDetail(Long id, OrderDetailUpdateDto dto){
-        Optional<OrderDetail> OrderDetailOptional = orderDetailRepository.findById(id);
+    public OrderDetailResponseDto updateOrderDetail( OrderDetailUpdateDto dto){
+        Optional<OrderDetail> OrderDetailOptional = orderDetailRepository.findById(dto.getId());
         if (OrderDetailOptional.isEmpty()){
             throw new ResourceNotFoundException("OrderDetail Not Found");
         }

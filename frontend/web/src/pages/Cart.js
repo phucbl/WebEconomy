@@ -105,7 +105,7 @@ export default function Cart() {
               <Row>
                 <Col md={1}>
                 <div className="form-check">
-                <input class="form-check-input" checked={cart.check} type="checkbox" onChange={(e)=>handleCheck(cart)}/>
+                <input className="form-check-input" checked={cart.check} type="checkbox" onChange={(e)=>handleCheck(cart)}/>
                 </div>
                 </Col>
                 <Col md={1}>

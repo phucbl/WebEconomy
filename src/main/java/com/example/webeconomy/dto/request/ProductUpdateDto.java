@@ -13,7 +13,7 @@ public class ProductUpdateDto {
 	@Min(value = 1, message = "Price should be a positive number")
 	private Double price;
 	private String origin;
-	List<String> imageUrl;
+	String imageUrl;
 
 
 	

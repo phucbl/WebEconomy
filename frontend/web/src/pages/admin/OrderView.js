@@ -1,9 +1,7 @@
 import  { React,useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
-
 import {Button,ListGroup, ListGroupItem, Row, Col, Image} from 'react-bootstrap'
 import axios from 'axios';
-import "../components/style.css";
 import Cookies from 'universal-cookie';
 export default function ViewOrder() {
     const cookies = new Cookies()
@@ -16,9 +14,10 @@ export default function ViewOrder() {
     const [countItem,setCountItem] = useState([])
     useEffect(()=>{
       loadOrder();
-      loadCustomer();
-      
       },[])
+    useEffect(()=>{
+        loadCustomer();
+        },[order])
     useEffect(()=>{
       setCountItem(orderDetails.reduce((total,currentItem)=> 
       total = total + currentItem.quantity,0))
@@ -33,25 +32,25 @@ export default function ViewOrder() {
     },[orderDetails])
     
     const loadOrder = ()=>{
-        axios.get(`http://localhost:8080/customer/order/${id}`,{
+        axios.get(`http://localhost:8080/order/${id}`,{
           headers:{
               'Content-Type': 'application/json',
-              'Authorization': 'Bearer ' + cookies.get('token'),
-              'customerId': cookies.get('customerId')
+              'Authorization': 'Bearer ' + cookies.get('token')
           }
       }).then((res)=>{
         setOrder(res.data)
         setOrderDetails(res.data.orderDetailResponseDtos)
       })}
-    const loadCustomer = async()=>{
-      const result=await axios.get("http://localhost:8080/customer/",{
+    const loadCustomer = ()=>{
+      axios.get(`http://localhost:8080/customer/${order.customerId}`,{
           headers:{
               'Content-Type': 'application/json',
-              'Authorization': 'Bearer ' + cookies.get('token'),
-              'customerId': cookies.get('customerId')
+              'Authorization': 'Bearer ' + cookies.get('token')
           }
+      }).then((res)=>{
+        setCustomer(res.data)
       });
-      setCustomer(result.data)
+      
       }
 return (
   <div className='col-md-8 offset-md-2 border rounded p-4 mt-2'>
@@ -63,18 +62,18 @@ return (
       <Col md={2}>
       <div>
       {order.status=="CHECKING"?(
-          <div className="alert alert-warning" role="alert">
+          <div class="alert alert-warning" role="alert">
           CHECKING
         </div>
       ):(order.status=="SHIPPING"?(
-          <div className="alert alert-info" role="alert">
+          <div class="alert alert-info" role="alert">
           SHIPPING
         </div>
       ):(order.status=="DONE"?(
-          <div className="alert alert-success" role="alert">
+          <div class="alert alert-success" role="alert">
           DONE
         </div>
-      ):(<div className="alert alert-danger" role="alert">
+      ):(<div class="alert alert-danger" role="alert">
               CANCEL
           </div>
       )))}
@@ -118,7 +117,7 @@ return (
       <h3> Total price: {sum} đ</h3>
       </div>
       <div className='col text-center'>
-      <Link to="/customer/order">
+      <Link to="/manager/order">
         <Button>Back</Button>
       </Link>
       </div>

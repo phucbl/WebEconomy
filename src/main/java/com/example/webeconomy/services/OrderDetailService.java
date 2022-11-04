@@ -13,6 +13,6 @@ public interface OrderDetailService {
     public List<OrderDetail> getAllOrderDetails();
     public List<OrderDetailResponseDto> getOrderDetailByOrderId(Long orderId);
     public OrderDetailResponseDto createOrderDetail(OrderDetailUpdateDto dto);
-    public OrderDetailResponseDto updateOrderDetail(Long id, OrderDetailUpdateDto dto);
+    public OrderDetailResponseDto updateOrderDetail(OrderDetailUpdateDto dto);
 }
 

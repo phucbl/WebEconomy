@@ -1,9 +1,7 @@
 import  { React,useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
-
 import {Button,ListGroup, ListGroupItem, Row, Col, Image} from 'react-bootstrap'
 import axios from 'axios';
-import "../components/style.css";
 import Cookies from 'universal-cookie';
 export default function ViewOrder() {
     const cookies = new Cookies()
@@ -16,12 +14,17 @@ export default function ViewOrder() {
     const [countItem,setCountItem] = useState([])
     useEffect(()=>{
       loadOrder();
-      loadCustomer();
-      
       },[])
     useEffect(()=>{
+        {order.customerId!==null?(
+            loadCustomer()
+        ):(
+            console.log("No customer info")
+          )}
+        },[order])
+    useEffect(()=>{
       setCountItem(orderDetails.reduce((total,currentItem)=> 
-      total = total + currentItem.quantity,0))
+      total = total + currentItem.quantity*1,0))
     },[orderDetails])
     useEffect(()=>{
         setSum(orderDetails.reduce((total,currentItem)=> 
@@ -33,26 +36,57 @@ export default function ViewOrder() {
     },[orderDetails])
     
     const loadOrder = ()=>{
-        axios.get(`http://localhost:8080/customer/order/${id}`,{
+        axios.get(`http://localhost:8080/order/${id}`,{
           headers:{
               'Content-Type': 'application/json',
-              'Authorization': 'Bearer ' + cookies.get('token'),
-              'customerId': cookies.get('customerId')
+              'Authorization': 'Bearer ' + cookies.get('token')
           }
       }).then((res)=>{
         setOrder(res.data)
         setOrderDetails(res.data.orderDetailResponseDtos)
       })}
-    const loadCustomer = async()=>{
-      const result=await axios.get("http://localhost:8080/customer/",{
+    const loadCustomer = ()=>{
+      
+        axios.get(`http://localhost:8080/customer/${order.customerId}`,{
           headers:{
               'Content-Type': 'application/json',
-              'Authorization': 'Bearer ' + cookies.get('token'),
-              'customerId': cookies.get('customerId')
+              'Authorization': 'Bearer ' + cookies.get('token')
           }
-      });
-      setCustomer(result.data)
+      }).then((res)=>{
+        setCustomer(res.data)
+      })
       }
+    const onInputChange = async (e)=>{
+    let {value,name} = e.target
+    let item = JSON.parse(name);
+    let tempOrderDetail = [...orderDetails]
+    let findIndex = tempOrderDetail.findIndex((orderDetail) => orderDetail.id.productId == item.id.productId);
+    tempOrderDetail[findIndex].quantity=value
+    setOrderDetails(tempOrderDetail)
+    axios.put(`http://localhost:8080/orderDetail/`,{
+      'id':{'orderId':item.id.orderId,'productId':item.id.productId},'price':item.price,'quantity':value
+    }
+    ,{
+      headers:{
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + cookies.get('token')
+      }
+      })
+}
+    const changeStatus = (value)=>{
+        order.status=value
+        setOrder(order)
+        axios.put(`http://localhost:8080/order/${order.id}`,{
+          "status":value
+        },{
+          headers:{
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + cookies.get('token')
+          }
+          }).then((res)=>{
+            loadOrder()
+          })
+    }
 return (
   <div className='col-md-8 offset-md-2 border rounded p-4 mt-2'>
     <Row className='text-center m-4'>
@@ -63,23 +97,30 @@ return (
       <Col md={2}>
       <div>
       {order.status=="CHECKING"?(
-          <div className="alert alert-warning" role="alert">
+          <div className="alert alert-warning" role="alert" style={{padding:10}}>
           CHECKING
         </div>
       ):(order.status=="SHIPPING"?(
-          <div className="alert alert-info" role="alert">
+          <div className="alert alert-info" role="alert" style={{padding:10}}>
           SHIPPING
         </div>
       ):(order.status=="DONE"?(
-          <div className="alert alert-success" role="alert">
+          <div className="alert alert-success" role="alert" style={{padding:10}}>
           DONE
         </div>
-      ):(<div className="alert alert-danger" role="alert">
+      ):(<div className="alert alert-danger" role="alert" style={{padding:10}}>
               CANCEL
           </div>
       )))}
       </div>
       </Col>
+      <div className='col text-center' hidden={order.status==="DONE"||order.status==="CANCEL"}>
+        <h2>Change Order status</h2>
+        <Button variant='info' style={{margin:10}} hidden={order.status==="SHIPPING"} onClick={()=>changeStatus("SHIPPING")}>SHIPPING</Button>
+        <Button variant='success' style={{margin:10}} onClick={()=>changeStatus("DONE")} >DONE</Button>
+        <Button variant='danger' style={{margin:10}} onClick={()=>changeStatus("CANCEL")}>CANCEL</Button>
+      </div>
+
     </Row>
       <h2>Phone Number: {customer.phoneNumber}</h2>
       <h2>Name: {customer.name}</h2>
@@ -101,7 +142,15 @@ return (
                     <span>{orderDetail.price} đ</span>
                     </Col>
                     <Col md={3}>
-                      <span>Số lượng: {orderDetail.quantity} </span>
+                    <input
+                        disabled={order.status!=="CHECKING"}
+                        type={"number"} 
+                        className="form-control" 
+                        name={JSON.stringify(orderDetail)}
+                        value={orderDetail.quantity} 
+                        onChange={(e)=> onInputChange(e)}
+                        />
+                     
                     </Col>
                     <Col>
                     <span> Sum: {orderDetail.price*orderDetail.quantity} đ</span>
@@ -118,7 +167,7 @@ return (
       <h3> Total price: {sum} đ</h3>
       </div>
       <div className='col text-center'>
-      <Link to="/customer/order">
+      <Link to="/manager/order">
         <Button>Back</Button>
       </Link>
       </div>

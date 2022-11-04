@@ -110,10 +110,26 @@ public class CustomerServiceImpl implements CustomerService{
         return modelMapper.map(savedOrder, OrderResponseDto.class);
     }
 
-
     @Override
     public CustomerResponseDto getCustomerById(Long id){
+        
+        Optional<Customer> customerOptional = this.customerRepository.findById(id);
 
+        if (customerOptional.isEmpty()){
+            throw new ResourceNotFoundException("Customer Not Found with Controller Advice");
+        }
+        Customer customer = customerOptional.get();
+        Optional<Account> accountOptional = accountRepository.findById(customer.getAccountId());
+        if (accountOptional.isEmpty()){
+            throw new ResourceNotFoundException("Account Not Found with Controller Advice");
+        }
+        
+        CustomerResponseDto customerResponseDto = modelMapper.map(customer, CustomerResponseDto.class);
+        customerResponseDto.setPhoneNumber(accountOptional.get().getPhoneNumber());
+        return customerResponseDto;
+    }
+    @Override
+    public CustomerResponseDto getCustomerByToken(){
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
                         .getPrincipal();
         String phoneNumber = userDetails.getUsername();
