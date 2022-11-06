@@ -61,7 +61,7 @@ public class ProductController {
     @PostMapping("/{id}/rating")
     @ResponseStatus(HttpStatus.CREATED)
     RatingResponseDto addRating (@PathVariable("id") Long id, @Valid @RequestBody RatingUpdateDto dto){
-        return this.productService.addRating(dto);
+        return this.productService.ratingProduct(dto);
     }
     
     @PutMapping("/{id}")

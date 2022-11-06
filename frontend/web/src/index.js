@@ -4,16 +4,14 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import "./index.css"
 import App from "./App"
 import login from "./App"
-import Context from "./components/Context"
-
-
+import {FilterProvider} from "./context/FilterContext"
 
 function Page() {
     return (
         <React.StrictMode>
-            <Context>
+            <FilterProvider>
                 <App />
-            </Context>
+            </FilterProvider>
         </React.StrictMode>
         
     )

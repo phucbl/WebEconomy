@@ -12,7 +12,7 @@ public interface ProductService {
     public List<Product> getAllProductsByCategoryId(int categoryId);
     public Product getProductById(Long id);
     public CartResponseDto addToCart(CartUpdateDto dto);
-    public RatingResponseDto addRating(RatingUpdateDto dto);
+    public RatingResponseDto ratingProduct(RatingUpdateDto dto);
     public ProductResponseDto createProduct(ProductUpdateDto dto);
     public ProductResponseDto updateProduct(Long id, ProductUpdateDto dto);
     public ProductResponseDto deactiveProduct(Long id);

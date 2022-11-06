@@ -40,14 +40,17 @@ public class CustomerController {
     }
 
     @GetMapping
-    List<Customer> getCustomers(){
+    List<CustomerResponseDto> getCustomers(){
         return customerService.getAllCustomers();
     }
     @GetMapping("/")
     CustomerResponseDto getCustomerByHeaderId(){
         return customerService.getCustomerByToken();
     }
-
+    @GetMapping("/check/{phoneNumber}")
+    ResponseEntity<ResponseDto> checkAccountExisted(@PathVariable("phoneNumber") String phoneNumber){
+        return customerService.checkAccountExisted(phoneNumber);
+    }
     @GetMapping("/cart")
     List<CartResponseDto> getCartByHeaderCustomerId(@RequestHeader("customerId") Long id){
         return customerService.getCartByCustomerId(id);
@@ -79,6 +82,10 @@ public class CustomerController {
     @DeleteMapping("/cart")
     public ResponseEntity<ResponseDto> deleteCart(@RequestBody ProductCustomerId id){
         return customerService.deleteCart(id);
+    }
+    @PutMapping("/password")
+    public ResponseEntity<ResponseDto> changPassword(@RequestBody ChangePasswordDto dto){
+        return customerService.changePassword(dto);
     }
 
     @PostMapping

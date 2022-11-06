@@ -2,6 +2,7 @@ package com.example.webeconomy.services.impl;
 import java.util.List;
 import java.util.Optional;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,8 +32,13 @@ public class CategoryServiceImpl implements CategoryService{
     }
 
     @Override
-    public List<Category> getAllCategories(){
-        return this.categoryRepository.findAll();
+    public List<CategoryResponseDto> getAllCategories(){
+        List<Category> categories = this.categoryRepository.findAll();
+        List<CategoryResponseDto> categoryResponseDtos = modelMapper.map(categories,new TypeToken<List<CategoryResponseDto>>() {}.getType());
+        for (CategoryResponseDto categoryResponseDto : categoryResponseDtos) {
+            categoryResponseDto.setNumberProduct(productRepository.findByCategoryId(categoryResponseDto.getId()).size());
+        }
+        return categoryResponseDtos;
     }  
     @Override
     public Category getCategoryById(Integer id){

@@ -118,9 +118,30 @@ return (
         <h2>Change Order status</h2>
         <Button variant='info' style={{margin:10}} hidden={order.status==="SHIPPING"} onClick={()=>changeStatus("SHIPPING")}>SHIPPING</Button>
         <Button variant='success' style={{margin:10}} onClick={()=>changeStatus("DONE")} >DONE</Button>
-        <Button variant='danger' style={{margin:10}} onClick={()=>changeStatus("CANCEL")}>CANCEL</Button>
+        <Button variant='danger' style={{margin:10}} data-toggle="modal" data-target="#modal1" >CANCEL</Button>
       </div>
-
+      <div className="modal fade" id="modal1" tabIndex="-1" role="dialog" aria-labelledby="modal1Label" aria-hidden="true">
+      <div className="modal-dialog" role="document">
+          <div className="modal-content">
+          <div className="modal-header">
+          <h5 className="modal-title" id="modal1Label">Cancel Order</h5>
+              <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div className="modal-body">
+              You want to cancel order: {order.id}?
+          </div>
+          <div className="modal-footer text-center">
+              <button type="button" className="btn btn-primary" style={{paddingLeft:20,paddingRight:20,marginRight:50}}
+              onClick={()=>changeStatus("CANCEL")} data-dismiss="modal"
+              >Cancel</button>
+              <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+              
+          </div>
+          </div>
+      </div>
+      </div>
     </Row>
       <h2>Phone Number: {customer.phoneNumber}</h2>
       <h2>Name: {customer.name}</h2>

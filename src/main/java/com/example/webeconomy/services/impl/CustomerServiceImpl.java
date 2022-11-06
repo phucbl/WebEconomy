@@ -16,6 +16,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.webeconomy.data.repositories.*;
@@ -56,8 +58,18 @@ public class CustomerServiceImpl implements CustomerService{
     }
 
     @Override
-    public List<Customer> getAllCustomers(){
-        return this.customerRepository.findAll();
+    public List<CustomerResponseDto> getAllCustomers(){
+        List<Customer> customers = this.customerRepository.findAll();
+        List<CustomerResponseDto> customerResponseDtos = modelMapper.map(customers,new TypeToken<List<CustomerResponseDto>>() {}.getType());
+        for (CustomerResponseDto customerResponseDto : customerResponseDtos) {
+            Optional<Account> accountOptional = accountRepository.findById(customerResponseDto.getAccountId());
+            if (accountOptional.isEmpty()){
+                throw new ResourceNotFoundException("Account Not Found with Controller Advice");
+            }
+            customerResponseDto.setPhoneNumber(accountOptional.get().getPhoneNumber());
+            customerResponseDto.setStatus(accountOptional.get().isStatus());
+        }
+        return customerResponseDtos;
     } 
 
     @Override
@@ -203,5 +215,33 @@ public class CustomerServiceImpl implements CustomerService{
         Cart cart = cartOptional.get();
         cartRepository.delete(cart);
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto(null, "Delete Successfully!","200"));
+    }
+
+    @Override
+    public ResponseEntity<ResponseDto> changePassword(ChangePasswordDto dto){    
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
+                        .getPrincipal();
+        String phoneNumber = userDetails.getUsername();
+        Optional<Account> accountOptional = accountRepository.findByPhoneNumber(phoneNumber);
+        if (accountOptional.isEmpty()){
+            throw new ResourceNotFoundException("Account Not Found with Controller Advice");
+        }
+        Account account = accountOptional.get();
+        PasswordEncoder encoder = new BCryptPasswordEncoder();
+        if (!encoder.matches(dto.getPassword(), account.getPassword())){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseDto(null, "Invalid password!","400"));
+        }
+        account.setPassword(encoder.encode(dto.getNewPassword()));
+        accountRepository.save(account);
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto(null, "Change Password Successfully!","200"));
+    }
+
+    @Override
+    public ResponseEntity<ResponseDto>  checkAccountExisted (String phoneNumber){
+        Optional<Account> accountOptional = accountRepository.findByPhoneNumber(phoneNumber);
+        if (accountOptional.isPresent()){
+            throw new ItemExistException("Phone number is already signed up");
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto(null, "Phone number can be register","200"));
     }
 }

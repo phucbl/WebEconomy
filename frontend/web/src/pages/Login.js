@@ -30,11 +30,7 @@ export default function Login() {
           cookies.set('customerId',res.data.data.customerId,{ path: '/' })
           cookies.set('role',res.data.data.role,{ path: '/' })
           cookies.set('token',res.data.data.token,{ path: '/' })
-          {cookies.get('role')==="ROLE_ADMIN"?(
-            navigate('/manager')
-          ):(
-            navigate('/')
-          )}
+          navigate('/')
           window.location.reload()
         })
         .catch((error)=>{
@@ -58,8 +54,10 @@ export default function Login() {
               className="form-control"
               name="phoneNumber"
               value={phoneNumber}
-              onChange={(e)=> onInputChange(e)}/>
-
+              onChange={(e)=> onInputChange(e)}
+              />
+              <div class="text-danger" hidden={phoneNumber!==""}>Please fill out this field.</div>
+              <div class="text-danger" hidden={!isNaN(Number(phoneNumber)) }>Not meet phone number type</div>
             </div>
             <div className='mb-3'>
               <label htmlFor="password" className='form-label'>
@@ -71,13 +69,24 @@ export default function Login() {
               name="password"
               value={password}
               onChange={(e)=> onInputChange(e)}/>
-              
+              <div class="text-danger" hidden={password!==""}>Please fill out this field.</div>
             </div>
             <div className='d-flex justify-content-center'>
-              <Button type="submit">Login</Button>
-              <Button variant="success" style={{marginLeft:10}}>
+              <Button type="submit" style={{padding:'20px 50px'}} 
+              disabled={
+                isNaN(Number(phoneNumber))||
+                phoneNumber===""||
+                password===""
+              }
+              >Login</Button>
+            </div>
+            <div className='text-center' style={{marginTop:10}}>
+            <Button variant="success" style={{marginRight:10}}>
                 <Link to='/customer/register'>Register New Accout</Link>
                 </Button>
+            <Link to="/">
+              <Button variant='danger' style={{paddingLeft:30,paddingRight:30}}>Back</Button>
+              </Link>
             </div>
             </form>  
           </div>

@@ -13,7 +13,7 @@ import com.example.webeconomy.dto.response.*;
 @Service
 public interface CustomerService {
 
-    public List<Customer> getAllCustomers();
+    public List<CustomerResponseDto> getAllCustomers();
     public List<CartResponseDto> getCartByCustomerId(Long id);
     public List<Order> getOrdersByCustomerId();
     public CustomerResponseDto getCustomerByToken();
@@ -22,5 +22,7 @@ public interface CustomerService {
     public CustomerResponseDto createCustomer(CustomerUpdateDto dto);
     public CustomerResponseDto updateCustomer(Long id, CustomerUpdateDto dto);
     public CartResponseDto updateCart(CartUpdateDto dto);
+    public ResponseEntity<ResponseDto> checkAccountExisted (String phoneNumber);
     public ResponseEntity<ResponseDto> deleteCart(ProductCustomerId id);
+    public ResponseEntity<ResponseDto> changePassword(ChangePasswordDto dto);
 }

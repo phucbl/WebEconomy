@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom'
 import axios from 'axios'
 import Cookies from 'universal-cookie'
 
-export default function Order(){
+export default function OrderManager(){
     const cookies = new Cookies();
     const [orders, setOrders] = useState([])
     useEffect(()=>{

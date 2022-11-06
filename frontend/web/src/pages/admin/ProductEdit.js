@@ -1,5 +1,5 @@
 import  { React,useEffect, useState } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate,Link } from 'react-router-dom'
 import {Image,Button, Dropdown} from 'react-bootstrap'
 import axios from 'axios';
 import DropdownMenu from 'react-bootstrap/esm/DropdownMenu';
@@ -41,15 +41,14 @@ export default function ProductEdit() {
     }
 
     const onSubmit = (e)=>{
-        axios.put(`http://localhost:8080/product/${id}`,{
-            
+        if(product.price===""||product.name===""||product.categoryId===""){alert("Missing fields")}else{
+            axios.put(`http://localhost:8080/product/${id}`,{
                 'name':product.name,
                 'imageUrl':product.imageUrl,
                 'price':product.price,
                 'origin':product.origin,
                 'categoryId':product.categoryId,
                 'description':product.description
-            
         },{
             headers:{
                 'Content-Type': 'application/json',
@@ -57,15 +56,22 @@ export default function ProductEdit() {
             }
         }).then(()=>{
             navigate("/manager/product")
+        }).catch((error)=>{
+            alert(error.response.data.message)
         })
+        }
+        
     }
     const uploadSingleFile= (e) =>{
-        console.log(e);
         setFile(e.target.files[0])
     };
     const  upload= (e)=> {
         e.preventDefault();
-        console.log(file);
+        {file.name!==undefined?(
+            setProduct({...product,["imageUrl"]:"/images/"+file.name})
+        ):(
+            alert('Select an image')
+        )}
     };
   return (
     <div>
@@ -75,7 +81,7 @@ export default function ProductEdit() {
                 <div className='d-flex row'>
                     <Image src={imageUrl} className="img-fluid" alt="Responsive"/>
                     <Button onClick={(e)=>upload(e)}>Change Image</Button>
-                    <input type="file" className="form-control" onChange={(e)=>uploadSingleFile(e)} />
+                    <input type="file"  className="form-control" onChange={(e)=>uploadSingleFile(e)} />
                 </div>
                 <div style={{paddingLeft:100}} className="d-flex row">
                     <h2>Name</h2>
@@ -134,7 +140,10 @@ export default function ProductEdit() {
             </form>
             <div className='text-center' style={{paddingTop:20}}>
                 <Button variant='warning' onClick={(e)=>onSubmit(e)}>Save Edit</Button>
-                <Button style={{marginLeft:20}}>Back</Button>
+                <Link to="/manager/product/">
+                    <Button style={{marginLeft:20}}>Back</Button>
+                </Link>
+                
                 </div>
         </div>
         

@@ -27,6 +27,8 @@ public class ProductServiceImpl implements ProductService{
     @Autowired
     private CartRepository cartRepository;
     @Autowired
+    private CategoryRepository categoryRepository;
+    @Autowired
     private OrderRepository orderRepository;
     @Autowired
     private RatingRepository ratingRepository;
@@ -69,7 +71,7 @@ public class ProductServiceImpl implements ProductService{
         return modelMapper.map(cart, CartResponseDto.class);
     }
     @Override
-    public RatingResponseDto addRating (RatingUpdateDto dto){        
+    public RatingResponseDto ratingProduct (RatingUpdateDto dto){        
         Rating saveRating;
         Boolean isBought = false;
         productCustomerId=dto.getId();
@@ -136,8 +138,11 @@ public class ProductServiceImpl implements ProductService{
         if (productOptional.isEmpty()){
             throw new ResourceNotFoundException("Product Not Found");
         }
-        
         Product product = productOptional.get();
+        Optional<Category> categoryOptional = categoryRepository.findById(dto.getCategoryId());
+        if (categoryOptional.isEmpty()){
+            throw new ResourceNotFoundException("Category Not Found");
+        }
         product.setUpdateDate(Date.valueOf(currentDate));
         modelMapper.map(dto,product);
         Product savedProduct = productRepository.save(product);
@@ -151,7 +156,7 @@ public class ProductServiceImpl implements ProductService{
         }
         Product product = productOptional.get();
         product.setUpdateDate(Date.valueOf(currentDate));
-        product.setStatus(false);
+        product.setStatus(!product.isStatus());
         Product savedProduct = productRepository.save(product);
         return modelMapper.map(savedProduct, ProductResponseDto.class);
     }

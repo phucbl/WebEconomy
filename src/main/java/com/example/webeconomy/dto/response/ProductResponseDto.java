@@ -16,6 +16,7 @@ public class ProductResponseDto {
     private int count;
     private int categoryId;
     private float rate;
+    private boolean status;
     private Date createDate;
     private Date updateDate;
 }

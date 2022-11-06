@@ -3,6 +3,7 @@ import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +20,7 @@ import com.example.webeconomy.dto.response.ResponseDto;
 import com.example.webeconomy.services.AccountService;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/account")
 public class AccountController {
     @Autowired
@@ -32,10 +34,7 @@ public class AccountController {
     AccountResponseDto getAccountByID(@PathVariable("id") Long id){
         return accountService.getAccountById(id);
     }
-    @GetMapping("/")
-    AccountResponseDto getAccountByPhoneNumber(@RequestParam("phoneNumber") String phoneNumber){
-        return accountService.getAccountByPhoneNumber(phoneNumber);
-    }
+    
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -49,7 +48,7 @@ public class AccountController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ResponseDto> deleteAccount(@PathVariable("id") Long id, @Valid @RequestBody AccountUpdateDto dto){
+    ResponseEntity<ResponseDto> deactiveAccount(@PathVariable("id") Long id){
         return accountService.deactiveAccount(id);
     }
     

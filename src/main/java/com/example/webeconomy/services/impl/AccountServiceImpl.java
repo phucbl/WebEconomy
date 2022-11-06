@@ -104,9 +104,10 @@ public class AccountServiceImpl implements AccountService{
             throw new ResourceNotFoundException("Account Not Found");
         }
         Account account = accountOptional.get();
-        account.setStatus(false);
+        account.setStatus(!account.isStatus());
         account = accountRepository.save(account);
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto(null, "Deactive Successfully!","200"));
     }
+    
 
 }

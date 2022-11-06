@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes, Navigate} from 'react-router-dom';
+import { BrowserRouter,createContext, Route, Routes, Navigate} from 'react-router-dom';
 import './App.css';
 import Header from './components/Header'
 import Home from './pages/Home'
@@ -12,15 +12,16 @@ import ConfirmOrder from './pages/ConfirmOrder';
 import { CookiesProvider } from "react-cookie";
 import ViewOrder from './pages/ViewOrder';
 import Manager from './pages/admin/Manager';
-import Order from './pages/admin/Order';
+import CategoryManager from './pages/admin/CategoryManager'
+import CustomerManager from './pages/admin/CustomerManager'
+import CustomerView from './pages/admin/CustomerView'
+import OrderManager from './pages/admin/OrderManager';
 import OrderView from './pages/admin/OrderView';
 import OrderEdit from './pages/admin/OrderEdit';
-import Product from './pages/admin/Product';
+import ProductManager from './pages/admin/ProductManager';
 import ProductEdit from './pages/admin/ProductEdit';
 import ProductAdd from './pages/admin/ProductAdd';
 import Cookies from 'universal-cookie';
-
-
 function App() {
   const cookies = new Cookies()
   return (
@@ -44,12 +45,15 @@ function App() {
         <Routes>
           <Route path='/' element={<Home />} exact/>
           <Route path='/manager' element={<Manager/>} exact/>
-          <Route path='/manager/customer' element={<Customer/>} exact/>
-          <Route path='/manager/product' element={<Product/>} exact/>
+          <Route path='/manager/customer/' element={<CustomerManager/>} exact/>
+          <Route path='/manager/customer/:id' element={<CustomerView/>} exact/>
+          <Route path='/manager/category/' element={<CategoryManager/>} exact/>
+          <Route path='/manager/product/' element={<ProductManager/>} exact/>
           <Route path='/manager/product/add' element={<ProductAdd/>} exact/>
           <Route path='/manager/product/edit/:id' element={<ProductEdit/>} exact/>
           <Route path='/product/:id' element={<ViewProduct/>} exact/>
-          <Route path='/manager/order' element={<Order/>} exact/>
+
+          <Route path='/manager/order' element={<OrderManager/>} exact/>
           <Route path='/manager/order/:id' element={<OrderView/>} exact/>
           <Route path='/manager/order/edit/:id' element={<OrderEdit/>} exact/>
           <Route path="*" element={<Navigate to="/" replace />} />

@@ -9,7 +9,7 @@ import com.example.webeconomy.dto.response.ResponseDto;
 
 
 public interface CategoryService {
-    public List<Category> getAllCategories();
+    public List<CategoryResponseDto> getAllCategories();
     public Category getCategoryById(Integer id);
     public CategoryResponseDto createCategory(CategoryUpdateDto dto);
     public CategoryResponseDto updateCategory(Integer id, CategoryUpdateDto dto);
