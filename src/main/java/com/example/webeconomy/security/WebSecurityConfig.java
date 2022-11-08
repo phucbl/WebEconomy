@@ -69,6 +69,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers(POST,"/product").hasAnyAuthority("ROLE_ADMIN")
             .antMatchers(PUT,"/product").hasAnyAuthority("ROLE_ADMIN")
             .antMatchers(DELETE,"/product").hasAnyAuthority("ROLE_ADMIN")
+            .antMatchers(PUT,"/order/**").permitAll()
             .antMatchers("/customer/**").permitAll()
             .antMatchers("/product/**").permitAll()
             .antMatchers("/category/**").permitAll()

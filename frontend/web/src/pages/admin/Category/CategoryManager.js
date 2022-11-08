@@ -28,7 +28,10 @@ export default function CategoryManager(){
               'Content-Type': 'application/json',
               'Authorization': 'Bearer ' + cookies.get('token')
           }
-      }).then(()=>{loadCategories()})
+      }).then(()=>{
+        loadCategories()
+        alert("Delete Successfully")
+    })
     }
     const onInputChange = (e) =>{
         setName(e.target.value)

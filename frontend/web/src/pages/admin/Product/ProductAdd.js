@@ -56,14 +56,25 @@ export default function ProductAdd() {
         
     }
     const uploadSingleFile= (e) =>{
-        setFile(e.target.files[0])
+        let fileType=e.target.files[0].name.split('.').reverse()[0]
+        axios.get(`/images/${e.target.files[0].name}`).catch((error) => {
+            alert("File was not saved in Images Folder")
+            e.target.value = null;
+        })
+        if (fileType==="jpg"||fileType==="jpeg"||fileType==="png"){
+            setFile(e.target.files[0])
+        }else{
+            alert("File type not supported")
+            e.target.value = null;
+        }
+        
     };
     const  upload= (e)=> {
         e.preventDefault();
         {file.name!==undefined?(
             setProduct({...product,["imageUrl"]:"/images/"+file.name})
         ):(
-            alert('Select an image')
+            alert('Select an image file')
         )}
     };
   return (
@@ -74,7 +85,7 @@ export default function ProductAdd() {
                 <div className='d-flex row'>
                     <Image src={imageUrl} className="img-fluid" alt="Responsive"/>
                     <Button onClick={(e)=>upload(e)}>Change Image</Button>
-                    <input type="file"  className="form-control" onChange={(e)=>uploadSingleFile(e)} />
+                    <input type="file" className="form-control" onChange={(e)=>uploadSingleFile(e)} accept=".jpg , .jpeg , .png"/>
                 </div>
                 <div style={{paddingLeft:100}} className="d-flex row">
                     <h2>Name</h2>

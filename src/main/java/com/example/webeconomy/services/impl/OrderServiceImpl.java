@@ -76,7 +76,7 @@ public class OrderServiceImpl implements OrderService{
         }
         Order order = orderOptional.get();
         OrderStatus lastStatus = order.getStatus();
-        if (lastStatus==OrderStatus.CANCELED) throw new BadRequestException("This order was canceled");
+        if (lastStatus==OrderStatus.CANCEL) throw new BadRequestException("This order was canceled");
         order.setStatus(dto.getStatus());
         order = orderRepository.save(order);
         if (order.getStatus()==OrderStatus.DONE&&lastStatus!=OrderStatus.DONE){
@@ -98,7 +98,7 @@ public class OrderServiceImpl implements OrderService{
             throw new ResourceNotFoundException("Order Not Found");
         }
         Order order = orderOptional.get();
-        order.setStatus(OrderStatus.CANCELED);
+        order.setStatus(OrderStatus.CANCEL);
         order = orderRepository.save(order);
         return modelMapper.map(order, OrderResponseDto.class);
     }

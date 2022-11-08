@@ -12,15 +12,15 @@ import ConfirmOrder from './pages/ConfirmOrder';
 import { CookiesProvider } from "react-cookie";
 import ViewOrder from './pages/ViewOrder';
 import Manager from './pages/admin/Manager';
-import CategoryManager from './pages/admin/CategoryManager'
-import CustomerManager from './pages/admin/CustomerManager'
-import CustomerView from './pages/admin/CustomerView'
-import OrderManager from './pages/admin/OrderManager';
-import OrderView from './pages/admin/OrderView';
-import OrderEdit from './pages/admin/OrderEdit';
-import ProductManager from './pages/admin/ProductManager';
-import ProductEdit from './pages/admin/ProductEdit';
-import ProductAdd from './pages/admin/ProductAdd';
+import CategoryManager from './pages/admin/Category/CategoryManager'
+import CustomerManager from './pages/admin/Customer/CustomerManager'
+import CustomerView from './pages/admin/Customer/CustomerView'
+import OrderManager from './pages/admin/Order/OrderManager';
+import OrderView from './pages/admin/Order/OrderView';
+import OrderEdit from './pages/admin/Order/OrderEdit';
+import ProductManager from './pages/admin/Product/ProductManager';
+import ProductEdit from './pages/admin/Product/ProductEdit';
+import ProductAdd from './pages/admin/Product/ProductAdd';
 import Cookies from 'universal-cookie';
 function App() {
   const cookies = new Cookies()
@@ -57,11 +57,8 @@ function App() {
           <Route path='/manager/order/:id' element={<OrderView/>} exact/>
           <Route path='/manager/order/edit/:id' element={<OrderEdit/>} exact/>
           <Route path="*" element={<Navigate to="/" replace />} />
-
       </Routes>
       )}
-      
-      
     </BrowserRouter>
     </CookiesProvider> 
   );

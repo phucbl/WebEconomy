@@ -56,23 +56,6 @@ export default function ViewOrder() {
         setCustomer(res.data)
       })
       }
-    const onInputChange = async (e)=>{
-    let {value,name} = e.target
-    let item = JSON.parse(name);
-    let tempOrderDetail = [...orderDetails]
-    let findIndex = tempOrderDetail.findIndex((orderDetail) => orderDetail.id.productId == item.id.productId);
-    tempOrderDetail[findIndex].quantity=value
-    setOrderDetails(tempOrderDetail)
-    axios.put(`http://localhost:8080/orderDetail/`,{
-      'id':{'orderId':item.id.orderId,'productId':item.id.productId},'price':item.price,'quantity':value
-    }
-    ,{
-      headers:{
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + cookies.get('token')
-      }
-      })
-}
     const changeStatus = (value)=>{
         order.status=value
         setOrder(order)
@@ -163,15 +146,7 @@ return (
                     <span>{orderDetail.price} đ</span>
                     </Col>
                     <Col md={3}>
-                    <input
-                        disabled={order.status!=="CHECKING"}
-                        type={"number"} 
-                        className="form-control" 
-                        name={JSON.stringify(orderDetail)}
-                        value={orderDetail.quantity} 
-                        onChange={(e)=> onInputChange(e)}
-                        />
-                     
+                    <span>{orderDetail.quantity}</span>
                     </Col>
                     <Col>
                     <span> Sum: {orderDetail.price*orderDetail.quantity} đ</span>

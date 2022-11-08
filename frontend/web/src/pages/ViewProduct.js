@@ -63,7 +63,7 @@ export default function ViewProduct() {
                     <p> Origin: {product.origin}</p>
                     <Rating rating={product.rate}/>
                     
-                    <Button data-toggle="modal" data-target="#modal1" > Rating this product</Button>
+                    <Button data-toggle="modal" data-target="#modal1" disabled={cookies.get('role')!=="ROLE_USER"} > Rating this product</Button>
                     <div className='d-flex' style={{marginTop:10}}>
                     <input
                     style={{marginRight:5, width:200, height:50}}
@@ -72,7 +72,7 @@ export default function ViewProduct() {
                     value={quantity}
                     onChange={(e)=>setQuantity(e.target.value)}
                     ></input>
-                    <Button variant='success' onClick={(e)=>addToCart(e)} disabled={cookies.get('role')=="ROLE_ADMIN"||product.status===false}>Add To Cart</Button>
+                    <Button variant='success' onClick={(e)=>addToCart(e)} disabled={cookies.get('role')!=="ROLE_USER"||product.status===false}>Add To Cart</Button>
                     </div>
                     <div className="modal fade" id="modal1" tabIndex="-1" role="dialog" aria-labelledby="modal1Label" aria-hidden="true">
                     <div className="modal-dialog" role="document">

@@ -40,7 +40,7 @@ public class CategoryController {
     }
 
     @GetMapping("/{id}")
-    Category getCategoryById(@PathVariable("id") Integer id){
+    CategoryResponseDto getCategoryById(@PathVariable("id") Integer id){
         return categoryService.getCategoryById(id);
     }
 

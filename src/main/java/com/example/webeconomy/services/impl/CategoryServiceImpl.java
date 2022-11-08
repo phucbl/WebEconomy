@@ -26,7 +26,8 @@ public class CategoryServiceImpl implements CategoryService{
     private ModelMapper modelMapper;
     
     @Autowired
-    public CategoryServiceImpl( CategoryRepository categoryRepository, ModelMapper modelMapper){
+    public CategoryServiceImpl( ProductRepository productRepository ,CategoryRepository categoryRepository, ModelMapper modelMapper){
+        this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;
         this.modelMapper = modelMapper;
     }
@@ -34,32 +35,38 @@ public class CategoryServiceImpl implements CategoryService{
     @Override
     public List<CategoryResponseDto> getAllCategories(){
         List<Category> categories = this.categoryRepository.findAll();
+        if (categories.isEmpty()) {
+            throw new ResourceNotFoundException("Category List Is Empty.");
+        }
         List<CategoryResponseDto> categoryResponseDtos = modelMapper.map(categories,new TypeToken<List<CategoryResponseDto>>() {}.getType());
         for (CategoryResponseDto categoryResponseDto : categoryResponseDtos) {
-            categoryResponseDto.setNumberProduct(productRepository.findByCategoryId(categoryResponseDto.getId()).size());
+            categoryResponseDto
+            .setNumberProduct(productRepository.findByCategoryId(categoryResponseDto.getId())
+            .get()
+            .size());
         }
         return categoryResponseDtos;
     }  
     @Override
-    public Category getCategoryById(Integer id){
+    public CategoryResponseDto getCategoryById(Integer id){
         Optional<Category> categoryOptional = this.categoryRepository.findById(id);
 
         if (categoryOptional.isEmpty()){
             throw new ResourceNotFoundException("Category Not Found with Controller Advice");
         }
-        Category category = categoryOptional.get();
-        return category;
+        CategoryResponseDto categoryrResponseDto =modelMapper.map(categoryOptional.get(),CategoryResponseDto.class) ;
+        return categoryrResponseDto;
 
     }
     @Override
     public CategoryResponseDto createCategory(CategoryUpdateDto dto){
         Optional<Category> categoryOptional = this.categoryRepository.findByName(dto.getName());
-        if (!categoryOptional.isEmpty()){
+        if (categoryOptional.isPresent()){
             throw new ItemExistException("Category was found, id is: "+ categoryOptional.get().getId());
         }
         Category category = modelMapper.map(dto,Category.class);
-        Category savedCategory = categoryRepository.save(category);
-        return modelMapper.map(savedCategory, CategoryResponseDto.class);
+        category = categoryRepository.save(category);
+        return modelMapper.map(category, CategoryResponseDto.class);
     }
 
     @Override
@@ -68,10 +75,9 @@ public class CategoryServiceImpl implements CategoryService{
         if (categoryOptional.isEmpty()){
             throw new ResourceNotFoundException("Category Not Found");
         }
-        
         Category category = categoryOptional.get();
-        modelMapper.map(dto,category);
-        category = categoryRepository.save(category);
+        category.setName(dto.getName());
+        categoryRepository.save(category);
         return modelMapper.map(category, CategoryResponseDto.class);
     }
 
@@ -82,8 +88,8 @@ public class CategoryServiceImpl implements CategoryService{
             throw new ResourceNotFoundException("Category Not Found");
         }
         Category category = categoryOptional.get();
-        List<Product> products = productRepository.findByCategoryId(category.getId());
-        if (!products.isEmpty()) {
+        Optional<List<Product>> products = productRepository.findByCategoryId(category.getId());
+        if (products.get().size()>0) {
             throw new BadRequestException("This category still has products");
         }
         categoryRepository.delete(category);
@@ -91,3 +97,4 @@ public class CategoryServiceImpl implements CategoryService{
     }
 
 }
+

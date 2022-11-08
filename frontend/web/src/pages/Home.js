@@ -3,8 +3,10 @@ import SingleProduct from '../components/SingleProduct'
 import "../components/style.css";
 import Filter from '../components/Filter';
 import {FilterState } from '../context/FilterContext'
+import DropdownMenu from 'react-bootstrap/esm/DropdownMenu';
 import axios from 'axios';
 import Pagination from '../components/Pagination';
+import { Dropdown } from 'react-bootstrap';
 
 
 export default function Home () {
@@ -52,7 +54,7 @@ export default function Home () {
       sortedProducts = sortedProducts.filter((prod) => prod.categoryId!==4);
     }
     if (byCate4===false) {
-      sortedProducts = sortedProducts.filter((prod) => prod.categoryId!==5);
+      sortedProducts = sortedProducts.filter((prod) => prod.categoryId!==1);
     }
     if (byCate1===false&&byCate2===false&&byCate3===false&&byCate4===false){
       sortedProducts = products;
@@ -68,7 +70,6 @@ export default function Home () {
   return (
     <div className='d-flex row'>
     <div className='home'>
-      
       <Filter/>
       <div className='homeContainer'>
         {transformProducts().slice(firstPostIndex,lastPostIndex).map((prod)=>{
@@ -78,14 +79,14 @@ export default function Home () {
       </div>
       
     </div>
-    <div className="text-center">
+    
     <Pagination
     totalItems={transformProducts().length}
     itemsPerPage={itemsPerPage}
     setCurrentPage={setCurrentPage}
     currentPage={currentPage}
+    setItemsPerPage={setItemsPerPage}
     />
-    </div>
     
     </div>
   )

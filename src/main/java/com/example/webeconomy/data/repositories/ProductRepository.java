@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.example.webeconomy.data.entities.*;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
-    List<Product> findByCategoryId(int categoryId);
+    Optional<List<Product>> findByCategoryId(int categoryId);
     Optional<Product> findByName (String name);
 
 }

@@ -52,9 +52,9 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public List<Product> getAllProductsByCategoryId (int categoryId){
-        return this.productRepository.findByCategoryId(categoryId);
+        return productRepository.findByCategoryId(categoryId).get();
     }
-
+    
     @Override
     public CartResponseDto addToCart(CartUpdateDto dto){        
         Cart cart;

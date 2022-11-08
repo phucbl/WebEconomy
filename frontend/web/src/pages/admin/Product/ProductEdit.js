@@ -63,7 +63,18 @@ export default function ProductEdit() {
         
     }
     const uploadSingleFile= (e) =>{
-        setFile(e.target.files[0])
+        let fileType=e.target.files[0].name.split('.').reverse()[0]
+        axios.get(`/images/${e.target.files[0].name}`).catch((error) => {
+            alert("File was not saved in Images Folder")
+            e.target.value = null;
+        })
+        if (fileType==="jpg"||fileType==="jpeg"||fileType==="png"){
+            setFile(e.target.files[0])
+        }else{
+            alert("File type not supported")
+            e.target.value = null;
+        }
+        
     };
     const  upload= (e)=> {
         e.preventDefault();
@@ -81,7 +92,7 @@ export default function ProductEdit() {
                 <div className='d-flex row'>
                     <Image src={imageUrl} className="img-fluid" alt="Responsive"/>
                     <Button onClick={(e)=>upload(e)}>Change Image</Button>
-                    <input type="file"  className="form-control" onChange={(e)=>uploadSingleFile(e)} />
+                    <input type="file"  className="form-control"  onChange={(e)=>uploadSingleFile(e)} accept="image/png, image/jpeg"/>
                 </div>
                 <div style={{paddingLeft:100}} className="d-flex row">
                     <h2>Name</h2>
@@ -118,9 +129,11 @@ export default function ProductEdit() {
                         List Category
                     </Dropdown.Toggle>
                         <DropdownMenu>
-                                {categories.map((category)=>{
+                                {categories.sort((a,b)=>a.id-b.id).map((category)=>{
                                     return(
-                                        <a className='dropdown-item' key={category.id}>{category.id} : {category.name}</a>
+                                        <span className='dropdown-item' 
+                                        onClick={()=>setProduct({...product,["categoryId"]:category.id})}
+                                        key={category.id}>{category.id} : {category.name}</span>
                                     )
                                 })}
                                 

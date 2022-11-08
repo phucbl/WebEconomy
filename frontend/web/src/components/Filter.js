@@ -61,10 +61,10 @@ const Filter = () => {
         <span>
             <Form.Check
             inline
-            label="Linh kiện mạch điện"
-            name="group1"
+            label="Linh kiện hotend"
+            name="group2"
             type="checkbox"
-            id={'inline-3'}
+            id={'inline-4'}
             onChange={() =>
                 dispatch({
                   type: "FILTER_BY_CATE1"
@@ -76,10 +76,10 @@ const Filter = () => {
         <span>
             <Form.Check
             inline
-            label="Linh kiện mạch hotend"
-            name="group1"
+            label="Linh kiện mạch điện"
+            name="group2"
             type="checkbox"
-            id={'inline-4'}
+            id={'inline-5'}
             onChange={() =>
                 dispatch({
                   type: "FILTER_BY_CATE2"
@@ -92,9 +92,9 @@ const Filter = () => {
             <Form.Check
             inline
             label="Ốc, vít"
-            name="group1"
+            name="group2"
             type="checkbox"
-            id={'inline-5'}
+            id={'inline-6'}
             onChange={() =>
                 dispatch({
                   type: "FILTER_BY_CATE3"
@@ -107,9 +107,9 @@ const Filter = () => {
             <Form.Check
             inline
             label="Phụ kiện khác"
-            name="group1"
+            name="group2"
             type="checkbox"
-            id={'inline-6'}
+            id={'inline-7'}
             onChange={() =>
                 dispatch({
                   type: "FILTER_BY_CATE4"

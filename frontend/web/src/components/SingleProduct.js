@@ -38,7 +38,7 @@ export default function SigleProduct ({prod}) {
                 <div style={{ paddingBottom:10}}>
                 Sold: {prod.count}
                 </div>
-                <Button onClick={(e)=>addToCart(e)} disabled={cookies.get('role')=="ROLE_ADMIN"||prod.status===false}>Add to cart</Button>
+                <Button onClick={(e)=>addToCart(e)} disabled={cookies.get('role')!=="ROLE_USER"||prod.status===false}>Add to cart</Button>
                 <Link to={'/product/'+prod.id}>
                 <Button variant='success' style={{marginLeft:5}}>View product</Button>
                 </Link>

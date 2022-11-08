@@ -42,7 +42,7 @@ export default function ViewOrder() {
       }).then((res)=>{
         setOrder(res.data)
         setOrderDetails(res.data.orderDetailResponseDtos)
-      })}
+    })}
     const loadCustomer = async()=>{
       const result=await axios.get("http://localhost:8080/customer/",{
           headers:{
@@ -52,7 +52,21 @@ export default function ViewOrder() {
           }
       });
       setCustomer(result.data)
-      }
+    }
+    const changeStatus = (value)=>{
+      order.status=value
+      setOrder(order)
+      axios.put(`http://localhost:8080/order/${order.id}`,{
+        "status":value
+      },{
+        headers:{
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + cookies.get('token')
+        }
+        }).then((res)=>{
+          loadOrder()
+        })
+    }
 return (
   <div className='col-md-8 offset-md-2 border rounded p-4 mt-2'>
     <Row className='text-center m-4'>
@@ -80,6 +94,32 @@ return (
       )))}
       </div>
       </Col>
+      <div className='col text-center' hidden={order.status==="DONE"||order.status==="CANCEL"}>
+        <h2>Cancel Order</h2>
+        <Button variant='danger' style={{margin:10}} data-toggle="modal" data-target="#modal1" >CANCEL</Button>
+      </div>
+      <div className="modal fade" id="modal1" tabIndex="-1" role="dialog" aria-labelledby="modal1Label" aria-hidden="true">
+      <div className="modal-dialog" role="document">
+          <div className="modal-content">
+          <div className="modal-header">
+          <h5 className="modal-title" id="modal1Label">Cancel Order</h5>
+              <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div className="modal-body">
+              You want to cancel order: {order.id}?
+          </div>
+          <div className="modal-footer text-center">
+              <button type="button" className="btn btn-primary" style={{paddingLeft:20,paddingRight:20,marginRight:50}}
+              onClick={()=>changeStatus("CANCEL")} data-dismiss="modal"
+              >Cancel</button>
+              <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+              
+          </div>
+          </div>
+      </div>
+      </div>
     </Row>
       <h2>Phone Number: {customer.phoneNumber}</h2>
       <h2>Name: {customer.name}</h2>

@@ -58,13 +58,13 @@ export default function CustomerManager(){
                                 {customer.status?(
                                     <Button variant="danger"  data-toggle="modal" data-target="#modal1">Deactive</Button>
                                 ):(
-                                    <Button variant='success' onClick={()=>deactiveCustomer(customer.accountId)}>Active</Button>
+                                    <Button variant='success' data-toggle="modal" data-target="#modal2">Active</Button>
                                 )}
                                 <div className="modal fade" id="modal1" tabIndex="-1" role="dialog" aria-labelledby="modal1Label" aria-hidden="true">
                                 <div className="modal-dialog" role="document">
                                     <div className="modal-content">
                                     <div className="modal-header">
-                                    <h5 className="modal-title" id="modal1Label">Deactive Product</h5>
+                                    <h5 className="modal-title" id="modal1Label">Deactive Customer</h5>
                                         <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                         </button>
@@ -82,7 +82,28 @@ export default function CustomerManager(){
                                     </div>
                                 </div>
                                 </div>
-                                
+                                <div className="modal fade" id="modal2" tabIndex="-1" role="dialog" aria-labelledby="modal2Label" aria-hidden="true">
+                                <div className="modal-dialog" role="document">
+                                    <div className="modal-content">
+                                    <div className="modal-header">
+                                    <h5 className="modal-title" id="modal2Label">Active Customer</h5>
+                                        <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div className="modal-body">
+                                        You want to active customer: {customer.phoneNumber}?
+                                    </div>
+                                    <div className="modal-footer text-center">
+                                        <button type="button" className="btn btn-primary" style={{paddingLeft:20,paddingRight:20,marginRight:50}}
+                                        onClick={()=>deactiveCustomer(customer.accountId)} data-dismiss="modal"
+                                        >Active</button>
+                                        <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        
+                                    </div>
+                                    </div>
+                                </div>
+                                </div>
                             </td>
                         </tr>
                     )).reverse()
