@@ -31,8 +31,8 @@ import lombok.Setter;
 public class Account {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator="seq")
-    @GenericGenerator(name = "seq", strategy="increment")
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "seq")
+    @GenericGenerator(name = "seq", strategy = "increment")
     @Column(name = "id")
     private long id;
 
@@ -43,13 +43,13 @@ public class Account {
     private String password;
 
     @Enumerated(EnumType.ORDINAL)
-    @Column(name = "role_id")    
+    @Column(name = "role_id")
     private Erole roleId;
 
     @Column(name = "status")
     private boolean status;
 
-    @JsonBackReference (value="accout-show")
+    @JsonBackReference(value = "accout-show")
     @OneToOne(mappedBy = "account", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Customer customer;
 

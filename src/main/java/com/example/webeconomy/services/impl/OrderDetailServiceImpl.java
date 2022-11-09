@@ -16,7 +16,7 @@ import com.example.webeconomy.exceptions.*;
 import com.example.webeconomy.services.OrderDetailService;
 
 @Service
-public class OrderDetailServiceImpl implements OrderDetailService{
+public class OrderDetailServiceImpl implements OrderDetailService {
     @Autowired
     private ProductRepository productRepository;
     @Autowired
@@ -25,48 +25,51 @@ public class OrderDetailServiceImpl implements OrderDetailService{
     private ModelMapper modelMapper;
 
     @Autowired
-    public OrderDetailServiceImpl(OrderDetailRepository orderDetailRepository, ModelMapper modelMapper){
+    public OrderDetailServiceImpl(OrderDetailRepository orderDetailRepository, ModelMapper modelMapper) {
         this.orderDetailRepository = orderDetailRepository;
         this.modelMapper = modelMapper;
     }
 
     @Override
-    public List<OrderDetail> getAllOrderDetails(){
+    public List<OrderDetail> getAllOrderDetails() {
         return orderDetailRepository.findAll();
-    }  
+    }
+
     @Override
-    public List<OrderDetailResponseDto> getOrderDetailByOrderId(Long orderId){
+    public List<OrderDetailResponseDto> getOrderDetailByOrderId(Long orderId) {
         List<OrderDetail> orderDetails = orderDetailRepository.findByIdOrderId(orderId);
-        List<OrderDetailResponseDto> orderDetailResponseDtos = modelMapper.map(orderDetails,new TypeToken<List<OrderDetailResponseDto>>() {}.getType());
+        List<OrderDetailResponseDto> orderDetailResponseDtos = modelMapper.map(orderDetails,
+                new TypeToken<List<OrderDetailResponseDto>>() {
+                }.getType());
         for (OrderDetailResponseDto orderDetailResponseDto : orderDetailResponseDtos) {
-            Long productId=orderDetailResponseDto.getId().getProductId();
+            Long productId = orderDetailResponseDto.getId().getProductId();
             Optional<Product> productOptional = productRepository.findById(productId);
-            Product product=productOptional.get();
+            Product product = productOptional.get();
             orderDetailResponseDto.setProductName(product.getName());
             orderDetailResponseDto.setImageUrl(product.getImageUrl());
         }
 
         return orderDetailResponseDtos;
-    }  
-    
+    }
+
     @Override
-    public OrderDetailResponseDto createOrderDetail(OrderDetailUpdateDto dto){
-        OrderDetail orderDetail = modelMapper.map(dto,OrderDetail.class);
+    public OrderDetailResponseDto createOrderDetail(OrderDetailUpdateDto dto) {
+        OrderDetail orderDetail = modelMapper.map(dto, OrderDetail.class);
         orderDetail.setId(dto.getId());
         OrderDetail savedOrderDetail = orderDetailRepository.save(orderDetail);
         return modelMapper.map(savedOrderDetail, OrderDetailResponseDto.class);
     }
+
     @Override
-    public OrderDetailResponseDto updateOrderDetail( OrderDetailUpdateDto dto){
+    public OrderDetailResponseDto updateOrderDetail(OrderDetailUpdateDto dto) {
         Optional<OrderDetail> OrderDetailOptional = orderDetailRepository.findById(dto.getId());
-        if (OrderDetailOptional.isEmpty()){
+        if (OrderDetailOptional.isEmpty()) {
             throw new ResourceNotFoundException("OrderDetail Not Found");
         }
-        
+
         OrderDetail OrderDetail = OrderDetailOptional.get();
-        modelMapper.map(dto,OrderDetail);
+        modelMapper.map(dto, OrderDetail);
         OrderDetail = orderDetailRepository.save(OrderDetail);
         return modelMapper.map(OrderDetail, OrderDetailResponseDto.class);
     }
 }
-

@@ -28,12 +28,13 @@ export default function ViewProduct() {
         alert("Thank You")
         loadProduct()
         setRating(5)
-      }).catch((error)=>{
-        console.log(error.response)
+      }).catch(()=>{
+        alert("Haven't bought this product yet")
       })
     }
     const addToCart = async(e)=>{
       e.preventDefault()
+      if (quantity>0){
       axios.post(`http://localhost:8080/product/${product.id}`,{
         'id':{'customerId':cookies.get('customerId'),'productId':product.id},'quantity':quantity
       }
@@ -45,8 +46,10 @@ export default function ViewProduct() {
         }
       })
       alert ("Added product to cart")
+    }else {
+      alert("Quantity not available")
     }
-
+  }
   return (
     <div className='productContainer'>
         <div className='col-md-8 offset-md-2 border rounded p-4 mt-2'>

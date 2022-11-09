@@ -1,4 +1,5 @@
 package com.example.webeconomy.data.entities;
+
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -18,10 +19,10 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @Entity
 @Table(name = "category")
 public class Category {
-    
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator="seq")
-    @GenericGenerator(name = "seq", strategy="increment")
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "seq")
+    @GenericGenerator(name = "seq", strategy = "increment")
     @Column(name = "id")
     private int id;
 
@@ -29,7 +30,7 @@ public class Category {
     @Column(name = "name")
     private String name;
 
-    @JsonBackReference (value="category-show")
+    @JsonBackReference(value = "category-show")
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Product> product;
 
@@ -61,5 +62,5 @@ public class Category {
     public String toString() {
         return "Category [id=" + id + ", name=" + name + "]";
     }
-    
+
 }

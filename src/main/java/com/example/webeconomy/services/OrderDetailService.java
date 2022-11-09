@@ -1,4 +1,5 @@
 package com.example.webeconomy.services;
+
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -11,8 +12,10 @@ import com.example.webeconomy.dto.response.OrderDetailResponseDto;
 public interface OrderDetailService {
 
     public List<OrderDetail> getAllOrderDetails();
+
     public List<OrderDetailResponseDto> getOrderDetailByOrderId(Long orderId);
+
     public OrderDetailResponseDto createOrderDetail(OrderDetailUpdateDto dto);
+
     public OrderDetailResponseDto updateOrderDetail(OrderDetailUpdateDto dto);
 }
-

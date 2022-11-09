@@ -1,8 +1,8 @@
 package com.example.webeconomy.controllers;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.webeconomy.dto.response.*;
@@ -24,7 +23,6 @@ import java.util.List;
 import javax.validation.Valid;
 
 @RestController
-@CrossOrigin
 @RequestMapping("/customer")
 public class CustomerController {
     @Autowired
@@ -33,70 +31,77 @@ public class CustomerController {
     private CustomerService customerService;
     @Autowired
     private OrderService orderService;
+
     @Autowired
-    CustomerController (CustomerService customerService){
+    CustomerController(CustomerService customerService) {
 
         this.customerService = customerService;
     }
 
     @GetMapping
-    List<CustomerResponseDto> getCustomers(){
+    List<CustomerResponseDto> getCustomers() {
         return customerService.getAllCustomers();
     }
+
     @GetMapping("/")
-    CustomerResponseDto getCustomerByHeaderId(){
+    CustomerResponseDto getCustomerByHeaderId() {
         return customerService.getCustomerByToken();
     }
+
     @GetMapping("/check/{phoneNumber}")
-    ResponseEntity<ResponseDto> checkAccountExisted(@PathVariable("phoneNumber") String phoneNumber){
+    ResponseEntity<ResponseDto> checkAccountExisted(@PathVariable("phoneNumber") String phoneNumber) {
         return customerService.checkAccountExisted(phoneNumber);
     }
+
     @GetMapping("/cart")
-    List<CartResponseDto> getCartByHeaderCustomerId(@RequestHeader("customerId") Long id){
+    List<CartResponseDto> getCartByHeaderCustomerId(@RequestHeader("customerId") Long id) {
         return customerService.getCartByCustomerId(id);
     }
+
     @GetMapping("/{id}")
-    CustomerResponseDto getCustomerById(@PathVariable("id") Long id){
+    CustomerResponseDto getCustomerById(@PathVariable("id") Long id) {
         return customerService.getCustomerById(id);
     }
 
     @GetMapping("/order")
-    List<Order> getOrderByCustomerId(){
+    List<Order> getOrderByCustomerId() {
         return customerService.getOrdersByCustomerId();
     }
+
     @GetMapping("/order/{id}")
-    OrderResponseDto getOrderByCustomerIdOrderId(@PathVariable("id") Long id){
+    OrderResponseDto getOrderByCustomerIdOrderId(@PathVariable("id") Long id) {
         return orderService.getOrderById(id);
     }
 
     @PostMapping("/cart")
-    OrderResponseDto createOrder(@RequestBody CreateOrderDto createOrderDto){
+    OrderResponseDto createOrder(@RequestBody CreateOrderDto createOrderDto) {
         return customerService.createOrder(createOrderDto);
     }
 
     @PutMapping("/cart")
-    CartResponseDto updateCart(@RequestBody CartUpdateDto dto){
+    CartResponseDto updateCart(@RequestBody CartUpdateDto dto) {
         return customerService.updateCart(dto);
     }
 
     @DeleteMapping("/cart")
-    public ResponseEntity<ResponseDto> deleteCart(@RequestBody ProductCustomerId id){
+    public ResponseEntity<ResponseDto> deleteCart(@RequestBody ProductCustomerId id) {
         return customerService.deleteCart(id);
     }
+
     @PutMapping("/password")
-    public ResponseEntity<ResponseDto> changPassword(@RequestBody ChangePasswordDto dto){
+    public ResponseEntity<ResponseDto> changPassword(@RequestBody ChangePasswordDto dto) {
         return customerService.changePassword(dto);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    CustomerResponseDto createCustomer(@RequestBody CustomerUpdateDto dto){
+    CustomerResponseDto createCustomer(@RequestBody CustomerUpdateDto dto) {
         return this.customerService.createCustomer(dto);
     }
-    
+
     @PutMapping("/{id}")
-    CustomerResponseDto updateCustomer(@PathVariable("id") Long id, @Valid @RequestBody CustomerUpdateDto dto){
-        return this.customerService.updateCustomer(id,dto);
+    CustomerResponseDto updateCustomer(@PathVariable("id") Long id, @Valid @RequestBody CustomerUpdateDto dto) {
+        return this.customerService.updateCustomer(id, dto);
     }
 
 }

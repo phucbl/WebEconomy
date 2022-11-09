@@ -1,4 +1,4 @@
-package com.example.WebEconomy.services;
+package com.example.webeconomy.services;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -18,8 +18,6 @@ import org.mockito.Mock;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.example.webeconomy.data.entities.Category;
@@ -28,16 +26,13 @@ import com.example.webeconomy.data.repositories.CategoryRepository;
 import com.example.webeconomy.data.repositories.ProductRepository;
 import com.example.webeconomy.dto.request.CategoryUpdateDto;
 import com.example.webeconomy.dto.response.CategoryResponseDto;
-import com.example.webeconomy.dto.response.ResponseDto;
 import com.example.webeconomy.services.impl.*;
 import com.example.webeconomy.exceptions.*;
-
-
 
 @Configuration
 @ExtendWith(SpringExtension.class)
 public class CategoryServiceImplTest {
-    
+
     CategoryServiceImpl categoryServiceImpl;
     @Mock
     CategoryRepository categoryRepository;
@@ -56,7 +51,7 @@ public class CategoryServiceImplTest {
         modelMapper = mock(ModelMapper.class);
         categoryUpdateDto = mock(CategoryUpdateDto.class);
         categoryResponseDto = mock(CategoryResponseDto.class);
-        categoryServiceImpl = new CategoryServiceImpl(productRepository,categoryRepository, modelMapper);
+        categoryServiceImpl = new CategoryServiceImpl(productRepository, categoryRepository, modelMapper);
     }
 
     @Test
@@ -67,6 +62,7 @@ public class CategoryServiceImplTest {
                 () -> categoryServiceImpl.getAllCategories());
         assertThat("Category List Is Empty.", is(actual.getMessage()));
     }
+
     @Test
     void getAllCategories_WhenCategoryValid_ShouldThrowResourceNotFoundException() {
         List<Category> categories = new ArrayList();
@@ -76,12 +72,12 @@ public class CategoryServiceImplTest {
         categories.add(category);
         categoryResponseDtos.add(categoryResponseDto);
         when(categoryRepository.findAll()).thenReturn(categories);
-        when(modelMapper.map(categories,new TypeToken<List<CategoryResponseDto>>() {}.getType())).thenReturn(categoryResponseDtos);
+        when(modelMapper.map(categories, new TypeToken<List<CategoryResponseDto>>() {
+        }.getType())).thenReturn(categoryResponseDtos);
         when(productRepository.findByCategoryId(categoryResponseDto.getId())).thenReturn(Optional.of(products));
         List<CategoryResponseDto> actual = categoryServiceImpl.getAllCategories();
         assertThat(categoryResponseDtos, is(actual));
     }
-    
 
     @Test
     void getCategoryById_WhenCategoryNull_ShouldThrowResourseNotFoundException() {
@@ -96,19 +92,19 @@ public class CategoryServiceImplTest {
     }
 
     @Test
-    void getCategoryById_WhenCategoryNotNull_ShouldReturnCategoryObject(){
+    void getCategoryById_WhenCategoryNotNull_ShouldReturnCategoryObject() {
         Category category = new Category();
         category.setId(1);
         CategoryResponseDto expected = mock(CategoryResponseDto.class);
         when(categoryRepository.findById(1)).thenReturn(Optional.of(category));
-        when(modelMapper.map(category,CategoryResponseDto.class)).thenReturn(expected);
+        when(modelMapper.map(category, CategoryResponseDto.class)).thenReturn(expected);
         CategoryResponseDto actual = categoryServiceImpl.getCategoryById(1);
 
         assertThat(actual, is(expected));
     }
 
     @Test
-    void createCategory_WhenCategoryNotNull_ShouldThrowItemExistException() {
+    void createCategory_WhenCategoryExisted_ShouldThrowItemExistException() {
         when(categoryRepository.findByName(category.getName())).thenReturn(Optional.of(category));
         ItemExistException actual = Assertions.assertThrows(ItemExistException.class,
                 () -> categoryServiceImpl.createCategory(categoryUpdateDto));
@@ -147,9 +143,8 @@ public class CategoryServiceImplTest {
     @Test
     void deteleCategory_WhenCategoryNull_ShouldThrowNewResourceNotFoundException() {
         when(categoryRepository.findById(category.getId())).thenReturn(Optional.empty());
-        ResourceNotFoundException actual = Assertions.assertThrows(ResourceNotFoundException.class,
-                () -> categoryServiceImpl.deleteCategory(category.getId()));
-        assertThat("Category Not Found", is(actual.getMessage()));
+        String responseActual = categoryServiceImpl.deleteCategory(category.getId()).getBody().getMessage();
+        assertThat("Category Not Found", is(responseActual));
     }
 
     @Test
@@ -158,17 +153,17 @@ public class CategoryServiceImplTest {
         products.add(product);
         when(categoryRepository.findById(category.getId())).thenReturn(Optional.of(category));
         when(productRepository.findByCategoryId(category.getId())).thenReturn(Optional.of(products));
-        BadRequestException actual = Assertions.assertThrows(BadRequestException.class,
-        () -> categoryServiceImpl.deleteCategory(category.getId()));
-        assertThat("This category still has products", is(actual.getMessage()));
+        String responseActual = categoryServiceImpl.deleteCategory(category.getId()).getBody().getMessage();
+        assertThat("Category still has products", is(responseActual));
     }
 
     @Test
     void deteleCategory_WhenCategoryDataValid_ShouldRenturnResponseEntity() {
+        List<Product> products = new ArrayList();
         when(categoryRepository.findById(category.getId())).thenReturn(Optional.of(category));
-        when(productRepository.findByCategoryId(category.getId())).thenReturn(Optional.empty());
+        when(productRepository.findByCategoryId(category.getId())).thenReturn(Optional.of(products));
         String responseActual = categoryServiceImpl.deleteCategory(category.getId()).getBody().getMessage();
         assertThat("Delete Successfully!", is(responseActual));
     }
 
-}   
+}

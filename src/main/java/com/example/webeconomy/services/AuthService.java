@@ -7,7 +7,7 @@ import com.example.webeconomy.dto.request.*;
 import com.example.webeconomy.dto.response.*;
 
 public interface AuthService extends UserDetailsService {
-    UserDetails loadUserByUsername (String phoneNumber);
+    UserDetails loadUserByUsername(String phoneNumber);
+
     ResponseEntity<ResponseDto> login(LoginInputDto loginRequest);
 }
-
